@@ -5,3 +5,4 @@
 # But explicitly include .env.example (reverse entry)
 !.env.example
 
+!PR_SUMMARY.md
