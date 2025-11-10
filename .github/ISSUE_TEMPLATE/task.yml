@@ -1,0 +1,47 @@
+name: Task / Chore
+about: Track documentation, automation, or maintenance work with acceptance criteria and dependencies.
+title: "[task] "
+labels:
+  - chore
+body:
+  - type: markdown
+    attributes:
+      value: |-
+        Use this form for targeted maintenance, docs work, or automation that keeps the project healthy. Provide the deliverables and acceptance criteria so we can plan it into a board or sprint.
+  - type: input
+    attributes:
+      label: Summary
+      description: 'One-line description of the work (e.g., "Refresh onboarding docs").'
+      required: true
+  - type: textarea
+    attributes:
+      label: Deliverables
+      description: "Describe what needs to change (files, docs, scripts, infra)."
+      required: true
+  - type: textarea
+    attributes:
+      label: Acceptance criteria
+      description: "Define what done looks like (checkboxes or numbered list)."
+      placeholder: "- [ ] Docs updated\n- [ ] Tests rerun\n- [ ] Automation reconfigured"
+  - type: dropdown
+    attributes:
+      label: Category
+      description: "Classify this task for board planning."
+      options:
+        - Docs
+        - Automation / tooling
+        - Infrastructure
+        - Testing
+        - Other
+  - type: input
+    attributes:
+      label: Owner / team
+      description: "Who should take this on or review it (optional)."
+  - type: input
+    attributes:
+      label: Dependencies / blockers
+      description: "What approvals, issues, or status updates must happen before work begins?"
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: "Links to reference docs, follow-up work, or rollout notes."

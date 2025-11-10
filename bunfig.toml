@@ -1,0 +1,6 @@
+[test]
+# Exclude e2e tests from bun test (they should only run with Playwright)
+ignore = ["**/*.e2e.test.ts"]
+# Preload DOM environment for component tests
+preload = ["./test/setup-dom.ts"]
+
