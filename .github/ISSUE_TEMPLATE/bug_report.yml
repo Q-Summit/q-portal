@@ -1,0 +1,75 @@
+name: Bug Report
+about: Submit a reproducible bug with the details we need to triage it without back-and-forth.
+title: "[bug] "
+labels:
+  - bug
+  - triage needed
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |-
+        This form is modeled on the GitHub Open Source Guide's recommendation to capture **steps, expectations, and environments** up front so maintainers can reproduce and prioritize the fix.
+        Fill in each section below; add logs, screenshots, or links where helpful.
+  - type: input
+    attributes:
+      label: Summary
+      description: "One-sentence description of the failure and where it happens."
+      placeholder: "E.g. Dashboard filter crashes when searching for a team name."
+      required: true
+  - type: textarea
+    attributes:
+      label: Reproduction steps
+      description: "List the exact, ordered steps you took (URLs, clicks, commands)."
+      placeholder: |-
+        1. Visit http://localhost:3000/dashboard
+        2. Select the "Community" filter
+        3. Click "Apply"
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: "Describe what should have happened instead."
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual behavior
+      description: "What happened instead? Include stack traces, console output, or screenshots."
+      required: true
+  - type: dropdown
+    attributes:
+      label: Severity
+      description: "How urgent is the fix?"
+      options:
+        - Blocker
+        - High
+        - Medium
+        - Low
+      required: true
+  - type: dropdown
+    attributes:
+      label: Environment
+      description: "Where does this reproduce?"
+      options:
+        - Local / development
+        - Staging
+        - Production
+        - Cross-browser
+        - Other
+      required: true
+  - type: input
+    attributes:
+      label: Component or URL (optional)
+      description: "Path, API, or UI area affected."
+  - type: textarea
+    attributes:
+      label: Workaround or mitigation
+      description: "Can something be done now to avoid the issue?"
+  - type: input
+    attributes:
+      label: Related issues / PRs
+      description: "Link to any existing discussion, RFC, or previous fix that is relevant."
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: "Any other notes (feature flags, dataset, timing) that could help the investigation."

@@ -1,0 +1,55 @@
+name: Feature Request
+about: Capture new capabilities with clear needs, value, and success criteria so we can scope the work quickly.
+title: "[feature] "
+labels:
+  - enhancement
+  - needs triage
+body:
+  - type: markdown
+    attributes:
+      value: |-
+        The Open Source Guide highlights how templates reduce friction for contributors. Use this form to explain the current pain, your idea, and why it matters so the maintainers can assess impact and effort.
+  - type: input
+    attributes:
+      label: Summary
+      description: "One-line description of the feature or improvement."
+      required: true
+  - type: textarea
+    attributes:
+      label: What problem are we solving?
+      description: "Describe the limitation, who experiences it, and how often."
+      required: true
+  - type: textarea
+    attributes:
+      label: Proposed solution
+      description: "Sketch the experience, behavior, endpoint, or automation you'd like to build."
+      required: true
+  - type: textarea
+    attributes:
+      label: Value statement / success criteria
+      description: "How will we know this is valuable? Metrics, UX goals, or reduced support requests."
+  - type: textarea
+    attributes:
+      label: Alternatives considered
+      description: "Document other workarounds you tried or why a docs fix / config tweak is insufficient."
+  - type: dropdown
+    attributes:
+      label: Impact area
+      description: "Helps route the request to the right domain."
+      options:
+        - UI
+        - API
+        - Backend
+        - Database
+        - Automation / tooling
+        - Docs
+        - Other
+      required: true
+  - type: input
+    attributes:
+      label: Dependencies or blockers
+      description: "Link to other tickets, approvals, or capacity constraints that affect timing."
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: "Attach mockups, data, or notes on rollout strategy (feature flags, schedule)."
