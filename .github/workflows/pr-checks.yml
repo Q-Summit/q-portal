@@ -1,28 +1,6 @@
 name: PR Checks
 
 on:
-  push:
-    paths:
-      # TypeScript/JavaScript files
-      - "**.ts"
-      - "**.tsx"
-      - "**.js"
-      - "**.jsx"
-      - "**.mjs"
-      - "**.cjs"
-      # Config files that affect checks
-      - "tsconfig.json"
-      - "tsconfig.*.json"
-      - "eslint.config.js"
-      - "eslint.config.*"
-      - "prettier.config.js"
-      - "prettier.config.*"
-      - ".prettierrc*"
-      # Package files
-      - "package.json"
-      - "bun.lock"
-      # Always run on workflow changes
-      - ".github/workflows/**"
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
