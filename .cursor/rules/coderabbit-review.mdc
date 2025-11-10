@@ -84,7 +84,7 @@ Before applying any fix, validate that it's actually an issue worth fixing:
 - ✅ Focus on high-count issue types first (e.g., if `potential_issue` has 66 items, start there)
 - ✅ Use review duration to estimate future review times
 - ✅ Limit iterations to 3 to avoid over-engineering
-- ✅ Always run `agent:finalize` after applying fixes
+- ✅ Always run `bun run agent:finalize` after applying fixes
 - ✅ Check issue types to understand what needs attention
 - ✅ Consult `.docs/DOCUMENTATION_GUIDE.md` if review suggests doc updates
 

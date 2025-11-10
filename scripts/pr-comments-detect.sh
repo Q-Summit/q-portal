@@ -13,24 +13,43 @@ fi
 
 # Parse arguments
 VALIDATE=true
-if [ "${1:-}" = "--no-validate" ]; then
-  VALIDATE=false
+PR_NUMBER=""
+
+# Check if first argument is a PR number or a flag
+if [ $# -gt 0 ]; then
+  if [ "${1}" = "--no-validate" ]; then
+    VALIDATE=false
+    # Check if second argument is a PR number
+    if [ $# -gt 1 ] && echo "${2}" | grep -qE '^[0-9]+$'; then
+      PR_NUMBER="${2}"
+    fi
+  elif echo "${1}" | grep -qE '^[0-9]+$'; then
+    # First argument is a PR number
+    PR_NUMBER="${1}"
+    # Check if second argument is --no-validate
+    if [ "${2:-}" = "--no-validate" ]; then
+      VALIDATE=false
+    fi
+  fi
 fi
 
 echo "🔍 Detecting PR number..."
 echo ""
 
-# Detect PR number
-PR_NUMBER=$(detect_pr_number)
-
+# Detect PR number if not provided
 if [ -z "$PR_NUMBER" ]; then
-  log_error "Could not detect PR number automatically"
-  echo ""
-  echo "Try one of these methods:"
-  echo "  1. Run 'bun run pr:comments <PR_NUMBER>' first to create a metadata file"
-  echo "  2. Use 'gh pr view' to see if GitHub CLI can detect the PR"
-  echo "  3. Manually specify the PR number when running commands"
-  exit 1
+  PR_NUMBER=$(detect_pr_number || echo "")
+  
+  if [ -z "$PR_NUMBER" ]; then
+    log_error "Could not detect PR number automatically"
+    echo ""
+    echo "Try one of these methods:"
+    echo "  1. Run 'bun run pr:comments:detect <PR_NUMBER>' to specify PR number"
+    echo "  2. Run 'bun run pr:comments <PR_NUMBER>' first to create a metadata file"
+    echo "  3. Use 'gh pr view' to see if GitHub CLI can detect the PR"
+    echo "  4. Manually specify the PR number when running commands"
+    exit 1
+  fi
 fi
 
 echo "✅ Detected PR: #${PR_NUMBER}"

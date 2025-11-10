@@ -34,11 +34,15 @@ Even if the code changes are minor or self-explanatory, a short written summary 
 
 Use phrases like "Closes #123" or "Fixes #456" in your PR descriptions. This automatically links your PR to the related issue and closes it once merged.
 
+**Auto-closing keywords**: `close`, `closes`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves`, `resolved` - These will automatically close the linked issue when the PR is merged.
+
+**Reference-only keywords**: `refs`, `references`, `relates to` - These create a link to the issue but do NOT close it. Use these when you want to reference an issue without closing it.
+
 ### 🧪 Mention What Was Tested (and How)
 
 Explain how you validated your changes. It doesn't need to be exhaustive—just enough to give reviewers confidence that things were tested and work as expected.
 
-> Example:  
+> Example:
 > "Tested locally with mock data and confirmed the flow works on staging."
 
 ## Development Setup
@@ -71,7 +75,7 @@ See [Development Setup Guide](.docs/guides/dev-setup.md) for complete setup inst
 ### Making a Pull Request
 
 - [Check the "Allow edits from maintainers" option](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/allowing-changes-to-a-pull-request-branch-created-from-a-fork) when creating your PR.
-- If your PR refers to or fixes an issue, add `refs #XXX` or `fixes #XXX` to the PR description.
+- If your PR refers to or fixes an issue, add `fixes #XXX` (closes the issue) or `refs #XXX` (only references, does not close) to the PR description.
 - Keep your branches updated (e.g., click the `Update branch` button on the GitHub PR page).
 
 ## Additional Resources

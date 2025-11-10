@@ -25,15 +25,15 @@ Complete reference for all available commands in Q-Portal.
 
 ## Testing
 
-| Command                  | Description                                      |
-| ------------------------ | ------------------------------------------------ |
-| `bun test`               | Run unit, integration, and component tests (E2E excluded) |
-| `bun run test:unit`      | Run unit tests only                              |
-| `bun run test:integration` | Run integration tests only                   |
-| `bun run test:component` | Run component tests only                        |
-| `bun run test:watch`     | Run tests in watch mode                          |
-| `bun run test:e2e`       | Run E2E tests (Playwright only - separate from bun test) |
-| `bun run test:e2e:install` | Install Playwright browsers (one-time setup) |
+| Command                    | Description                                               |
+| -------------------------- | --------------------------------------------------------- |
+| `bun test`                 | Run unit, integration, and component tests (E2E excluded) |
+| `bun run test:unit`        | Run unit tests only                                       |
+| `bun run test:integration` | Run integration tests only                                |
+| `bun run test:component`   | Run component tests only                                  |
+| `bun run test:watch`       | Run tests in watch mode                                   |
+| `bun run test:e2e`         | Run E2E tests (Playwright only - separate from bun test)  |
+| `bun run test:e2e:install` | Install Playwright browsers (one-time setup)              |
 
 ## Code Quality
 

@@ -50,14 +50,40 @@ if [ ${#NON_FLAG_ARGS[@]} -eq 0 ]; then
 elif [ ${#NON_FLAG_ARGS[@]} -eq 1 ]; then
   # One argument: could be PR number or index/ID
   ARG="${NON_FLAG_ARGS[0]}"
-  if [ "$ARG" -lt 1000 ]; then
-    # Small number - treat as index, auto-detect PR
-    PR_NUMBER=""
-    INDEX_OR_ID="$ARG"
-  else
+  # Try to detect PR first
+  DETECTED_PR=$(detect_pr_number || echo "")
+  
+  # Check if the argument is a valid PR number by checking if PR exists
+  if command -v gh &> /dev/null && gh auth status &> /dev/null 2>&1; then
+    if gh pr view "$ARG" --json number &> /dev/null 2>&1; then
+      # Argument is a valid PR number
+      PR_NUMBER="$ARG"
+      INDEX_OR_ID="1"
+    elif [ "$ARG" -ge 1000 ]; then
+      # Large number - treat as comment ID, try to auto-detect PR
+      PR_NUMBER=""
+      INDEX_OR_ID="$ARG"
+    elif [ -n "$DETECTED_PR" ]; then
+      # We can detect a PR, so treat argument as index
+      PR_NUMBER=""
+      INDEX_OR_ID="$ARG"
+    else
+      # Can't detect PR, treat argument as PR number (user's intent)
+      PR_NUMBER="$ARG"
+      INDEX_OR_ID="1"
+    fi
+  elif [ "$ARG" -ge 1000 ]; then
     # Large number - treat as comment ID, auto-detect PR
     PR_NUMBER=""
     INDEX_OR_ID="$ARG"
+  elif [ -n "$DETECTED_PR" ]; then
+    # We can detect a PR, so treat argument as index
+    PR_NUMBER=""
+    INDEX_OR_ID="$ARG"
+  else
+    # Can't detect PR, treat argument as PR number (user's intent)
+    PR_NUMBER="$ARG"
+    INDEX_OR_ID="1"
   fi
 elif [ ${#NON_FLAG_ARGS[@]} -eq 2 ]; then
   # Two arguments: first is PR number, second is index/ID
@@ -72,15 +98,15 @@ fi
 # Auto-detect PR number if not provided
 if [ -z "$PR_NUMBER" ]; then
   log_info "No PR number provided, detecting latest PR..."
-  PR_NUMBER=$(detect_pr_number)
+  PR_NUMBER=$(detect_pr_number || echo "")
   if [ -z "$PR_NUMBER" ]; then
     log_error "Could not detect PR number automatically"
     echo "Try one of these methods:"
     echo "  1. Run 'bun run pr:comments <PR_NUMBER>' first to create a metadata file"
     echo "  2. Use 'gh pr view' to see if GitHub CLI can detect the PR"
     echo "  3. Manually specify the PR number: $0 <PR_NUMBER> [INDEX_OR_ID]"
-  exit 1
-fi
+    exit 1
+  fi
   log_info "Detected PR: #${PR_NUMBER}"
 fi
 

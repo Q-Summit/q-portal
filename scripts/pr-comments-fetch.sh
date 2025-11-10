@@ -9,7 +9,7 @@
 set -euo pipefail
 
 # Verbose logging flag (disabled by default)
-VERBOSE=false
+export VERBOSE=false
 
 # Source shared utilities
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

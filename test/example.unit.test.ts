@@ -2,7 +2,7 @@ import { describe, it, expect } from "bun:test";
 
 /**
  * Example unit test demonstrating how to test pure functions without database.
- * 
+ *
  * Unit tests should test individual functions or modules in isolation,
  * without external dependencies like databases or network calls.
  */

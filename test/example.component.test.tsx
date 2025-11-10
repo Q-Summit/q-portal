@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 /**
  * Example component test demonstrating how to test React components in isolation.
- * 
+ *
  * Component tests should test component rendering, user interactions,
  * and component behavior without full page rendering.
  */
@@ -29,7 +29,9 @@ describe("Button Component", () => {
     const handleClick = () => {
       // Mock click handler
     };
-    const { container } = render(<Button onClick={handleClick}>Click me</Button>);
+    const { container } = render(
+      <Button onClick={handleClick}>Click me</Button>,
+    );
     const button = container.querySelector("button");
     expect(button).toBeDefined();
   });

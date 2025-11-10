@@ -4,7 +4,7 @@ import { appRouter } from "@/server/api/root";
 
 /**
  * Example integration test demonstrating how to test tRPC routers.
- * 
+ *
  * Integration tests should test interactions between components.
  * This example doesn't require a database, but shows the pattern for tests that do.
  */
@@ -43,4 +43,3 @@ describe("Example Router - Integration Tests", () => {
   //   }
   // });
 });
-

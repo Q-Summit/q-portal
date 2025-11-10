@@ -72,7 +72,7 @@ async function createTables() {
 const mockDataPresets = [
   {
     name: "full",
-    description: "Complete mock environment with test users",
+    description: "Create all tables (no test data)",
     setup: async () => {
       await createTables();
     },

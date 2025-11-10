@@ -6,6 +6,10 @@ set -euo pipefail
 
 # Source shared utilities
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ ! -r "${SCRIPT_DIR}/lib/review-utils.sh" ]; then
+  echo "❌ Error: review-utils.sh not found or not readable: ${SCRIPT_DIR}/lib/review-utils.sh" >&2
+  exit 1
+fi
 source "${SCRIPT_DIR}/lib/review-utils.sh"
 
 # Check if .coderabbit directory exists

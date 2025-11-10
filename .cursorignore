@@ -6,3 +6,5 @@
 !.env.example
 
 !PR_SUMMARY.md
+!/.coderabbit
+!/.github/pr-comments

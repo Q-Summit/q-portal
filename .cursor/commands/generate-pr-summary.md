@@ -37,11 +37,11 @@ When this command is invoked, the AI agent should:
    - Get repository info (for GitHub MCP): `git remote get-url origin` (extract owner/repo from URL)
 
 3. **Fill out each section:**
-   - **Summary:** 
+   - **Summary:**
      - Use commit messages from this PR (origin/main..HEAD)
      - For multiple commits, synthesize into a cohesive summary rather than listing each commit
      - Extract issue references from commit messages (e.g., "Fixes #123", "Closes #456")
-   - **Changes:** 
+   - **Changes:**
      - **Areas touched:** Group changed files into high-level functional areas:
        - **Backend:** API routes, server logic, database schema, migrations
        - **Frontend:** UI components, pages, client-side code
@@ -54,7 +54,7 @@ When this command is invoked, the AI agent should:
        - Only list areas that have significant changes (not every touched category)
        - Keep it simple - reviewers need to know the scope, not every detail
        - **Avoid listing too many areas** - if you have 5+ areas, you're probably being too granular
-     - **Key files modified:** 
+     - **Key files modified:**
        - For small PRs (< 10 files): List key files with change counts from `git diff --stat origin/main`
        - For large PRs (≥ 10 files): Group by category (e.g., "5 files in Backend (API routes, database schema)", "3 files in Frontend (UI components)")
        - Focus on what reviewers need to know, not exhaustive detail
@@ -63,7 +63,7 @@ When this command is invoked, the AI agent should:
    - **Context & Impact:** Fill based on actual changes - focus on what reviewers should pay attention to
    - **Documentation:** Check boxes if docs changed, list doc files, or "N/A - No documentation changes"
    - **Visual Changes:** "N/A - No visual changes" if no UI files, or describe changes
-   - **Linked Work:** 
+   - **Linked Work:**
      - **If GitHub MCP is available:**
        - Get repository owner/name from `git remote get-url origin`
        - Use `mcp_github_search_issues` to search for related issues using keywords from commit messages or changed files
@@ -110,13 +110,16 @@ When this command is invoked, the AI agent should:
 ## Examples:
 
 ### Summary Section:
+
 **Before:**
+
 ```markdown
 - Brief summary of the change and the problem it solves
 - Link to related issue (e.g., "Closes #123" or "Fixes #456")
 ```
 
 **After:**
+
 ```markdown
 - Added user authentication system with login and registration endpoints
 - Closes #123
@@ -125,6 +128,7 @@ When this command is invoked, the AI agent should:
 ### Changes Section:
 
 **Before:**
+
 ```markdown
 - Areas touched (config, UI, API, database, docs, etc.)
 - Key files modified (use `git diff --stat` output)
@@ -132,6 +136,7 @@ When this command is invoked, the AI agent should:
 ```
 
 **After (small PR - < 10 files):**
+
 ```markdown
 - Areas touched: Backend, Documentation
 - Key files modified:
@@ -142,6 +147,7 @@ When this command is invoked, the AI agent should:
 ```
 
 **After (large PR - ≥ 10 files):**
+
 ```markdown
 - Areas touched: Backend, Infrastructure, Documentation
 - Key files modified:
@@ -152,26 +158,30 @@ When this command is invoked, the AI agent should:
 ```
 
 **Optional (with minimal subcategories for clarity):**
+
 ```markdown
 - Areas touched: Backend (API, database), Infrastructure (config, scripts), Documentation
 ```
 
 **❌ Too verbose (avoid this):**
+
 ```markdown
 - Areas touched: Backend (API routes, server logic, database schema, migrations), Frontend (UI components, pages, client-side code), Infrastructure (config files, CI/CD, tooling, scripts)
 ```
 
 **❌ Wrong (too granular):**
+
 ```markdown
 - Areas touched: config, UI, API, database, docs, testing, CI/CD, tooling, scripts
 - Key files modified:
   - `.cursor/commands/docs-update.md` (42 insertions)
   - `.cursor/commands/finalize.md` (32 insertions)
   - `.cursor/commands/fix-pr-comments.md` (127 insertions)
-  ... (50+ more files listed individually)
+    ... (50+ more files listed individually)
 ```
 
 **✅ Correct (high-level grouping):**
+
 ```markdown
 - Areas touched: Infrastructure, Documentation
 - Key files modified:
@@ -180,6 +190,7 @@ When this command is invoked, the AI agent should:
 ```
 
 **✅ Also acceptable (minimal subcategories):**
+
 ```markdown
 - Areas touched: Infrastructure (tooling, scripts), Documentation
 - Key files modified:
@@ -188,7 +199,9 @@ When this command is invoked, the AI agent should:
 ```
 
 ### Documentation Section:
+
 **Before (with instruction line):**
+
 ```markdown
 - [ ] Code comments, README, API docs, or user-facing docs
 - Links to updated documentation files
@@ -196,36 +209,43 @@ When this command is invoked, the AI agent should:
 ```
 
 **After (docs changed):**
+
 ```markdown
 - [x] Code comments, README, API docs, or user-facing docs
 - Links to updated documentation files: `README.md`, `.docs/api/auth.md`
 ```
 
 **After (no docs changed):**
+
 ```markdown
 - [ ] Code comments, README, API docs, or user-facing docs
 - Links to updated documentation files: N/A - No documentation changes
 ```
 
 ### Additional Notes Section:
+
 **Before:**
+
 ```markdown
 - Questions for reviewers, known issues, or follow-up work
 - If none, write "N/A" or "None"
 ```
 
 **After (with notes):**
+
 ```markdown
 - This PR introduces a new authentication system that requires database migration
 - Reviewers should test login and registration flows
 ```
 
 **After (no notes):**
+
 ```markdown
 - N/A - None
 ```
 
 **❌ Wrong (don't do this):**
+
 ```markdown
 - This PR introduces a new authentication system
 - N/A - None
@@ -242,6 +262,7 @@ When filling out the "Changes" section, analyze at a higher level:
 5. **Use meaningful groupings** - "Backend" is more useful than "API, database, server logic" separately
 
 **Example analysis:**
+
 - Changed files: `src/server/api/routers/auth.ts`, `src/server/db/schema.ts`, `src/server/api/routers/user.ts`
 - Analysis: These are all backend changes (API and database)
 - **Best result:** "Areas touched: Backend"
@@ -252,10 +273,10 @@ When filling out the "Changes" section, analyze at a higher level:
 ## Output:
 
 The file `PR_SUMMARY.md` will be created in the project root with:
+
 - All sections filled out with actual content
 - Placeholder instruction lines removed
 - High-level "Areas touched" groupings (not granular categories)
 - Summarized file listings for large PRs (grouped by category)
 - Only files changed vs main/master included
 - Ready to copy-paste into GitHub PR draft
-

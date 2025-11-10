@@ -33,6 +33,7 @@ bun run test:e2e:install   # Install Playwright browsers (one-time setup)
 ## Test Database
 
 Tests use in-memory SQLite via LibSQL/Turso local mode. Each call to `createTestDb()` creates a new unique in-memory database:
+
 - If called in `beforeAll`, all tests in that suite share the same database
 - If called in each test, each test gets its own isolated database
 
@@ -41,7 +42,11 @@ Tests use in-memory SQLite via LibSQL/Turso local mode. Each call to `createTest
 Import from `@/test/utils`:
 
 ```typescript
-import { createTestDb, createTestDbWithMigrations, cleanupTestDb } from "@/test/utils";
+import {
+  createTestDb,
+  createTestDbWithMigrations,
+  cleanupTestDb,
+} from "@/test/utils";
 
 // Create test database
 const { db, client } = createTestDb();
@@ -56,6 +61,7 @@ await cleanupTestDb(db, client);
 ## Example Tests
 
 Example tests are provided in `test/`:
+
 - `test/example.unit.test.ts` - Unit test example
 - `test/example.integration.test.ts` - Integration test example
 - `test/example.component.test.tsx` - Component test example

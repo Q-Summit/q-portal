@@ -11,7 +11,7 @@ body:
   - type: input
     attributes:
       label: Summary
-      description: "One-line description of the work (e.g., "Refresh onboarding docs")."
+      description: 'One-line description of the work (e.g., "Refresh onboarding docs").'
       required: true
   - type: textarea
     attributes:

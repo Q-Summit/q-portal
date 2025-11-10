@@ -92,7 +92,9 @@ bun run test:watch         # Watch mode
 
 bun run test:e2e           # E2E tests (Playwright only - separate from bun test)
 ```
+
 **Note:** Before running E2E tests, install Playwright browsers:
+
 ```bash
 bun run test:e2e:install
 ```
