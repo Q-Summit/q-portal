@@ -61,7 +61,8 @@ To manage the OAuth credentials, access the [Google Cloud Console](https://conso
   - **Contains the Domain Restriction Hook:** Look for `databaseHooks.user.create`.
 - **`src/lib/auth-client.ts`**
   - Exports the type-safe client used by components.
-  - `baseURL` must match the current environment.
+  - Uses `NEXT_PUBLIC_BETTER_AUTH_URL` env var for the base URL.
+  - The `NEXT_PUBLIC_` prefix is required for Next.js client-side access.
 
 ### API Route
 
@@ -94,6 +95,10 @@ BETTER_AUTH_SECRET="your-generated-secret-with-atleast-32-chars"
 GOOGLE_CLIENT_ID="xxx.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET="xxx"
 
-# The base URL of your application
+# The base URL of your application (server-side)
 BETTER_AUTH_URL="http://localhost:3000"
+
+# Same URL but exposed to the browser (client-side auth operations)
+# Must use NEXT_PUBLIC_ prefix for Next.js client-side access
+NEXT_PUBLIC_BETTER_AUTH_URL="http://localhost:3000"
 ```
