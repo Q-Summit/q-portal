@@ -102,6 +102,10 @@ Create a `.env` file in the project root with the following variables:
 
 - **`DATABASE_URL`** - Your database URL (e.g., `libsql://your-database-url` for Turso or `file:./db.sqlite` for local SQLite)
 - **`NODE_ENV`** - Environment mode (`development`, `test`, or `production`)
+- **`BETTER_AUTH_SECRET`** - A random string used to encrypt session tokens (Generate via bunx auth secret)
+- **`BETTER_AUTH_URL`** - The full base URL of your application (e.g., http://localhost:3000 for dev)
+- **`GOOGLE_CLIENT_ID`** - The Client ID from the `q-summit-dev` Google Cloud Console project
+- **`GOOGLE_CLIENT_SECRET`** - The Client Secret from the `q-summit-dev` Google Cloud Console project
 
 #### Optional / Feature-specific
 
