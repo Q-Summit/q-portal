@@ -42,6 +42,7 @@ describe("Slack Router - Integration Tests", () => {
       success: true,
       channel: "C123ABC456",
       message: "Test message",
+      ts: "1234567890.123456",
     });
 
     expect(mockPostMessage).toHaveBeenCalledWith({

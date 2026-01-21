@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { sendSlackMessage } from "@/server/slack/client";
@@ -13,12 +14,25 @@ export const slackRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { channel, message } = input;
 
-      await sendSlackMessage(channel, message);
+      try {
+        const slackResponse = await sendSlackMessage(channel, message);
 
-      return {
-        success: true,
-        channel,
-        message,
-      };
+        return {
+          success: true,
+          channel,
+          message,
+          ts: slackResponse?.ts,
+        };
+      } catch (error) {
+        console.error("Slack API Error:", error);
+
+        const msg = error instanceof Error ? error.message : "Unknown error";
+
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: msg,
+          cause: error,
+        });
+      }
     }),
 });
