@@ -8,7 +8,6 @@ import { useState } from "react";
 import superjson from "superjson";
 
 import { type AppRouter } from "@/server/api/root";
-import { env } from "@/env";
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return window.location.origin;
@@ -38,7 +37,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
       links: [
         loggerLink({
           enabled: (opts) =>
-            env.NODE_ENV === "development" ||
+            process.env.NODE_ENV === "development" ||
             (opts.direction === "down" && opts.result instanceof Error),
         }),
         httpBatchStreamLink({
