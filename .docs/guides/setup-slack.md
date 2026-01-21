@@ -111,11 +111,6 @@ The following advanced features are planned for future releases:
 - **Mentions**: Trigger actions when users mention @Q-Portal (`app_mentions:read`).
 - **Slash Commands**: Execute defined actions via command shortcuts (`commands`).
 
-### Interactivity
-
-- **Mentions**: Trigger actions when users mention @Q-Portal (`app_mentions:read`).
-- **Slash Commands**: Execute defined actions via command shortcuts (`commands`).
-
 ## Troubleshooting
 
 ### "channel_not_found" Error
