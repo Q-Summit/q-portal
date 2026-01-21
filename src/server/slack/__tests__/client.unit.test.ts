@@ -124,6 +124,7 @@ describe("Slack Client Unit Tests", () => {
         expect(String(error)).toContain("channel_not_found");
       }
 
+      expect(consoleErrorSpy).toHaveBeenCalled();
       consoleErrorSpy.mockRestore();
     });
   });
