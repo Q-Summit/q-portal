@@ -9,8 +9,10 @@ export default [
       ".next/**",
       "out/**",
       "build/**",
+      "storybook-static/**",
       "next-env.d.ts",
       "node_modules/**",
+      "public/mockServiceWorker.js",
     ],
   },
   {
