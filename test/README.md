@@ -9,20 +9,21 @@ Tests should be organized in `__tests__` directories directly at implementation 
 ## Test File Naming
 
 - `*.unit.test.ts` - Unit tests (individual functions/modules)
-- `*.integration.test.ts` - Integration tests (component interactions, database)
-- `*.component.test.ts` / `*.component.test.tsx` - Component tests (React components)
+- `*.integration.test.ts` - Integration tests (e.g. database, API)
 - `*.e2e.test.ts` - E2E tests (Playwright only)
+
+**UI components:** Test via Storybook stories and the Vitest addon—add `play` functions for interactions and use the test widget (or `bun run test:stories`). No separate component test files.
 
 ## Running Tests
 
 ```bash
-bun test                    # Run unit, integration, and component tests (E2E excluded)
+bun test                    # Run unit and integration tests (E2E excluded)
 bun run test:unit          # Unit tests only
 bun run test:integration   # Integration tests only
-bun run test:component     # Component tests only
 bun run test:watch         # Watch mode
 bun run test:e2e           # E2E tests (Playwright only)
 bun run test:e2e:install   # Install Playwright browsers (one-time setup)
+bun run test:stories       # Storybook story tests (Vitest; UI components)
 ```
 
 ## Test Configuration
@@ -64,8 +65,9 @@ Example tests are provided in `test/`:
 
 - `test/example.unit.test.ts` - Unit test example
 - `test/example.integration.test.ts` - Integration test example
-- `test/example.component.test.tsx` - Component test example
 - `test/example.e2e.test.ts` - E2E test example
+
+For UI component testing, see `src/components/ui/button.stories.tsx` and run Storybook (`bun run storybook`) or `bun run test:stories`.
 
 ## Best Practices
 
@@ -80,4 +82,4 @@ Example tests are provided in `test/`:
 
 - [Bun Test Documentation](https://bun.sh/docs/cli/test) - Official Bun test documentation
 - [Playwright Documentation](https://playwright.dev) - Playwright e2e testing documentation
-- [React Testing Library](https://testing-library.com/react) - React component testing documentation
+- [Storybook Vitest addon](https://storybook.js.org/docs/writing-tests/integrations/vitest-addon) - Component testing via stories

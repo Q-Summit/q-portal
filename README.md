@@ -120,15 +120,15 @@ The application will be available at `http://localhost:3000`.
 
 ## Testing
 
-Q Portal uses `bun test` for unit, integration, and component tests, and Playwright for end-to-end tests.
+Q Portal uses `bun test` for unit and integration tests, Storybook/Vitest for UI component tests (stories), and Playwright for E2E tests.
 
 ```bash
-bun test                   # Run unit, integration, and component tests (E2E excluded)
+bun test                   # Run unit and integration tests (E2E excluded)
 bun run test:unit          # Unit tests only
 bun run test:integration   # Integration tests only
-bun run test:component     # Component tests only
 bun run test:watch         # Watch mode
 
+bun run test:stories       # Storybook story tests (UI components; Vitest)
 bun run test:e2e           # E2E tests (Playwright only - separate from bun test)
 ```
 
