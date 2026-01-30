@@ -11,6 +11,7 @@ Q-Portal is the central hub for Q-Summit's internal tools and automation, optimi
 - **Centralized Hub** - Single platform for all internal tools and automation
 - **Workflow Optimization** - Streamlined processes for enhanced operational efficiency
 - **Team Collaboration** - Tools designed to improve cross-team coordination
+- **Slack Integration** - Send messages to Slack channels via Web API
 - **Type-safe APIs** - End-to-end type safety with tRPC
 - **Modern Stack** - Next.js 16 with App Router and React 19
 - **Database** - Turso (distributed SQLite) with Drizzle ORM
@@ -142,6 +143,7 @@ For detailed testing information, see [test/README.md](test/README.md) and [CONT
 
 - **[Development Setup](.docs/guides/dev-setup.md)** - Complete setup instructions
 - **[Commands Reference](.docs/guides/commands.md)** - Complete command reference
+- **[Slack Setup Guide](.docs/guides/setup-slack.md)** - Slack integration setup and configuration
 - **[Documentation Guide](.docs/DOCUMENTATION_GUIDE.md)** - Documentation standards and best practices
 - **[Test Documentation](test/README.md)** - Test structure and organization guide
 - **[Contributing Guide](CONTRIBUTING.md)** - Contributing guidelines and testing standards
