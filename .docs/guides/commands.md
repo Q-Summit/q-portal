@@ -25,15 +25,26 @@ Complete reference for all available commands in Q-Portal.
 
 ## Testing
 
-| Command                    | Description                                               |
-| -------------------------- | --------------------------------------------------------- |
-| `bun test`                 | Run unit, integration, and component tests (E2E excluded) |
-| `bun run test:unit`        | Run unit tests only                                       |
-| `bun run test:integration` | Run integration tests only                                |
-| `bun run test:component`   | Run component tests only                                  |
-| `bun run test:watch`       | Run tests in watch mode                                   |
-| `bun run test:e2e`         | Run E2E tests (Playwright only - separate from bun test)  |
-| `bun run test:e2e:install` | Install Playwright browsers (one-time setup)              |
+| Command                    | Description                                              |
+| -------------------------- | -------------------------------------------------------- |
+| `bun test`                 | Run unit and integration tests (E2E excluded)            |
+| `bun run test:unit`        | Run unit tests only                                      |
+| `bun run test:integration` | Run integration tests only                               |
+| `bun run test:watch`       | Run tests in watch mode                                  |
+| `bun run test:e2e`         | Run E2E tests (Playwright only - separate from bun test) |
+| `bun run test:e2e:install` | Install Playwright browsers (one-time setup)             |
+| `bun run test:stories`     | Run Storybook story tests (Vitest; play functions, a11y) |
+
+## Visual testing (Storybook & Chromatic)
+
+| Command                   | Description                                        |
+| ------------------------- | -------------------------------------------------- |
+| `bun run storybook`       | Start Storybook dev server (http://localhost:6006) |
+| `bun run build-storybook` | Build static Storybook output                      |
+
+Chromatic runs in CI (see `.github/workflows/chromatic.yml`). For a one-off local build, use `bun run build-storybook` (or `bunx storybook build`).
+
+**Story-based testing:** Run `bun run storybook` and use the **test widget** (sidebar) to run tests; enable **Accessibility** and **Coverage** there. Add `play` functions for interaction tests (import `expect`, `fn`, `userEvent`, `within` from `storybook/test`). You don’t need separate component test files for components that have stories—test them in stories. Use `bun run test:stories` to run the same story tests from the CLI (e.g. in CI). For a different port, set **STORYBOOK_PORT**.
 
 ## Code Quality
 
