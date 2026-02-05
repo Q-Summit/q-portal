@@ -37,11 +37,12 @@ Complete reference for all available commands in Q-Portal.
 
 ## Visual testing (Storybook & Chromatic)
 
-| Command             | Description                                        |
-| ------------------- | -------------------------------------------------- |
-| `bun run storybook` | Start Storybook dev server (http://localhost:6006) |
+| Command                   | Description                                        |
+| ------------------------- | -------------------------------------------------- |
+| `bun run storybook`       | Start Storybook dev server (http://localhost:6006) |
+| `bun run build-storybook` | Build static Storybook output                      |
 
-Chromatic runs in CI (see `.github/workflows/chromatic.yml`). For a one-off local build, use `bunx storybook build`.
+Chromatic runs in CI (see `.github/workflows/chromatic.yml`). For a one-off local build, use `bun run build-storybook` (or `bunx storybook build`).
 
 **Story-based testing:** Run `bun run storybook` and use the **test widget** (sidebar) to run tests; enable **Accessibility** and **Coverage** there. Add `play` functions for interaction tests (import `expect`, `fn`, `userEvent`, `within` from `storybook/test`). You don’t need separate component test files for components that have stories—test them in stories. Use `bun run test:stories` to run the same story tests from the CLI (e.g. in CI). For a different port, set **STORYBOOK_PORT**.
 
