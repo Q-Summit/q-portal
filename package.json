@@ -39,7 +39,8 @@
     "test:e2e:install": "bunx playwright install",
     "test:stories": "vitest run",
     "test:watch": "bun test --watch",
-    "storybook": "storybook dev -p 6006"
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
@@ -83,7 +84,7 @@
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-istanbul": "^4.0.18",
     "autoprefixer": "^10.4.20",
-    "chromatic": "^13.3.5",
+    "chromatic": "^15.0.0",
     "drizzle-kit": "^0.31.7",
     "eslint": "^9.12.0",
     "happy-dom": "^20.0.10",
