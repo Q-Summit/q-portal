@@ -1,6 +1,6 @@
+import { db } from "@/server/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "@/server/db";
 import { APIError } from "better-auth/api";
 
 export const auth = betterAuth({
@@ -9,8 +9,8 @@ export const auth = betterAuth({
   }),
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
   },
   databaseHooks: {
@@ -20,8 +20,7 @@ export const auth = betterAuth({
           // 🔒 SECURITY: Enforce domain restriction
           if (!user.email.endsWith("@q-summit.com")) {
             throw new APIError("FORBIDDEN", {
-              message:
-                "Access is restricted to @q-summit.com email addresses only.",
+              message: "Access is restricted to @q-summit.com email addresses only.",
             });
           }
           return { data: user };

@@ -1,4 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "bun:test";
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-empty-function */
+
+import { afterEach, beforeEach, describe, expect, it, vi } from "bun:test";
 import { sendSlackMessage, slackClient } from "../client";
 
 describe("Slack Client Unit Tests", () => {
@@ -47,9 +50,7 @@ describe("Slack Client Unit Tests", () => {
         error: "channel_not_found",
       });
 
-      await expect(
-        sendSlackMessage("C123ABC456", "Test message"),
-      ).rejects.toThrow("channel_not_found");
+      expect(sendSlackMessage("C123ABC456", "Test message")).rejects.toThrow("channel_not_found");
     });
 
     it("should throw error when Slack API returns not_in_channel", async () => {
@@ -58,9 +59,7 @@ describe("Slack Client Unit Tests", () => {
         error: "not_in_channel",
       });
 
-      await expect(
-        sendSlackMessage("C123ABC456", "Test message"),
-      ).rejects.toThrow("not_in_channel");
+      expect(sendSlackMessage("C123ABC456", "Test message")).rejects.toThrow("not_in_channel");
     });
 
     it("should throw error when Slack API returns account_inactive", async () => {
@@ -69,9 +68,7 @@ describe("Slack Client Unit Tests", () => {
         error: "account_inactive",
       });
 
-      await expect(
-        sendSlackMessage("C123ABC456", "Test message"),
-      ).rejects.toThrow("account_inactive");
+      expect(sendSlackMessage("C123ABC456", "Test message")).rejects.toThrow("account_inactive");
     });
 
     it("should throw error when Slack API returns unknown_error", async () => {
@@ -80,24 +77,18 @@ describe("Slack Client Unit Tests", () => {
         error: "unknown_error",
       });
 
-      await expect(
-        sendSlackMessage("C123ABC456", "Test message"),
-      ).rejects.toThrow("unknown_error");
+      expect(sendSlackMessage("C123ABC456", "Test message")).rejects.toThrow("unknown_error");
     });
 
     it("should throw error when Slack API call fails", async () => {
       const networkError = new Error("Network error");
       mockPostMessage.mockRejectedValue(networkError);
 
-      await expect(
-        sendSlackMessage("C123ABC456", "Test message"),
-      ).rejects.toThrow(networkError);
+      expect(sendSlackMessage("C123ABC456", "Test message")).rejects.toThrow(networkError);
     });
 
     it("should log success message to console", async () => {
-      const consoleLogSpy = vi
-        .spyOn(console, "log")
-        .mockImplementation(() => {});
+      const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
 
       await sendSlackMessage("C123ABC456", "Test message");
 
@@ -109,9 +100,7 @@ describe("Slack Client Unit Tests", () => {
     });
 
     it("should log error message to console on failure", async () => {
-      const consoleErrorSpy = vi
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
       mockPostMessage.mockResolvedValue({
         ok: false,

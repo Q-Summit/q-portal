@@ -1,7 +1,10 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "bun:test";
-import { createTRPCContext } from "@/server/api/trpc";
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { appRouter } from "@/server/api/root";
+import { createTRPCContext } from "@/server/api/trpc";
 import { slackClient } from "@/server/slack/client";
+import { afterEach, beforeEach, describe, expect, it, vi } from "bun:test";
 
 describe("Slack Router - Integration Tests", () => {
   // Store original chat to restore it later
@@ -10,7 +13,7 @@ describe("Slack Router - Integration Tests", () => {
 
   beforeEach(() => {
     // Replace the chat method with our mock
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     (slackClient as any).chat = {
       postMessage: mockPostMessage,
     };
@@ -25,12 +28,12 @@ describe("Slack Router - Integration Tests", () => {
 
   afterEach(() => {
     // Restore original chat
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     (slackClient as any).chat = originalChat;
   });
 
   it("should successfully send a message", async () => {
-    const ctx = createTRPCContext({ headers: new Headers() });
+    const ctx = await createTRPCContext({ headers: new Headers() });
     const caller = appRouter.createCaller(ctx);
 
     const result = await caller.slack.sendMessage({
@@ -52,25 +55,25 @@ describe("Slack Router - Integration Tests", () => {
   });
 
   it("should validate that channel is required", async () => {
-    const ctx = createTRPCContext({ headers: new Headers() });
+    const ctx = await createTRPCContext({ headers: new Headers() });
     const caller = appRouter.createCaller(ctx);
 
-    await expect(
-      caller.slack.sendMessage({ channel: "", message: "test" }),
-    ).rejects.toThrow("Channel is required");
+    expect(caller.slack.sendMessage({ channel: "", message: "test" })).rejects.toThrow(
+      "Channel is required",
+    );
   });
 
   it("should validate that message is required", async () => {
-    const ctx = createTRPCContext({ headers: new Headers() });
+    const ctx = await createTRPCContext({ headers: new Headers() });
     const caller = appRouter.createCaller(ctx);
 
-    await expect(
-      caller.slack.sendMessage({ channel: "test", message: "" }),
-    ).rejects.toThrow("Message is required");
+    expect(caller.slack.sendMessage({ channel: "test", message: "" })).rejects.toThrow(
+      "Message is required",
+    );
   });
 
   it("should handle channel_not_found error from Slack API", async () => {
-    const ctx = createTRPCContext({ headers: new Headers() });
+    const ctx = await createTRPCContext({ headers: new Headers() });
     const caller = appRouter.createCaller(ctx);
 
     mockPostMessage.mockResolvedValue({
@@ -78,13 +81,13 @@ describe("Slack Router - Integration Tests", () => {
       error: "channel_not_found",
     });
 
-    await expect(
-      caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" }),
-    ).rejects.toThrow("channel_not_found");
+    expect(caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" })).rejects.toThrow(
+      "channel_not_found",
+    );
   });
 
   it("should handle not_in_channel error from Slack API", async () => {
-    const ctx = createTRPCContext({ headers: new Headers() });
+    const ctx = await createTRPCContext({ headers: new Headers() });
     const caller = appRouter.createCaller(ctx);
 
     mockPostMessage.mockResolvedValue({
@@ -92,13 +95,13 @@ describe("Slack Router - Integration Tests", () => {
       error: "not_in_channel",
     });
 
-    await expect(
-      caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" }),
-    ).rejects.toThrow("not_in_channel");
+    expect(caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" })).rejects.toThrow(
+      "not_in_channel",
+    );
   });
 
   it("should handle account_inactive error from Slack API", async () => {
-    const ctx = createTRPCContext({ headers: new Headers() });
+    const ctx = await createTRPCContext({ headers: new Headers() });
     const caller = appRouter.createCaller(ctx);
 
     mockPostMessage.mockResolvedValue({
@@ -106,25 +109,25 @@ describe("Slack Router - Integration Tests", () => {
       error: "account_inactive",
     });
 
-    await expect(
-      caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" }),
-    ).rejects.toThrow("account_inactive");
+    expect(caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" })).rejects.toThrow(
+      "account_inactive",
+    );
   });
 
   it("should handle network errors from Slack API", async () => {
-    const ctx = createTRPCContext({ headers: new Headers() });
+    const ctx = await createTRPCContext({ headers: new Headers() });
     const caller = appRouter.createCaller(ctx);
 
     const networkError = new Error("Network error");
     mockPostMessage.mockRejectedValue(networkError);
 
-    await expect(
-      caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" }),
-    ).rejects.toThrow(networkError);
+    expect(caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" })).rejects.toThrow(
+      networkError,
+    );
   });
 
   it("should handle unknown Slack API errors", async () => {
-    const ctx = createTRPCContext({ headers: new Headers() });
+    const ctx = await createTRPCContext({ headers: new Headers() });
     const caller = appRouter.createCaller(ctx);
 
     mockPostMessage.mockResolvedValue({
@@ -132,13 +135,13 @@ describe("Slack Router - Integration Tests", () => {
       error: "unknown_error",
     });
 
-    await expect(
-      caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" }),
-    ).rejects.toThrow("unknown_error");
+    expect(caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" })).rejects.toThrow(
+      "unknown_error",
+    );
   });
 
   it("should pass through helpful error messages from getChannelErrorHelp", async () => {
-    const ctx = createTRPCContext({ headers: new Headers() });
+    const ctx = await createTRPCContext({ headers: new Headers() });
     const caller = appRouter.createCaller(ctx);
 
     mockPostMessage.mockResolvedValue({
@@ -147,14 +150,12 @@ describe("Slack Router - Integration Tests", () => {
     });
 
     // Test for the raw error code
-    await expect(
-      caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" }),
-    ).rejects.toThrow("channel_not_found");
+    expect(caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" })).rejects.toThrow(
+      "channel_not_found",
+    );
 
     // Test for the helpful message part
-    await expect(
-      caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" }),
-    ).rejects.toThrow(
+    expect(caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" })).rejects.toThrow(
       "Make sure: 1) Bot is installed in your workspace, 2) Bot is invited to the channel using /invite @botname",
     );
   });

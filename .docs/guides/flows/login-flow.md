@@ -7,23 +7,35 @@ This project uses **Better Auth** combined with **Google OAuth 2.0** to handle a
 - **Strategy:** Google OAuth (Social Sign-in)
 - **Restriction:** Only emails ending in `@q-summit.com` are allowed.
 - **Session Management:** Database-backed sessions (SQLite/Turso via Drizzle ORM).
+- **Profile Requirement:** Users must complete their profile (Division/Team) before accessing the dashboard.
 
 ---
 
 ## 2. Architecture & Flow
 
-1.  **User Action:** User clicks "Sign in with Google" on `/login`.
-2.  **Redirect:** App redirects to Google's OAuth consent screen.
-3.  **Validation (Google Side):** Google verifies the user's credentials.
-4.  **Callback:** Google redirects back to `/api/auth/callback/google` with an authorization code.
-5.  **Hook & Security Check (Server Side):**
-    - Better Auth attempts to create the user in the database.
-    - **The Hook:** A `before` hook in `auth.ts` checks if `email.endsWith("@q-summit.com")`.
-    - **Pass:** User is created/updated, session is generated.
-    - **Fail:** Database write is blocked, error `ACCESS_DENIED` is thrown.
-6.  **Final Routing:**
-    - **Success:** User is redirected to `/dashboard`.
-    - **Failure:** User is redirected back to `/login?error=ACCESS_DENIED` where the error is handled.
+The authentication process follows a multi-stage pipeline: Login → OAuth → Database Check → Profile Gate → Final Destination.
+
+Detailed Step-by-Step
+
+    1. User Entry:
+        - User attempts to visit a protected page (e.g., /dashboard?tab=settings).
+        - Middleware intercepts the request, saves the path as a callbackUrl, and redirects to /login.
+        -
+    2. Authentication:
+        - User clicks "Sign in with Google".
+        - App initiates OAuth flow, passing callbackUrl to the Google configuration.
+        - Google Hook (Server): Better Auth attempts to create the user. A before hook blocks any email not ending in @q-summit.com.
+
+    3. Post-Auth Routing (/post-auth):
+        - Upon success, Google redirects the user to our interstitial page: /post-auth?next=....
+        - Server Check: We query the member_profile table.
+          - If Profile Incomplete: Redirect to /complete-profile.
+          - If Profile Complete: Redirect immediately to the next destination (or /dashboard).
+
+    4. Profile Completion (/complete-profile):
+        - User fills out mandatory fields (Division, Team).
+        - Upon submission, the profile is marked isProfileComplete: true.
+        - User is finally redirected to their original destination.
 
 ---
 
@@ -53,52 +65,53 @@ To manage the OAuth credentials, access the [Google Cloud Console](https://conso
 
 ## 4. Codebase Map
 
-### Configuration & Logic
+### Core Logic
 
-- **`src/lib/auth.ts`**
-  - Main configuration file.
-  - Connects to Drizzle (`db`).
-  - **Contains the Domain Restriction Hook:** Look for `databaseHooks.user.create`.
-- **`src/lib/auth-client.ts`**
-  - Exports the type-safe client used by components.
-  - Uses `NEXT_PUBLIC_BETTER_AUTH_URL` env var for the base URL.
-  - The `NEXT_PUBLIC_` prefix is required for Next.js client-side access.
+- `src/lib/auth.ts`
+  - Main server-side config. Defines the user, session, account schema adapters.
+  - Security Hook: Contains the databaseHooks.user.create that enforces @q-summit.com emails.
+- `src/middleware.ts`
+  - Protects routes globally.
+  - Smart Redirects: Captures current path + query params into callbackUrl before kicking users to login.
+  - API Protection: Returns 401 JSON (instead of 307 Redirects) for unauthorized API calls.
 
-### API Route
+### Route Handlers & Pages
 
-- **`src/app/api/auth/[...all]/route.ts`**
-  - The single endpoint that handles all auth requests (login, logout, callback, session).
+- `src/app/(auth)/login/page.tsx`
+  - Client-side login form. Handles error states (e.g., ACCESS_DENIED) and initiates the Google flow.
 
-### Database Schema
+- `src/app/(auth)/post-auth/page.tsx`
+  - The Traffic Controller. An invisible server component that decides if a user goes to Dashboard or Profile Completion.
 
-- **`src/server/db/schema.ts`**
-  - Contains the `user`, `session`, `account`, and `verification` tables required by Better Auth.
+- `src/app/(auth)/complete-profile/page.tsx`
+  - The form for new users to select their Division and Team.
 
-### UI Components
+### Database Schema (`src/server/db/schema.ts`)
 
-- **`src/app/login/page.tsx`**
-  - The visual login card (shadcn/ui).
-  - Handles the `signIn.social` call.
-  - Reads `?error=` params from the URL to display "Access Denied" messages.
+- Auth Tables: `user`, `session`, `account`, `verification` (Standard Better Auth).
+- Business Tables: `member_profile` (Linked to `user.id` via Foreign Key).
+  - Constraint: `onDelete: "cascade"` ensures deleting a User removes their Profile/Session.
 
 ---
 
 ## 5. Environment Variables
 
-Ensure these are present in `.env`:
+We use `@t3-oss/env-nextjs` for strict validation in `src/env.js`.
 
 ```bash
-# Generated via bunx auth secret
-BETTER_AUTH_SECRET="your-generated-secret-with-atleast-32-chars"
+# Security & Database
+BETTER_AUTH_SECRET="[generated-32-char-secret]"
+TURSO_CONNECTION_URL="libsql://..."
+TURSO_AUTH_TOKEN="..."
 
-# From Google Cloud Console -> Credentials
+# Google OAuth (Server-Side)
 GOOGLE_CLIENT_ID="xxx.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET="xxx"
 
-# The base URL of your application (server-side)
+# App URLs
+# Used by Better Auth server-side to construct callback URLs
 BETTER_AUTH_URL="http://localhost:3000"
 
-# Same URL but exposed to the browser (client-side auth operations)
-# Must use NEXT_PUBLIC_ prefix for Next.js client-side access
+# Used by client-side components (must start with NEXT_PUBLIC_)
 NEXT_PUBLIC_BETTER_AUTH_URL="http://localhost:3000"
 ```
