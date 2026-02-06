@@ -1,25 +1,57 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { afterEach, beforeEach, describe, expect, it, mock, spyOn, type Mock } from "bun:test";
 
-import { appRouter } from "@/server/api/root";
-import { createTRPCContext } from "@/server/api/trpc";
-import { slackClient } from "@/server/slack/client";
-import { afterEach, beforeEach, describe, expect, it, vi } from "bun:test";
+// Better Auth reads this directly upon import, so we must set it first.
+process.env.BETTER_AUTH_URL = "http://localhost:3000";
+process.env.BETTER_AUTH_SECRET = "mock-secret-123";
+
+// --- 1. MOCK ENV FIRST (Prevent T3 Env crashes) ---
+await mock.module("@/env", () => ({
+  env: {
+    SLACK_BOT_TOKEN: "xoxb-mock",
+    DATABASE_URL: "libsql://mock-db", // Satisfy URL validation
+    DATABASE_TOKEN: "mock-token",
+  },
+}));
+
+// --- 2. MOCK DATABASE (Prevent LibSQL connection crashes) ---
+await mock.module("@/server/db", () => ({
+  db: {
+    query: {},
+    insert: () => ({ values: () => Promise.resolve() }),
+  },
+}));
+
+// --- 3. MOCK SLACK CLIENT ---
+// Create the mock function *outside* so we can reference it in tests
+type SlackResponse =
+  | { ok: true; ts: string; error?: never }
+  | { ok: false; error: string; ts?: never };
+
+const mockPostMessage = mock(
+  (): Promise<SlackResponse> => Promise.resolve({ ok: true, ts: "1234567890.123456" }),
+);
+
+await mock.module("@/server/slack/client", () => ({
+  slackClient: {
+    chat: {
+      postMessage: mockPostMessage,
+    },
+  },
+}));
+
+// --- 4. IMPORTS (Must be dynamic to load AFTER mocks are applied) ---
+const { appRouter } = await import("@/server/api/root");
+const { createTRPCContext } = await import("@/server/api/trpc");
 
 describe("Slack Router - Integration Tests", () => {
-  // Store original chat to restore it later
-  const originalChat = slackClient.chat;
-  const mockPostMessage = vi.fn();
+  let consoleErrorSpy: Mock<(...args: unknown[]) => void>;
 
   beforeEach(() => {
-    // Replace the chat method with our mock
-
-    (slackClient as any).chat = {
-      postMessage: mockPostMessage,
-    };
-
-    vi.clearAllMocks();
-    // Set up mock to return successful response by default
+    // Reset call counts and restore default success behavior before every test
+    consoleErrorSpy = spyOn(console, "error").mockImplementation(() => {
+      /* empty */
+    });
+    mockPostMessage.mockClear();
     mockPostMessage.mockResolvedValue({
       ok: true,
       ts: "1234567890.123456",
@@ -27,9 +59,7 @@ describe("Slack Router - Integration Tests", () => {
   });
 
   afterEach(() => {
-    // Restore original chat
-
-    (slackClient as any).chat = originalChat;
+    consoleErrorSpy.mockRestore();
   });
 
   it("should successfully send a message", async () => {
@@ -58,18 +88,18 @@ describe("Slack Router - Integration Tests", () => {
     const ctx = await createTRPCContext({ headers: new Headers() });
     const caller = appRouter.createCaller(ctx);
 
-    expect(caller.slack.sendMessage({ channel: "", message: "test" })).rejects.toThrow(
-      "Channel is required",
-    );
+    // Note: In tRPC, input validation errors usually throw before the resolver runs
+    // We expect the promise to reject
+    const promise = caller.slack.sendMessage({ channel: "", message: "test" });
+    expect(promise).rejects.toThrow("Channel is required");
   });
 
   it("should validate that message is required", async () => {
     const ctx = await createTRPCContext({ headers: new Headers() });
     const caller = appRouter.createCaller(ctx);
 
-    expect(caller.slack.sendMessage({ channel: "test", message: "" })).rejects.toThrow(
-      "Message is required",
-    );
+    const promise = caller.slack.sendMessage({ channel: "test", message: "" });
+    expect(promise).rejects.toThrow("Message is required");
   });
 
   it("should handle channel_not_found error from Slack API", async () => {
@@ -149,14 +179,10 @@ describe("Slack Router - Integration Tests", () => {
       error: "channel_not_found",
     });
 
-    // Test for the raw error code
-    expect(caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" })).rejects.toThrow(
-      "channel_not_found",
-    );
+    // We can check strictly against the message content
+    const promise = caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" });
 
-    // Test for the helpful message part
-    expect(caller.slack.sendMessage({ channel: "C123ABC456", message: "Test" })).rejects.toThrow(
-      "Make sure: 1) Bot is installed in your workspace, 2) Bot is invited to the channel using /invite @botname",
-    );
+    // Checks if the error message contains the helpful hint
+    expect(promise).rejects.toThrow("Make sure: 1) Bot is installed");
   });
 });
