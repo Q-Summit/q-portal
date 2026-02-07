@@ -81,7 +81,6 @@ function LoginContent() {
           </>
         ) : (
           <>
-            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
             <Image width={20} height={20} src={googleImg} alt="Google" className="mr-3 h-5 w-5" />
             Sign in with Google
             <ArrowRight className="ml-2 h-4 w-4 opacity-80" />

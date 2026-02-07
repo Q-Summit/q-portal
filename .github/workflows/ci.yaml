@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -47,3 +47,10 @@ jobs:
         env:
           SKIP_ENV_VALIDATION: true
           NODE_ENV: "test"
+          DATABASE_URL: "libsql://build-placeholder.turso.io"
+          DATABASE_TOKEN: "build-placeholder-token"
+          BETTER_AUTH_SECRET: "build-placeholder-secret-32chars"
+          BETTER_AUTH_URL: "http://localhost:3000"
+          NEXT_PUBLIC_BETTER_AUTH_URL: "http://localhost:3000"
+          GOOGLE_CLIENT_ID: "build-placeholder.apps.googleusercontent.com"
+          GOOGLE_CLIENT_SECRET: "build-placeholder-secret"
