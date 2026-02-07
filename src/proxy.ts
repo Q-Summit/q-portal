@@ -8,6 +8,9 @@ const PUBLIC_PATHS = ["/login", "/api/auth"];
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
+  // Edge proxy only performs an optimistic cookie-presence gate for redirects.
+  // Full session validation is deferred to server components and API routes.
+
   // 1. Check for session cookie
   // Better Auth uses this cookie name by default.
   // In production (HTTPS), it might be prefixed with __Secure-

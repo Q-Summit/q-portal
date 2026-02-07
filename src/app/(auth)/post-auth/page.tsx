@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
-import { isValidRedirectPath } from "@/lib/utils";
+import { isValidRedirectPath, safeDecodeURIComponent } from "@/lib/utils";
 import { db } from "@/server/db";
 import { memberProfile } from "@/server/db/schema";
 
@@ -33,8 +33,9 @@ export default async function PostAuthPage(props: PostAuthPageProps) {
   const isProfileComplete = profile?.isProfileComplete ?? false;
 
   let destination = "/dashboard";
-  if (callbackUrl && isValidRedirectPath(decodeURIComponent(callbackUrl))) {
-    destination = decodeURIComponent(callbackUrl);
+  const decodedCallback = callbackUrl ? safeDecodeURIComponent(callbackUrl) : null;
+  if (decodedCallback && isValidRedirectPath(decodedCallback)) {
+    destination = decodedCallback;
   }
 
   if (!isProfileComplete) {

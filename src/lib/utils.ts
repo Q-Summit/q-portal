@@ -15,3 +15,14 @@ export function isValidRedirectPath(path: string | null | undefined): boolean {
   if (!path) return false;
   return path.startsWith("/") && !path.startsWith("//") && !path.includes("://");
 }
+
+/**
+ * Safely decode a URI component, returning null on malformed input.
+ */
+export function safeDecodeURIComponent(value: string): string | null {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return null;
+  }
+}

@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { isValidRedirectPath } from "@/lib/utils";
+import { isValidRedirectPath, safeDecodeURIComponent } from "@/lib/utils";
 import { db } from "@/server/db";
 import { memberProfile } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
@@ -39,8 +39,8 @@ export default async function CompleteProfilePageWrapper(props: CompleteProfileP
 
   // FIX: Use rawCallbackUrl instead of the undefined 'next' variable
   if (rawCallbackUrl) {
-    const decoded = decodeURIComponent(rawCallbackUrl);
-    if (isValidRedirectPath(decoded)) {
+    const decoded = safeDecodeURIComponent(rawCallbackUrl);
+    if (decoded && isValidRedirectPath(decoded)) {
       destination = decoded;
     }
   }
