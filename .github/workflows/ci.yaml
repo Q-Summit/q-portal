@@ -3,6 +3,9 @@ on:
   pull_request:
     branches: ["main"]
 
+permissions:
+  contents: read
+
 jobs:
   quality:
     name: Validate & Build
@@ -15,7 +18,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
+          bun-version: "1.3.0"
 
       - name: Cache dependencies
         uses: actions/cache@v5
