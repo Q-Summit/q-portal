@@ -5,6 +5,7 @@
   "description": "Central hub for Q-Summit's internal tools and automation, optimizing workflows and enhancing operational efficiency across teams.",
   "type": "module",
   "scripts": {
+    "agent:finalize": "bun run check",
     "build": "next build",
     "check": "run-s format:check typecheck lint",
     "db:generate": "drizzle-kit generate",
@@ -31,7 +32,7 @@
     "review:read": "bash scripts/review-read.sh",
     "review:task": "bash scripts/review-run.sh",
     "start": "next start",
-    "test": "bun test",
+    "test": "NODE_ENV=test bun test",
     "test:e2e": "playwright test",
     "test:unit": "bun test **/*.unit.test.ts",
     "test:watch": "bun test --watch",

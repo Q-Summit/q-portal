@@ -20,6 +20,7 @@ type Context = Awaited<ReturnType<typeof createTRPCContext>>;
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
+  allowOutsideOfServer: process.env.NODE_ENV === "test",
   errorFormatter({ shape, error }) {
     return {
       ...shape,
