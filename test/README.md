@@ -42,11 +42,7 @@ Tests use in-memory SQLite via LibSQL/Turso local mode. Each call to `createTest
 Import from `@/test/utils`:
 
 ```typescript
-import {
-  createTestDb,
-  createTestDbWithMigrations,
-  cleanupTestDb,
-} from "@/test/utils";
+import { createTestDb, createTestDbWithMigrations, cleanupTestDb } from "@/test/utils";
 
 // Create test database
 const { db, client } = createTestDb();

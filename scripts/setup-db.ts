@@ -15,9 +15,7 @@ import * as schema from "../src/server/db/schema";
 const envSchema = z.object({
   DATABASE_URL: z.string(),
   DATABASE_TOKEN: z.string(),
-  NODE_ENV: z
-    .enum(["development", "test", "production"])
-    .default("development"),
+  NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 });
 
 const validatedEnv = envSchema.parse({
@@ -47,11 +45,7 @@ async function createTables() {
       dialect: "turso",
       entries: [],
     };
-    writeFileSync(
-      journalPath,
-      JSON.stringify(journalContent, null, 2) + "\n",
-      "utf-8",
-    );
+    writeFileSync(journalPath, JSON.stringify(journalContent, null, 2) + "\n", "utf-8");
     console.log(`   ✓ Created journal file at: ${journalPath}`);
   }
 
@@ -104,9 +98,7 @@ async function clearDatabase() {
     AND name NOT LIKE '_drizzle%'
   `);
 
-  const tables = tablesResult.rows.map(
-    (row: unknown) => (row as { name: string }).name,
-  );
+  const tables = tablesResult.rows.map((row: unknown) => (row as { name: string }).name);
 
   if (tables.length === 0) {
     console.log("   ✓ Database is already empty");
@@ -119,9 +111,7 @@ async function clearDatabase() {
     console.log(`   ✓ Dropped table: ${table}`);
   }
 
-  console.log(
-    `\n✅ Cleared ${tables.length} table(s) including all auth users and data`,
-  );
+  console.log(`\n✅ Cleared ${tables.length} table(s) including all auth users and data`);
 }
 
 async function main() {

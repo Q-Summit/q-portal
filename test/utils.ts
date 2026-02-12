@@ -1,6 +1,6 @@
-import { drizzle } from "drizzle-orm/libsql";
-import { createClient } from "@libsql/client";
 import * as schema from "@/server/db/schema";
+import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import { join } from "path";
 
@@ -73,7 +73,7 @@ export async function cleanupTestDb(
   client: ReturnType<typeof createTestDb>["client"],
 ) {
   try {
-    await client.close();
+    client.close();
   } catch (error) {
     // Ignore cleanup errors
     console.warn("Error cleaning up test database:", error);
