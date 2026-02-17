@@ -1,5 +1,5 @@
-import { WebClient } from "@slack/web-api";
 import { env } from "@/env";
+import { WebClient } from "@slack/web-api";
 
 /**
  * Singleton Slack Web API client instance
@@ -34,14 +34,10 @@ export async function sendSlackMessage(channel: string, text: string) {
       console.error(`Slack API error for channel "${channel}":`, errorMsg);
 
       const helpfulMessage = getChannelErrorHelp(result.error ?? "");
-      throw new Error(
-        `${errorMsg}${helpfulMessage ? ` (${helpfulMessage})` : ""}`,
-      );
+      throw new Error(`${errorMsg}${helpfulMessage ? ` (${helpfulMessage})` : ""}`);
     }
 
-    console.log(
-      `Message sent successfully to channel ${channel}: ${result.ts}`,
-    );
+    console.log(`Message sent successfully to channel ${channel}: ${result.ts}`);
     return result;
   } catch (error) {
     console.error("Failed to send Slack message:", error);
@@ -55,11 +51,8 @@ function getChannelErrorHelp(error: string): string {
       "Make sure: 1) Bot is installed in your workspace, 2) Bot is invited to the channel using /invite @botname",
     not_in_channel:
       "Bot must be a member of the channel to send messages. Invite the bot to the channel.",
-    account_inactive:
-      "The bot's account is inactive. Check your Slack app settings.",
+    account_inactive: "The bot's account is inactive. Check your Slack app settings.",
   };
 
-  return (
-    helpMessages[error] || "Check Slack app permissions and bot installation."
-  );
+  return helpMessages[error] || "Check Slack app permissions and bot installation.";
 }

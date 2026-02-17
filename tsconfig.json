@@ -24,6 +24,8 @@
     }
   },
   "include": [
+    "src/assets/images.d.ts",
+    "src/env.js",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
