@@ -50,6 +50,4 @@ async function handleTRPCRequest(request: Request) {
   });
 }
 
-export const handlers = [
-  http.post("*/api/trpc", ({ request }) => handleTRPCRequest(request)),
-];
+export const handlers = [http.post("*/api/trpc", ({ request }) => handleTRPCRequest(request))];

@@ -38,9 +38,7 @@ export const trpcMsw = createTRPCMsw<AppRouter>({
  * Provides tRPC context and React Query client for components in Storybook.
  * Configured to work with MSW for request interception.
  */
-export function TRPCReactProviderStorybook(props: {
-  children: React.ReactNode;
-}) {
+export function TRPCReactProviderStorybook(props: { children: React.ReactNode }) {
   const [queryClient] = useState(
     () =>
       new QueryClient({

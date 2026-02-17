@@ -3,8 +3,8 @@
  *
  * Copy this file and replace:
  * - ComponentName with your actual component name
- * - routerName with your tRPC router name (e.g. 'example')
- * - procedureName with your tRPC procedure name (e.g. 'hello')
+ * - routerName with your tRPC router name (e.g. 'profile')
+ * - procedureName with your tRPC procedure name (e.g. 'getMy')
  * - defaultMockData with your default mock data (must match procedure output type)
  *
  * For visual regression (Chromatic): use fixed dates and deterministic data,
@@ -38,7 +38,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   parameters: {
     msw: {
-      handlers: [trpcQuery("example", "hello", () => defaultMockData)],
+      handlers: [trpcQuery("profile", "getMy", () => defaultMockData)],
     },
   },
 };
@@ -47,7 +47,7 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        trpcQuery("example", "hello", async () => {
+        trpcQuery("profile", "getMy", async () => {
           await delay("infinite");
           return defaultMockData;
         }),
@@ -59,7 +59,7 @@ export const Loading: Story = {
 export const ErrorState: Story = {
   parameters: {
     msw: {
-      handlers: [trpcQueryError("example", "hello", "Failed to fetch data")],
+      handlers: [trpcQueryError("profile", "getMy", "Failed to fetch data")],
     },
   },
 };
@@ -67,7 +67,7 @@ export const ErrorState: Story = {
 export const Empty: Story = {
   parameters: {
     msw: {
-      handlers: [trpcQuery("example", "hello", () => ({ greeting: "" }))],
+      handlers: [trpcQuery("profile", "getMy", () => ({ greeting: "" }))],
     },
   },
 };

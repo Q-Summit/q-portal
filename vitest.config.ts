@@ -2,19 +2,12 @@ import { defineConfig } from "vitest/config";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
 
-const port = process.env.STORYBOOK_PORT
-  ? parseInt(process.env.STORYBOOK_PORT, 10)
-  : 6006;
+const port = process.env.STORYBOOK_PORT ? parseInt(process.env.STORYBOOK_PORT, 10) : 6006;
 
 export default defineConfig({
   server: {
     watch: {
-      ignored: [
-        "**/node_modules/**",
-        "**/.next/**",
-        "**/storybook-static/**",
-        "**/.git/**",
-      ],
+      ignored: ["**/node_modules/**", "**/.next/**", "**/storybook-static/**", "**/.git/**"],
     },
   },
   test: {

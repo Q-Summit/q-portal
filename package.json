@@ -7,6 +7,7 @@
   "scripts": {
     "agent:finalize": "bun run check",
     "build": "next build",
+    "build-storybook": "storybook build",
     "check": "run-s format:check typecheck lint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
@@ -33,7 +34,6 @@
     "review:task": "bash scripts/review-run.sh",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
     "test": "NODE_ENV=test bun test",
     "test:e2e": "playwright test",
     "test:e2e:install": "bunx playwright install",
