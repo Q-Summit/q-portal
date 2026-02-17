@@ -1,11 +1,25 @@
 /**
  * Optional global MSW handlers for tRPC procedures.
- * Stories can override via parameters.msw.handlers.
+ *
+ * This file provides example handlers that can be imported and used in
+ * preview.tsx if you want global defaults. Currently not imported because
+ * individual stories should explicitly define their handlers for clarity.
+ *
+ * To use: Import and add to preview.tsx:
+ *   import { handlers } from "./mocks/handlers";
+ *   // Then in parameters.msw: handlers: handlers
  */
 
 import { http, HttpResponse } from "msw";
 
-const defaultHello = { greeting: "Hello from global handler!" };
+const defaultProfile = {
+  id: "user-123",
+  userId: "user-123",
+  firstName: "Example",
+  lastName: "User",
+  email: "example@test.com",
+  status: "confirmed",
+};
 
 async function handleTRPCRequest(request: Request) {
   const clonedRequest = request.clone();
@@ -34,10 +48,10 @@ async function handleTRPCRequest(request: Request) {
     });
   }
 
-  if (procedurePath === "example.hello") {
+  if (procedurePath === "profile.getMy") {
     return HttpResponse.json({
       id: body.id,
-      result: { data: defaultHello },
+      result: { data: defaultProfile },
     });
   }
 
