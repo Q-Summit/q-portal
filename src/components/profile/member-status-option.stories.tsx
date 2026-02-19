@@ -1,117 +1,53 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { useState } from "react";
 import { MemberStatusOption } from "./member-status-option";
 import { RadioGroup } from "@/components/ui/radio-group";
+import type { Status } from "@/domain/qsum/profile";
 
 const meta = {
   title: "Profile/MemberStatusOption",
-  component: MemberStatusOption,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
-  argTypes: {
-    value: {
-      control: "select",
-      options: ["active", "alumni"],
-    },
-    title: {
-      control: "text",
-    },
-    subtitle: {
-      control: "text",
-    },
-    selected: {
-      control: "boolean",
-    },
-  },
-  decorators: [
-    (Story) => (
-      <RadioGroup className="grid grid-cols-2 gap-4">
-        <Story />
-      </RadioGroup>
-    ),
-  ],
-} satisfies Meta<typeof MemberStatusOption>;
+} satisfies Meta;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const ActiveUnselected: Story = {
-  args: {
-    value: "active",
-    title: "Active Member",
-    subtitle: "Current team",
-    selected: false,
-  },
-};
+function StatusOptions({ defaultValue }: { defaultValue: Status }) {
+  const [value, setValue] = useState<Status>(defaultValue);
+
+  return (
+    <RadioGroup
+      value={value}
+      onValueChange={(v) => setValue(v as Status)}
+      className="grid w-[400px] grid-cols-2 gap-4"
+    >
+      <MemberStatusOption
+        value="active"
+        title="Active Member"
+        subtitle="Current team"
+        selected={value === "active"}
+      />
+      <MemberStatusOption
+        value="alumni"
+        title="Alumni"
+        subtitle="Former team"
+        selected={value === "alumni"}
+      />
+    </RadioGroup>
+  );
+}
 
 export const ActiveSelected: Story = {
-  args: {
-    value: "active",
-    title: "Active Member",
-    subtitle: "Current team",
-    selected: true,
-  },
-};
-
-export const AlumniUnselected: Story = {
-  args: {
-    value: "alumni",
-    title: "Alumni",
-    subtitle: "Former team",
-    selected: false,
-  },
+  render: () => <StatusOptions defaultValue="active" />,
 };
 
 export const AlumniSelected: Story = {
-  args: {
-    value: "alumni",
-    title: "Alumni",
-    subtitle: "Former team",
-    selected: true,
-  },
+  render: () => <StatusOptions defaultValue="alumni" />,
 };
 
-export const BothOptions: Story = {
-  decorators: [
-    () => (
-      <RadioGroup className="grid w-[400px] grid-cols-2 gap-4">
-        <MemberStatusOption
-          value="active"
-          title="Active Member"
-          subtitle="Current team"
-          selected={true}
-        />
-        <MemberStatusOption value="alumni" title="Alumni" subtitle="Former team" selected={false} />
-      </RadioGroup>
-    ),
-  ],
-  args: {
-    value: "active",
-    title: "Active Member",
-    subtitle: "Current team",
-    selected: true,
-  },
-};
-
-export const AlumniSelectedView: Story = {
-  decorators: [
-    () => (
-      <RadioGroup className="grid w-[400px] grid-cols-2 gap-4">
-        <MemberStatusOption
-          value="active"
-          title="Active Member"
-          subtitle="Current team"
-          selected={false}
-        />
-        <MemberStatusOption value="alumni" title="Alumni" subtitle="Former team" selected={true} />
-      </RadioGroup>
-    ),
-  ],
-  args: {
-    value: "alumni",
-    title: "Alumni",
-    subtitle: "Former team",
-    selected: true,
-  },
+export const Interactive: Story = {
+  render: () => <StatusOptions defaultValue="active" />,
 };
