@@ -19,10 +19,8 @@ export function ErrorBanner({
     >
       <AlertCircle className="h-5 w-5 shrink-0" />
       <div className="flex flex-col gap-1">
-        <span className="text-sm font-semibold leading-none text-destructive-foreground">
-          {title}
-        </span>
-        <span className="text-sm opacity-90">{message}</span>
+        <span className="text-sm font-semibold leading-none">{title}</span>
+        <span className="text-sm">{message}</span>
       </div>
     </div>
   );

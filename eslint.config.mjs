@@ -13,7 +13,17 @@ const __dirname = path.dirname(__filename);
 export default defineConfig(
   // 1. Global Ignores
   {
-    ignores: [".next/**", "dist/**", "node_modules/**", "**/*.d.ts", "scripts/**"],
+    ignores: [
+      ".next/**",
+      "dist/**",
+      "out/**",
+      "build/**",
+      "storybook-static/**",
+      "node_modules/**",
+      "**/*.d.ts",
+      "scripts/**",
+      "public/mockServiceWorker.js",
+    ],
   },
 
   // 2. Base JS Configuration
