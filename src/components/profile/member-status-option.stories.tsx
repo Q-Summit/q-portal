@@ -22,7 +22,7 @@ function StatusOptions({ defaultValue }: { defaultValue: Status }) {
     <RadioGroup
       value={value}
       onValueChange={(v) => setValue(v as Status)}
-      className="grid w-[400px] grid-cols-2 gap-4"
+      className="grid w-full max-w-[400px] grid-cols-2 gap-3"
     >
       <MemberStatusOption
         value="active"
