@@ -25,7 +25,11 @@ export function MemberStatusOption(props: {
 
       <div className="min-w-0">
         <div className="text-sm font-semibold text-foreground">{props.title}</div>
-        <div className="text-xs text-muted-foreground">{props.subtitle}</div>
+        <div
+          className={cn("text-xs", props.selected ? "text-foreground/70" : "text-muted-foreground")}
+        >
+          {props.subtitle}
+        </div>
       </div>
     </Label>
   );
