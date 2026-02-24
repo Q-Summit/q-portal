@@ -65,7 +65,7 @@ See [Development Setup Guide](.docs/guides/dev-setup.md) for complete setup inst
 3. **Set Up Development Environment**: See [Development Setup Guide](.docs/guides/dev-setup.md).
 4. **Implement Changes**: Make your code changes following the project's coding standards.
 5. **Run Quality Checks**: Before submitting, run `bun run agent:finalize` (runs typecheck, lint, and format checks).
-6. **Run Tests**: Ensure all tests pass. See [Test Documentation](test/README.md) for details.
+6. **Run Tests**: Ensure all tests pass. See [Test Documentation](test/README.md) for details. PR checks in CI also run typecheck, lint, format, and unit/integration tests (`bun test`).
 7. **Build**: Ensure you can make a full production build with `bun run build`.
 8. **Commit and Push**: Commit your changes with a descriptive message and push to your fork.
 9. **Open a Pull Request**: Open a PR from your branch.

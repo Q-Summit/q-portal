@@ -59,9 +59,11 @@ export function AuthScrollableCard({
             />
           </AuthLogoBadge>
 
-          <CardTitle className="text-2xl font-bold text-foreground">{title}</CardTitle>
+          <CardTitle className={cn("text-2xl font-bold text-foreground", description && "mb-2")}>
+            {title}
+          </CardTitle>
           {description && (
-            <CardDescription className="mt-2 text-muted-foreground">{description}</CardDescription>
+            <CardDescription className="text-muted-foreground">{description}</CardDescription>
           )}
         </CardHeader>
 
