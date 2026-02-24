@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { isValidRedirectPath, safeDecodeURIComponent } from "@/lib/utils";
+import { buildLoginRedirect, resolveCallbackUrl } from "@/lib/utils";
 import { db } from "@/server/db";
 import { memberProfile } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
@@ -22,7 +22,10 @@ export default async function CompleteProfilePageWrapper(props: CompleteProfileP
   });
 
   if (!session?.user?.id) {
-    redirect("/login");
+    const loginPath = rawCallbackUrl
+      ? `/complete-profile?callbackUrl=${encodeURIComponent(rawCallbackUrl)}`
+      : "/complete-profile";
+    redirect(buildLoginRedirect(loginPath));
   }
 
   // Check if profile is already complete
@@ -33,19 +36,9 @@ export default async function CompleteProfilePageWrapper(props: CompleteProfileP
     .limit(1);
 
   const isComplete = row[0]?.isProfileComplete ?? false;
+  const destination = resolveCallbackUrl(rawCallbackUrl);
 
-  // 2. Resolve safe redirect URL
-  let destination = "/dashboard";
-
-  // FIX: Use rawCallbackUrl instead of the undefined 'next' variable
-  if (rawCallbackUrl) {
-    const decoded = safeDecodeURIComponent(rawCallbackUrl);
-    if (decoded && isValidRedirectPath(decoded)) {
-      destination = decoded;
-    }
-  }
-
-  // 3. If complete, forward immediately to the destination
+  // If complete, forward immediately to the destination
   if (isComplete) {
     redirect(destination);
   }

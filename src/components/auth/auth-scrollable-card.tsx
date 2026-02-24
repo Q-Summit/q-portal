@@ -68,8 +68,8 @@ export function AuthScrollableCard({
         </CardHeader>
 
         {/* Scrollable Content */}
-        {/* Changed 'grid' to 'flex flex-col' for better alignment control */}
         <CardContent
+          tabIndex={0}
           className={cn(
             "flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto px-10 py-4",
             contentClassName,

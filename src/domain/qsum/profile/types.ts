@@ -21,6 +21,10 @@ export type Team =
   | "gp"
   | "other";
 
+export type TalentCategory = "driver_license" | "gastronomy";
+
+export type TalentKey = "driver_18plus" | "driver_21plus" | "driver_c1" | "gastro";
+
 /* ──────────────────────────────────────────────────────────────────────────
  * UI & Helper Interfaces
  * ────────────────────────────────────────────────────────────────────────── */
@@ -37,9 +41,18 @@ export interface LabeledValue<T extends string> {
 export interface MemberProfile {
   userId: string;
   status: Status;
-  lastActiveYear?: number;
+  lastActiveYear?: number | null;
   division: Division;
   team: Team;
-  teamOther?: string;
+  teamOther?: string | null;
+  phoneNumber?: string | null;
+  privateEmail?: string | null;
+  linkedInUrl?: string | null;
   isProfileComplete: boolean;
+}
+
+export interface Talent {
+  id: string;
+  category: TalentCategory;
+  key: TalentKey;
 }
