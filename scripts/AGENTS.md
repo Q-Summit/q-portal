@@ -40,8 +40,8 @@ Scripts are invoked via package.json npm scripts, not directly:
 
 ```bash
 # Quality gates
-bun run agent:finalize      # Runs finalize.sh (agent mode)
-bun run check               # Runs finalize.sh (ci mode)
+bun run agent:finalize      # Runs check (format + typecheck + lint)
+bun run check               # Same as agent:finalize
 bun run docs:check          # Runs check-docs.sh
 
 # Code reviews

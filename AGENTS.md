@@ -96,7 +96,7 @@ bun run review:pr        # CodeRabbit review (vs main)
 
 ## NOTES
 
-- **Env vars:** Required: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`. See `.env.example`
+- **Env vars:** Required: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `NEXT_PUBLIC_BETTER_AUTH_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`. See `.env.example`
 - **DB:** Turso (libSQL). Local dev can use `file:./db.sqlite`
 - **Auth:** better-auth with Google OAuth
 - **MSW:** Worker in `public/mockServiceWorker.js` for tests/Storybook

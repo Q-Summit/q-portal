@@ -24,13 +24,13 @@ shadcn/ui component library using Radix primitives, CVA for variants, and Tailwi
 
 **Class merging:** Always use `cn()` from `@/lib/utils` to merge Tailwind classes.
 
-**forwardRef:** Wrap all components with `React.forwardRef` for ref forwarding.
+**forwardRef:** For legacy compatibility, wrap with `React.forwardRef`. In React 19, refs forward automatically without wrapper.
 
 **displayName:** Set `displayName` on every component for debugging.
 
 **Radix primitives:** Import from `@radix-ui/react-*`. Re-export sub-components (e.g., `SelectTrigger`, `SelectContent`).
 
-**Client components:** Add `"use client"` directive for interactive components.
+**Client components:** Add `"use client"` only when using hooks, event handlers, or browser APIs.
 
 ## ANTI-PATTERNS
 
