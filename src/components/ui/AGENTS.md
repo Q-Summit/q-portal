@@ -30,7 +30,7 @@ shadcn/ui component library using Radix primitives, CVA for variants, and Tailwi
 
 **Radix primitives:** Import from `@radix-ui/react-*`. Re-export sub-components (e.g., `SelectTrigger`, `SelectContent`).
 
-**Client components:** Add `"use client"` only when using hooks, event handlers, or browser APIs.
+**Client components:** Add `"use client"` for hooks, event handlers, browser APIs, providers, or client-library wrappers.
 
 ## ANTI-PATTERNS
 
