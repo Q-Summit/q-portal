@@ -5,3 +5,6 @@ pnpm-lock.yaml
 bun.lock
 # MSW generated file - do not modify; regenerated via npx msw init public/
 public/mockServiceWorker.js
+# Agent skills - installed from external source
+.agents/
+.claude/
