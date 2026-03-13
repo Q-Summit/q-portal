@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 /**
  * ──────────────────────────────────────────────────────────────────────────────
@@ -128,5 +128,30 @@ export const memberProfile = sqliteTable("member_profile", {
 
   teamOther: text("teamOther"),
 
+  phoneNumber: text("phoneNumber"),
+  privateEmail: text("privateEmail"),
+  linkedInUrl: text("linkedInUrl"),
+
   isProfileComplete: integer("isProfileComplete", { mode: "boolean" }).notNull().default(false),
 });
+
+export const talent = sqliteTable("talent", {
+  id: text("id").primaryKey(),
+  category: text("category", { enum: ["driver_license", "gastronomy"] }).notNull(),
+  key: text("key").notNull().unique(),
+});
+
+export const userTalent = sqliteTable(
+  "user_talent",
+  {
+    userId: text("userId")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    talentId: text("talentId")
+      .notNull()
+      .references(() => talent.id, { onDelete: "cascade" }),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.userId, table.talentId] }),
+  }),
+);

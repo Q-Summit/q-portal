@@ -1,19 +1,26 @@
-import React, { type ComponentType } from "react";
 import type { Preview } from "@storybook/nextjs-vite";
 import { initialize, mswLoader } from "msw-storybook-addon";
+import { type ComponentType } from "react";
 
-import { TRPCReactProviderStorybook } from "../src/trpc/msw";
+import { INITIAL_VIEWPORTS } from "storybook/viewport";
 import "../src/styles/globals.css";
+import { TRPCReactProviderStorybook } from "../src/trpc/msw";
 
 initialize({ quiet: true });
 
 const preview: Preview = {
+  initialGlobals: {
+    viewport: { value: "iphone13pro", isRotated: false },
+  },
   parameters: {
     controls: {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+    },
+    viewport: {
+      options: INITIAL_VIEWPORTS,
     },
 
     msw: {

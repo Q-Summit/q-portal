@@ -65,15 +65,16 @@ export default function CompleteProfileForm({ callbackUrl }: CompleteProfileForm
   // Super edge case and should realistically only happen if we mess up in the future
   // or meddle with the database directly.
   React.useEffect(() => {
-    if (!me) return;
+    if (!me?.profile) return;
 
-    setStatus(me.status as Status);
-    setDivision(me.division as Division);
-    setLastActiveYear(me.lastActiveYear ? String(me.lastActiveYear) : "");
+    const p = me.profile;
+    setStatus(p.status);
+    setDivision(p.division as Division);
+    setLastActiveYear(p.lastActiveYear ? String(p.lastActiveYear) : "");
 
-    const dbTeam = me.team as Team;
+    const dbTeam = p.team as Team;
     setTeam(dbTeam);
-    setTeamOther(me.teamOther ?? "");
+    setTeamOther(p.teamOther ?? "");
   }, [me]);
 
   // 4. Effect: Reset Team if Division changes

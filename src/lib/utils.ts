@@ -26,3 +26,32 @@ export function safeDecodeURIComponent(value: string): string | null {
     return null;
   }
 }
+
+/**
+ * Resolve a callbackUrl from searchParams, with safe decoding and validation.
+ * Returns the fallback path if the callback is invalid or missing.
+ */
+export function resolveCallbackUrl(
+  rawCallbackUrl: string | undefined,
+  fallback = "/dashboard",
+): string {
+  if (!rawCallbackUrl) return fallback;
+
+  const decoded = safeDecodeURIComponent(rawCallbackUrl);
+  if (decoded && isValidRedirectPath(decoded)) {
+    return decoded;
+  }
+
+  return fallback;
+}
+
+/**
+ * Build a /login URL that preserves the intended destination.
+ * Used in server components when redirecting unauthenticated users.
+ */
+export function buildLoginRedirect(currentPath: string): string {
+  if (isValidRedirectPath(currentPath)) {
+    return `/login?callbackUrl=${encodeURIComponent(currentPath)}`;
+  }
+  return "/login";
+}

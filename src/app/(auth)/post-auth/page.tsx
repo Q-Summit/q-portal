@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
-import { isValidRedirectPath, safeDecodeURIComponent } from "@/lib/utils";
+import { buildLoginRedirect, isValidRedirectPath, safeDecodeURIComponent } from "@/lib/utils";
 import { db } from "@/server/db";
 import { memberProfile } from "@/server/db/schema";
 
@@ -22,7 +22,11 @@ export default async function PostAuthPage(props: PostAuthPageProps) {
   });
 
   if (!session) {
-    redirect("/login");
+    // Pass the final destination directly to login.
+    // The login page already routes through post-auth after OAuth.
+    const destination =
+      callbackUrl && isValidRedirectPath(callbackUrl) ? callbackUrl : "/dashboard";
+    redirect(buildLoginRedirect(destination));
   }
 
   const profile = await db.query.memberProfile.findFirst({

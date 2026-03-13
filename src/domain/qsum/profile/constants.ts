@@ -1,4 +1,4 @@
-import type { Division, LabeledValue, Status, Team } from "./types";
+import type { Division, LabeledValue, Status, TalentCategory, TalentKey, Team } from "./types";
 
 /* ──────────────────────────────────────────────────────────────────────────
  * Option Lists
@@ -49,4 +49,19 @@ export const TEAMS_BY_DIVISION: Record<Division, readonly LabeledValue<Team>[]> 
     { value: "gp", label: "G&P (Growth & Partnerships)" },
     { value: "other", label: "Other" },
   ],
+};
+
+export const TALENT_CATEGORY_LABELS: Record<TalentCategory, string> = {
+  driver_license: "Driver's Licenses",
+  gastronomy: "Gastronomy Experience",
+};
+
+export const TALENT_LABELS: Record<TalentKey, { label: string; subtitle: string }> = {
+  driver_18plus: { label: "18+", subtitle: "Driver's license, at least 18 years old" },
+  driver_21plus: {
+    label: "21+ (no probation)",
+    subtitle: "Driver's license, 21+ and out of probation period",
+  },
+  driver_c1: { label: "C1 License", subtitle: "Truck/transporter license (C1 or higher)" },
+  gastro: { label: "Gastro Experience", subtitle: "Experience in gastronomy/catering" },
 };
