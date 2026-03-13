@@ -32,6 +32,8 @@ profile/
 // Import from domain, not sub-files
 import {
   ProfileUpdateSchema,
+  normalizeProfileInput,
+  STATUS_OPTIONS,
   type ProfileUpdateInput,
   type MemberProfile,
 } from "@/domain/qsum/profile";
