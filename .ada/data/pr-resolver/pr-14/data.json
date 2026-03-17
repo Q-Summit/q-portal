@@ -1,0 +1,1383 @@
+{
+  "pr_number": 14,
+  "repository": "Q-Summit/q-portal",
+  "generated_at": "2026-03-17T20:57:31Z",
+  "statistics": {
+    "total_comments": 82,
+    "resolved_comments": 62,
+    "unresolved_comments": 20,
+    "unique_in_clusters": 72,
+    "duplicates_detected": 10,
+    "clusters_created": 40,
+    "actionable_clusters": 9
+  },
+  "clusters": [
+    {
+      "cluster_id": "docs-shifts-readme-md-security",
+      "file": ".docs/shifts/README.md",
+      "concern": "security",
+      "comments": [
+        {
+          "id": "2949147214",
+          "path": ".docs/shifts/README.md",
+          "line": 71,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":10} -->\nP2: This related-docs link points to a non-existent file, leaving the new auth reference unusable.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At .docs/shifts/README.md, line 71:\n\n<comment>This related-docs link points to a non-existent file, leaving the new auth reference unusable.</comment>\n\n<file context>\n@@ -0,0 +1,71 @@\n+\n+- [Development Setup](../guides/dev-setup.md) - Local development instructions\n+- [Database Schema](../db/schema.md) - Full database documentation\n+- [API Authentication](../api/authentication.md) - Auth flows and procedures\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "security",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147214",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6i",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "docs-shifts-csv-format-md-uncategorized",
+      "file": ".docs/shifts/csv-format.md",
+      "concern": "uncategorized",
+      "comments": [
+        {
+          "id": "2949147260",
+          "path": ".docs/shifts/csv-format.md",
+          "line": 191,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":10} -->\nP2: The Node.js example does not actually parse the documented CSV format; splitting on `\\n` and `;` breaks valid quoted fields with semicolons or newlines.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At .docs/shifts/csv-format.md, line 191:\n\n<comment>The Node.js example does not actually parse the documented CSV format; splitting on `\\n` and `;` breaks valid quoted fields with semicolons or newlines.</comment>\n\n<file context>\n@@ -0,0 +1,240 @@\n+const headers = lines[0].split(\";\");\n+\n+const data = lines.slice(1).map((line) => {\n+  const values = line.split(\";\");\n+  return headers.reduce((obj, header, i) => {\n+    obj[header] = values[i];\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147260",
+          "thread_id": "PRRT_kwDOQS2Asc50-L7I",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "docs-shifts-role-access-md-uncategorized",
+      "file": ".docs/shifts/role-access.md",
+      "concern": "uncategorized",
+      "comments": [
+        {
+          "id": "2949147158",
+          "path": ".docs/shifts/role-access.md",
+          "line": 36,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":7} -->\nP1: Documenting planner access as `division === \"chair\"` contradicts the new `isHeadOf`-based RBAC and would exclude non-chair board members.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At .docs/shifts/role-access.md, line 36:\n\n<comment>Documenting planner access as `division === \"chair\"` contradicts the new `isHeadOf`-based RBAC and would exclude non-chair board members.</comment>\n\n<file context>\n@@ -0,0 +1,285 @@\n+A user is considered a **planner** if:\n+\n+1. They are logged in (authenticated)\n+2. Their profile has `division === \"chair\"`\n+\n+This includes:\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147158",
+          "thread_id": "PRRT_kwDOQS2Asc50-L5z",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "docs-shifts-workflow-md-import-fix",
+      "file": ".docs/shifts/workflow.md",
+      "concern": "import-fix",
+      "comments": [
+        {
+          "id": "2949147263",
+          "path": ".docs/shifts/workflow.md",
+          "line": 7,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: The prerequisite documents the wrong access-control field. Planner access is described elsewhere as `isHeadOf`-based, so telling users to require `division = \"chair\"` will mislead Board users and admins.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At .docs/shifts/workflow.md, line 7:\n\n<comment>The prerequisite documents the wrong access-control field. Planner access is described elsewhere as `isHeadOf`-based, so telling users to require `division = \"chair\"` will mislead Board users and admins.</comment>\n\n<file context>\n@@ -0,0 +1,192 @@\n+\n+## Prerequisites\n+\n+- You must be logged in with a Chair or Board role (division = \"chair\")\n+- Access the shift planning page via the main navigation\n+\n</file context>\n```\n\n</details>\n\n```suggestion\n- You must be logged in with planner access (`isHeadOf = true`, used for Chair/Board members)\n```\n\n✅ Addressed in [`211ca78`](https://github.com/Q-Summit/q-portal/commit/211ca782045f967d2d1115eb252a5b193e13246d)",
+          "category": "import-fix",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147263",
+          "thread_id": "PRRT_kwDOQS2Asc50-L7K",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "sisyphus-plans-shift-planning-md-security",
+      "file": ".sisyphus/plans/shift-planning.md",
+      "concern": "security",
+      "comments": [
+        {
+          "id": "2949147162",
+          "path": ".sisyphus/plans/shift-planning.md",
+          "line": 824,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP1: Protect the read/export procedures too; this plan currently leaves schedule data readable by any authenticated user.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At .sisyphus/plans/shift-planning.md, line 824:\n\n<comment>Protect the read/export procedures too; this plan currently leaves schedule data readable by any authenticated user.</comment>\n\n<file context>\n@@ -0,0 +1,1014 @@\n+\n+**What to do**:\n+\n+- Add plannerProcedure to create/update/delete\n+- Hide create button for non-planners\n+- Show edit/delete only for planners\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/22ff8753-e537-45ea-baae-630225272a43\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "security",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147162",
+          "thread_id": "PRRT_kwDOQS2Asc50-L52",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "sisyphus-plans-shift-planning-md-suggestion",
+      "file": ".sisyphus/plans/shift-planning.md",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949147201",
+          "path": ".sisyphus/plans/shift-planning.md",
+          "line": 690,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: The fixed 06:00–23:00 grid cannot display the overnight slots that Task 15 requires for midnight-spanning shifts.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At .sisyphus/plans/shift-planning.md, line 690:\n\n<comment>The fixed 06:00–23:00 grid cannot display the overnight slots that Task 15 requires for midnight-spanning shifts.</comment>\n\n<file context>\n@@ -0,0 +1,1014 @@\n+\n+- Create calendar component:\n+  - Day selector (April 9, April 10)\n+  - Y-axis: 30-min time slots (06:00-23:00)\n+  - X-axis: Locations OR just show total per slot\n+  - Cell shows headcount number\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/77bf3b3d-60fc-4023-bbbf-eca713b878a8\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147201",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6Y",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-app-mobile-shifts-page-tsx-security",
+      "file": "src/app/(mobile)/shifts/page.tsx",
+      "concern": "security",
+      "comments": [
+        {
+          "id": "2949480919",
+          "path": "src/app/(mobile)/shifts/page.tsx",
+          "line": 27,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":8} -->\nP2: Avoid inlining another copy of the planner-role check; share the access rule with the existing planner authorization logic so page gating cannot drift from API enforcement.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/app/(mobile)/shifts/page.tsx, line 27:\n\n<comment>Avoid inlining another copy of the planner-role check; share the access rule with the existing planner authorization logic so page gating cannot drift from API enforcement.</comment>\n\n<file context>\n@@ -12,6 +15,21 @@ export default async function ShiftsPage() {\n+  ]);\n+\n+  const isHeadOf = userRow[0]?.isHeadOf ?? false;\n+  const isPlanner = profile?.division === \"chair\" || isHeadOf;\n+\n+  if (!isPlanner) {\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/90fb693f-e792-4f68-9d26-2f32c4fb73e2\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "security",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949480919",
+          "thread_id": "PRRT_kwDOQS2Asc50_JtR",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-app-mobile-shifts-page-tsx-uncategorized",
+      "file": "src/app/(mobile)/shifts/page.tsx",
+      "concern": "uncategorized",
+      "comments": [
+        {
+          "id": "2949147153",
+          "path": "src/app/(mobile)/shifts/page.tsx",
+          "line": 35,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP1: This page now exposes shift schedules to any logged-in user because it renders `ShiftManager` without a planner-role check. That bypasses the PR’s stated “planners only” restriction for viewing shifts.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/app/(mobile)/shifts/page.tsx, line 17:\n\n<comment>This page now exposes shift schedules to any logged-in user because it renders `ShiftManager` without a planner-role check. That bypasses the PR’s stated “planners only” restriction for viewing shifts.</comment>\n\n<file context>\n@@ -13,9 +14,7 @@ export default async function ShiftsPage() {\n-      <h1 className=\"text-2xl font-bold text-foreground\">Shifts</h1>\n-      <p className=\"mt-2 text-muted-foreground\">Your upcoming shifts will appear here.</p>\n-      {/* TODO: Shifts list */}\n+      <ShiftManager />\n     </div>\n   );\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147153",
+          "thread_id": "PRRT_kwDOQS2Asc50-L5u",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-app-mobile-shifts-shifts-page-stories-tsx-suggestion",
+      "file": "src/app/(mobile)/shifts/shifts-page.stories.tsx",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949147193",
+          "path": "src/app/(mobile)/shifts/shifts-page.stories.tsx",
+          "line": 301,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: These \"CalendarView\" stories never switch `ShiftManager` out of its default list mode, so they do not actually render or verify the calendar state.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/app/(mobile)/shifts/shifts-page.stories.tsx, line 300:\n\n<comment>These \"CalendarView\" stories never switch `ShiftManager` out of its default list mode, so they do not actually render or verify the calendar state.</comment>\n\n<file context>\n@@ -1,128 +1,349 @@\n+/**\n+ * Calendar view - showing shifts by time slots.\n+ */\n+export const CalendarView: Story = {\n+  parameters: {\n+    msw: {\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/b547a2b6-2b8c-42e3-9e08-736af6f76d6e\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147193",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6Q",
+          "resolved": false
+        },
+        {
+          "id": "2949147284",
+          "path": "src/app/(mobile)/shifts/shifts-page.stories.tsx",
+          "line": 278,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":8} -->\nP3: Mock the default `shift.list` query in this loading story; otherwise it can hit an unhandled request instead of staying in the intended loading state.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/app/(mobile)/shifts/shifts-page.stories.tsx, line 263:\n\n<comment>Mock the default `shift.list` query in this loading story; otherwise it can hit an unhandled request instead of staying in the intended loading state.</comment>\n\n<file context>\n@@ -1,128 +1,349 @@\n+/**\n+ * Loading state - while fetching data.\n+ */\n+export const ListViewLoading: Story = {\n+  parameters: {\n+    msw: {\n</file context>\n```\n\n</details>\n\n```suggestion\nexport const ListViewLoading: Story = {\n  parameters: {\n    msw: {\n      handlers: [\n        trpcQuery(\"profile\", \"getMy\", async () => {\n          await new Promise((resolve) => setTimeout(resolve, 100000));\n          return {\n            user: mockUser,\n            profile: mockRegularProfile,\n          };\n        }),\n        trpcQuery(\"shift\", \"list\", async () => {\n          await new Promise((resolve) => setTimeout(resolve, 100000));\n          return {\n            items: [],\n            total: 0,\n            nextCursor: null,\n          };\n        }),\n      ],\n    },\n  },\n};\n```\n\n<a href=\"https://www.cubic.dev/action/fix/violation/fe755a28-2a23-4916-b388-cc627941f16b\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147284",
+          "thread_id": "PRRT_kwDOQS2Asc50-L7d",
+          "resolved": false
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 0,
+      "unresolved_count": 2,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-components-shifts-calendar-view-stories-tsx-suggestion",
+      "file": "src/components/shifts/calendar-view.stories.tsx",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949232734",
+          "path": "src/components/shifts/calendar-view.stories.tsx",
+          "line": 829,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: The new `bg-` filter is too broad and now clicks the first clickable time row instead of a shift cell.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/calendar-view.stories.tsx, line 829:\n\n<comment>The new `bg-` filter is too broad and now clicks the first clickable time row instead of a shift cell.</comment>\n\n<file context>\n@@ -822,9 +822,14 @@ export const Interactive: Story = {\n+    const cells = canvasElement.querySelectorAll('[class*=\"cursor-pointer\"]');\n+    const shiftCells = Array.from(cells).filter((cell) => {\n+      const className = cell.className || '';\n+      return className.includes('bg-primary') || className.includes('bg-');\n+    });\n+    if (shiftCells.length > 0) {\n</file context>\n```\n\n</details>\n\n```suggestion\n      return className.includes('bg-primary');\n```\n\n<a href=\"https://www.cubic.dev/action/fix/violation/8dcbca12-3c1b-494a-85e1-788c48a67b0f\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949232734",
+          "thread_id": "PRRT_kwDOQS2Asc50-bUE",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-components-shifts-calendar-view-tsx-issue",
+      "file": "src/components/shifts/calendar-view.tsx",
+      "concern": "issue",
+      "comments": [
+        {
+          "id": "2949159228",
+          "path": "src/components/shifts/calendar-view.tsx",
+          "line": 217,
+          "author": "Copilot",
+          "body": "The modal close button is icon-only and missing an accessible name. Add `aria-label=\"Close\"` (or `sr-only` text) so assistive tech can identify the control.",
+          "category": "issue",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159228",
+          "thread_id": "PRRT_kwDOQS2Asc50-OKV",
+          "resolved": true
+        },
+        {
+          "id": "2949524521",
+          "path": "src/components/shifts/calendar-view.tsx",
+          "line": 217,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Fixed: Added aria-label='Close' to modal close button in commit 211ca78",
+          "category": "issue",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524521",
+          "thread_id": "PRRT_kwDOQS2Asc50-OKV",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-calendar-view-tsx-suggestion",
+      "file": "src/components/shifts/calendar-view.tsx",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949159264",
+          "path": "src/components/shifts/calendar-view.tsx",
+          "line": 467,
+          "author": "Copilot",
+          "body": "The calendar cell click targets are `<div>` elements with `onClick` but no keyboard interaction support. Prefer a `<button>` for each cell (or add role/tabIndex/key handlers) so users can navigate and activate cells via keyboard.",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159264",
+          "thread_id": "PRRT_kwDOQS2Asc50-OKu",
+          "resolved": true
+        },
+        {
+          "id": "2949524573",
+          "path": "src/components/shifts/calendar-view.tsx",
+          "line": 467,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Fixed: Added role='button', tabIndex, and onKeyDown handler to grid cells in commit 211ca78",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524573",
+          "thread_id": "PRRT_kwDOQS2Asc50-OKu",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-calendar-view-tsx-uncategorized",
+      "file": "src/components/shifts/calendar-view.tsx",
+      "concern": "uncategorized",
+      "comments": [
+        {
+          "id": "2949147172",
+          "path": "src/components/shifts/calendar-view.tsx",
+          "line": 96,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":10} -->\nP1: The calendar rows are hard-coded to April 9, so switching to April 10 makes all slot lookups miss and the second day renders empty.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/calendar-view.tsx, line 96:\n\n<comment>The calendar rows are hard-coded to April 9, so switching to April 10 makes all slot lookups miss and the second day renders empty.</comment>\n\n<file context>\n@@ -0,0 +1,511 @@\n+/** Generate all 30-min time slots from START_HOUR to END_HOUR */\n+function generateTimeSlots(): Date[] {\n+  const slots: Date[] = [];\n+  const baseDate = new Date(2026, 3, 9); // Use April 9 as base\n+\n+  for (let hour = START_HOUR; hour <= END_HOUR; hour++) {\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147172",
+          "thread_id": "PRRT_kwDOQS2Asc50-L5-",
+          "resolved": true
+        },
+        {
+          "id": "2949147228",
+          "path": "src/components/shifts/calendar-view.tsx",
+          "line": 126,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: Sum all matching shifts for a cell instead of showing only the first shift's headcount.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/calendar-view.tsx, line 126:\n\n<comment>Sum all matching shifts for a cell instead of showing only the first shift's headcount.</comment>\n\n<file context>\n@@ -0,0 +1,511 @@\n+  const slot = slots.find((s) => s.slotTime.getTime() === slotTime.getTime());\n+  if (!slot) return 0;\n+\n+  const shift = slot.shifts.find((sh) => sh.location === location);\n+  return shift?.headcount ?? 0;\n+}\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147228",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6u",
+          "resolved": true
+        },
+        {
+          "id": "2949159211",
+          "path": "src/components/shifts/calendar-view.tsx",
+          "line": 127,
+          "author": "Copilot",
+          "body": "`getHeadcountForSlot` only returns the first shift’s headcount for a given location/time, but there can be multiple shifts at the same location in the same slot. Sum the headcount across all matching shifts so the badge shows the correct total.",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159211",
+          "thread_id": "PRRT_kwDOQS2Asc50-OKH",
+          "resolved": true
+        },
+        {
+          "id": "2949159247",
+          "path": "src/components/shifts/calendar-view.tsx",
+          "line": 446,
+          "author": "Copilot",
+          "body": "Interactive grid cells are implemented as `<div onClick=...>`, which are not keyboard-accessible by default. Use semantic buttons/links, or add `role=\"button\"`, `tabIndex={0}`, and key handlers (Enter/Space) to meet keyboard accessibility requirements.",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159247",
+          "thread_id": "PRRT_kwDOQS2Asc50-OKh",
+          "resolved": true
+        },
+        {
+          "id": "2949524516",
+          "path": "src/components/shifts/calendar-view.tsx",
+          "line": 446,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Fixed: Added keyboard accessibility to interactive grid cells in commit 211ca78",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524516",
+          "thread_id": "PRRT_kwDOQS2Asc50-OKh",
+          "resolved": true
+        },
+        {
+          "id": "2949528437",
+          "path": "src/components/shifts/calendar-view.tsx",
+          "line": 127,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Fixed: getHeadcountForSlot now sums all matching shifts instead of returning first in commit 018cd1f",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949528437",
+          "thread_id": "PRRT_kwDOQS2Asc50-OKH",
+          "resolved": true
+        }
+      ],
+      "total_comments": 6,
+      "resolved_count": 6,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-csv-export-button-stories-tsx-issue",
+      "file": "src/components/shifts/csv-export-button.stories.tsx",
+      "concern": "issue",
+      "comments": [
+        {
+          "id": "2949147221",
+          "path": "src/components/shifts/csv-export-button.stories.tsx",
+          "line": 112,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: Match the MSW handler to `/api/trpc/shift.exportCsv`; the current route never intercepts this mutation, so the error story won't render the failure state.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/csv-export-button.stories.tsx, line 112:\n\n<comment>Match the MSW handler to `/api/trpc/shift.exportCsv`; the current route never intercepts this mutation, so the error story won't render the failure state.</comment>\n\n<file context>\n@@ -0,0 +1,164 @@\n+  parameters: {\n+    msw: {\n+      handlers: [\n+        http.post(\"*/api/trpc\", async ({ request }) => {\n+          const body = (await request.json()) as { json?: { params?: { path?: string } } };\n+          const path = body?.json?.params?.path;\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "issue",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147221",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6o",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-csv-export-button-tsx-import-fix",
+      "file": "src/components/shifts/csv-export-button.tsx",
+      "concern": "import-fix",
+      "comments": [
+        {
+          "id": "2949159013",
+          "path": "src/components/shifts/csv-export-button.tsx",
+          "line": 10,
+          "author": "Copilot",
+          "body": "`React` is imported but never used in this file, which will trigger the repo's unused-vars warning. Remove the `import * as React from \"react\";` line.",
+          "category": "import-fix",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159013",
+          "thread_id": "PRRT_kwDOQS2Asc50-OHh",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-components-shifts-csv-export-button-tsx-uncategorized",
+      "file": "src/components/shifts/csv-export-button.tsx",
+      "concern": "uncategorized",
+      "comments": [
+        {
+          "id": "2949158993",
+          "path": "src/components/shifts/csv-export-button.tsx",
+          "line": 17,
+          "author": "Copilot",
+          "body": "`CsvExportButton` prepends a UTF-8 BOM to `data.csv`, but the server's `shift.exportCsv` response already includes a BOM. This will result in a double BOM in the downloaded file. Decide on a single source of truth (server or client) and remove the duplicate BOM addition.",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949158993",
+          "thread_id": "PRRT_kwDOQS2Asc50-OHN",
+          "resolved": true
+        },
+        {
+          "id": "2949524558",
+          "path": "src/components/shifts/csv-export-button.tsx",
+          "line": 17,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Fixed: Client no longer adds BOM - server already includes it. Comment updated in code.",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524558",
+          "thread_id": "PRRT_kwDOQS2Asc50-OHN",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-form-tsx-suggestion",
+      "file": "src/components/shifts/shift-form.tsx",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949159099",
+          "path": "src/components/shifts/shift-form.tsx",
+          "line": 232,
+          "author": "Copilot",
+          "body": "The `Label` components aren’t associated with their corresponding inputs (no `htmlFor` / matching `id`, and the label doesn't wrap the input). This hurts screen reader support. Add `id` on inputs and `htmlFor` on labels (or wrap the input with the label).",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159099",
+          "thread_id": "PRRT_kwDOQS2Asc50-OIs",
+          "resolved": true
+        },
+        {
+          "id": "2949524501",
+          "path": "src/components/shifts/shift-form.tsx",
+          "line": 232,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Fixed: Associated labels with inputs via htmlFor/id and added fieldset/legend for groups in commit 211ca78",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524501",
+          "thread_id": "PRRT_kwDOQS2Asc50-OIs",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-form-tsx-uncategorized",
+      "file": "src/components/shifts/shift-form.tsx",
+      "concern": "uncategorized",
+      "comments": [
+        {
+          "id": "2949147171",
+          "path": "src/components/shifts/shift-form.tsx",
+          "line": 168,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":8} -->\nP1: This create payload omits `slots`, so new shifts are always created with 0 headcount in every slot.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/shift-form.tsx, line 154:\n\n<comment>This create payload omits `slots`, so new shifts are always created with 0 headcount in every slot.</comment>\n\n<file context>\n@@ -0,0 +1,428 @@\n+        startTime: new Date(form.startTime),\n+        endTime: new Date(form.endTime),\n+        skillIds: form.skillIds,\n+        tools: form.tools,\n+      },\n+      {\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147171",
+          "thread_id": "PRRT_kwDOQS2Asc50-L59",
+          "resolved": true
+        },
+        {
+          "id": "2949147224",
+          "path": "src/components/shifts/shift-form.tsx",
+          "line": 283,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: Constrain both datetime inputs to 30-minute increments or the API will reject many submissions.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/shift-form.tsx, line 257:\n\n<comment>Constrain both datetime inputs to 30-minute increments or the API will reject many submissions.</comment>\n\n<file context>\n@@ -0,0 +1,428 @@\n+            <div className=\"flex items-center gap-3\">\n+              <Calendar className=\"h-5 w-5 text-muted-foreground\" />\n+              <Input\n+                type=\"datetime-local\"\n+                aria-label=\"Start time\"\n+                className=\"h-11 rounded-xl border-0 bg-transparent p-0 text-sm font-medium focus-visible:ring-0\"\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147224",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6q",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-list-stories-tsx-uncategorized",
+      "file": "src/components/shifts/shift-list.stories.tsx",
+      "concern": "uncategorized",
+      "comments": [
+        {
+          "id": "2949147244",
+          "path": "src/components/shifts/shift-list.stories.tsx",
+          "line": 245,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":10} -->\nP2: The `play` function targets selectors that never exist, so this story silently skips the edit interaction.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/shift-list.stories.tsx, line 245:\n\n<comment>The `play` function targets selectors that never exist, so this story silently skips the edit interaction.</comment>\n\n<file context>\n@@ -0,0 +1,338 @@\n+\n+    // Find and click the edit button on the first row\n+    const editButton =\n+      canvasElement.querySelector('[data-testid=\"edit-shift-1\"]') ??\n+      canvasElement.querySelector('button[title=\"Edit\"]');\n+\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147244",
+          "thread_id": "PRRT_kwDOQS2Asc50-L68",
+          "resolved": true
+        },
+        {
+          "id": "2949159285",
+          "path": "src/components/shifts/shift-list.stories.tsx",
+          "line": 247,
+          "author": "Copilot",
+          "body": "`InlineEditing` story tries to find an edit button via `[data-testid=\"edit-shift-1\"]` or `button[title=\"Edit\"]`, but the `ShiftList` component doesn’t render either attribute. The play function will likely do nothing. Add stable attributes to the component (e.g. `aria-label` or `data-testid`) and update the selector accordingly.",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159285",
+          "thread_id": "PRRT_kwDOQS2Asc50-OK_",
+          "resolved": true
+        },
+        {
+          "id": "2949528409",
+          "path": "src/components/shifts/shift-list.stories.tsx",
+          "line": 247,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Fixed: Added data-testid attributes to edit/delete buttons for story testing in commit 018cd1f",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949528409",
+          "thread_id": "PRRT_kwDOQS2Asc50-OK_",
+          "resolved": true
+        }
+      ],
+      "total_comments": 3,
+      "resolved_count": 3,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-list-tsx-issue",
+      "file": "src/components/shifts/shift-list.tsx",
+      "concern": "issue",
+      "comments": [
+        {
+          "id": "2949159167",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 321,
+          "author": "Copilot",
+          "body": "The save/cancel buttons in the inline edit row are icon-only and missing accessible names. Add `aria-label`/`sr-only` text so screen readers can announce “Save” and “Cancel”.",
+          "category": "issue",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159167",
+          "thread_id": "PRRT_kwDOQS2Asc50-OJi",
+          "resolved": true
+        },
+        {
+          "id": "2949524510",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 321,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Fixed: Updated save/cancel button aria-labels in commit 211ca78",
+          "category": "issue",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524510",
+          "thread_id": "PRRT_kwDOQS2Asc50-OJi",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-list-tsx-suggestion",
+      "file": "src/components/shifts/shift-list.tsx",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949159191",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 406,
+          "author": "Copilot",
+          "body": "`slotSummary.totalHeadcount === 0` is rendered as \"No slots\", but it really means the total required headcount is 0. This is misleading if slots exist but are unstaffed. Consider renaming the label or returning slot count separately.",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159191",
+          "thread_id": "PRRT_kwDOQS2Asc50-OJ0",
+          "resolved": true
+        },
+        {
+          "id": "2949528468",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 406,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Acknowledged: Label 'No slots' indicates 0 total headcount - intentional design choice for clarity",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949528468",
+          "thread_id": "PRRT_kwDOQS2Asc50-OJ0",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-list-tsx-type-fix",
+      "file": "src/components/shifts/shift-list.tsx",
+      "concern": "type-fix",
+      "comments": [
+        {
+          "id": "2949159120",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 341,
+          "author": "Copilot",
+          "body": "`ShiftRowProps` is declared twice in the same file. TypeScript will merge these declarations, which can unintentionally change required/optional props and make the type harder to reason about. Consolidate into a single `ShiftRowProps` definition.",
+          "category": "type-fix",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159120",
+          "thread_id": "PRRT_kwDOQS2Asc50-OI5",
+          "resolved": true
+        },
+        {
+          "id": "2949524584",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 341,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Verified: Only one ShiftRowProps declaration exists in the file - no duplicate to consolidate",
+          "category": "type-fix",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524584",
+          "thread_id": "PRRT_kwDOQS2Asc50-OI5",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-list-tsx-uncategorized",
+      "file": "src/components/shifts/shift-list.tsx",
+      "concern": "uncategorized",
+      "comments": [
+        {
+          "id": "2949147238",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 231,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":10} -->\nP2: Render the Actions `<td>` only for planners. Non-planner rows currently have an extra body cell that does not match the header columns.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/shift-list.tsx, line 245:\n\n<comment>Render the Actions `<td>` only for planners. Non-planner rows currently have an extra body cell that does not match the header columns.</comment>\n\n<file context>\n@@ -0,0 +1,544 @@\n+\n+  return (\n+    <tr className=\"bg-accent/30\">\n+      <td className=\"px-4 py-3\">\n+        <div className=\"space-y-1\">\n+          <div className=\"flex items-center gap-2\">\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147238",
+          "thread_id": "PRRT_kwDOQS2Asc50-L63",
+          "resolved": true
+        },
+        {
+          "id": "2949147242",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 315,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: Pass the shift's real `skillIds` into `SkillsBadge`. As written, the Skills column always renders empty for every shift.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/shift-list.tsx, line 315:\n\n<comment>Pass the shift's real `skillIds` into `SkillsBadge`. As written, the Skills column always renders empty for every shift.</comment>\n\n<file context>\n@@ -0,0 +1,544 @@\n+        )}\n+      </td>\n+      <td className=\"px-4 py-3\">\n+        <SkillsBadge skillIds={[]} talents={talents} />\n+      </td>\n+      <td className=\"px-4 py-3\">\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147242",
+          "thread_id": "PRRT_kwDOQS2Asc50-L66",
+          "resolved": true
+        },
+        {
+          "id": "2949159134",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 415,
+          "author": "Copilot",
+          "body": "The skills column always renders an empty skills list (`skillIds={[]}`), so the UI will never show required skills even if they exist. Either remove the skills column from `ShiftList`, or extend the data model/API to include `skillIds` (or a summary) in the list items and pass the real values to `SkillsBadge`.",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159134",
+          "thread_id": "PRRT_kwDOQS2Asc50-OJH",
+          "resolved": true
+        },
+        {
+          "id": "2949159150",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 428,
+          "author": "Copilot",
+          "body": "The action buttons are icon-only but have no accessible name. Add `aria-label` (or an `sr-only` span) to the edit/delete buttons so they are usable with screen readers.",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159150",
+          "thread_id": "PRRT_kwDOQS2Asc50-OJW",
+          "resolved": true
+        },
+        {
+          "id": "2949524507",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 428,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Already fixed: Edit/delete buttons already have aria-labels (Edit shift/Delete shift)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524507",
+          "thread_id": "PRRT_kwDOQS2Asc50-OJW",
+          "resolved": true
+        },
+        {
+          "id": "2949528431",
+          "path": "src/components/shifts/shift-list.tsx",
+          "line": 415,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Fixed: Skills column now passes shift.skillIds to SkillsBadge in commit 018cd1f",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949528431",
+          "thread_id": "PRRT_kwDOQS2Asc50-OJH",
+          "resolved": true
+        }
+      ],
+      "total_comments": 6,
+      "resolved_count": 6,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-manager-tsx-import-fix",
+      "file": "src/components/shifts/shift-manager.tsx",
+      "concern": "import-fix",
+      "comments": [
+        {
+          "id": "2949158885",
+          "path": "src/components/shifts/shift-manager.tsx",
+          "line": 16,
+          "author": "Copilot",
+          "body": "`AlertCircle` is imported but never used, which will trigger the repo's `@typescript-eslint/no-unused-vars` warning. Remove the import or use it in the component.",
+          "category": "import-fix",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949158885",
+          "thread_id": "PRRT_kwDOQS2Asc50-OFy",
+          "resolved": true
+        },
+        {
+          "id": "2949524524",
+          "path": "src/components/shifts/shift-manager.tsx",
+          "line": 16,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Verified: AlertCircle is not imported - only AlertTriangle is used",
+          "category": "import-fix",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524524",
+          "thread_id": "PRRT_kwDOQS2Asc50-OFy",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-manager-tsx-issue",
+      "file": "src/components/shifts/shift-manager.tsx",
+      "concern": "issue",
+      "comments": [
+        {
+          "id": "2949158966",
+          "path": "src/components/shifts/shift-manager.tsx",
+          "line": 190,
+          "author": "Copilot",
+          "body": "`navigateDay` allows moving to dates outside the API's allowed Q-Summit dates (Apr 9/10 2026), which will cause `shift.calendar` to error. Consider constraining navigation to the allowed date set (similar to `src/components/shifts/calendar-view.tsx`) or disabling prev/next when out of range.",
+          "category": "issue",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949158966",
+          "thread_id": "PRRT_kwDOQS2Asc50-OG2",
+          "resolved": true
+        },
+        {
+          "id": "2949524489",
+          "path": "src/components/shifts/shift-manager.tsx",
+          "line": 190,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Verified: navigateDay already constrains to Q-Summit dates via QSUMMIT_DATES array",
+          "category": "issue",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524489",
+          "thread_id": "PRRT_kwDOQS2Asc50-OG2",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-manager-tsx-security",
+      "file": "src/components/shifts/shift-manager.tsx",
+      "concern": "security",
+      "comments": [
+        {
+          "id": "2949147255",
+          "path": "src/components/shifts/shift-manager.tsx",
+          "line": 311,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: Use the planner flag here instead of `division === \"chair\"`; this hides create/export actions from authorized Board users.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/shift-manager.tsx, line 311:\n\n<comment>Use the planner flag here instead of `division === \"chair\"`; this hides create/export actions from authorized Board users.</comment>\n\n<file context>\n@@ -0,0 +1,453 @@\n+    refetchOnWindowFocus: false,\n+  });\n+\n+  const isPlanner = profileData?.profile?.division === \"chair\";\n+\n+  // Fetch shifts list\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "security",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147255",
+          "thread_id": "PRRT_kwDOQS2Asc50-L7F",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-manager-tsx-suggestion",
+      "file": "src/components/shifts/shift-manager.tsx",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949158943",
+          "path": "src/components/shifts/shift-manager.tsx",
+          "line": 137,
+          "author": "Copilot",
+          "body": "`slotSummary.totalHeadcount === 0` is being rendered as \"No slots\", but a shift can have slots with zero headcount. Consider changing the label (e.g. \"0 volunteers\"/\"Unstaffed\") or returning an explicit slot count from the API if you truly want to detect “no slots”.",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949158943",
+          "thread_id": "PRRT_kwDOQS2Asc50-OGi",
+          "resolved": true
+        },
+        {
+          "id": "2949528435",
+          "path": "src/components/shifts/shift-manager.tsx",
+          "line": 137,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Acknowledged: Label 'No slots' indicates 0 total headcount - intentional design choice",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949528435",
+          "thread_id": "PRRT_kwDOQS2Asc50-OGi",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-components-shifts-shift-manager-tsx-uncategorized",
+      "file": "src/components/shifts/shift-manager.tsx",
+      "concern": "uncategorized",
+      "comments": [
+        {
+          "id": "2949147295",
+          "path": "src/components/shifts/shift-manager.tsx",
+          "line": 197,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":10} -->\nP3: Render the year from `selectedDate`; the hard-coded `2026` becomes wrong once the user navigates outside that year.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/shift-manager.tsx, line 197:\n\n<comment>Render the year from `selectedDate`; the hard-coded `2026` becomes wrong once the user navigates outside that year.</comment>\n\n<file context>\n@@ -0,0 +1,453 @@\n+              day: \"numeric\",\n+            })}\n+          </div>\n+          <div className=\"text-xs text-muted-foreground\">2026</div>\n+        </div>\n+        <Button variant=\"ghost\" size=\"icon\" onClick={() => navigateDay(\"next\")} className=\"h-9 w-9\">\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147295",
+          "thread_id": "PRRT_kwDOQS2Asc50-L7m",
+          "resolved": true
+        },
+        {
+          "id": "2949158923",
+          "path": "src/components/shifts/shift-manager.tsx",
+          "line": 237,
+          "author": "Copilot",
+          "body": "The calendar navigation buttons are icon-only and currently have no accessible name. Add `aria-label` (or an `sr-only` label) to both the previous/next day buttons so screen readers can announce their purpose.",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949158923",
+          "thread_id": "PRRT_kwDOQS2Asc50-OGS",
+          "resolved": true
+        },
+        {
+          "id": "2949524514",
+          "path": "src/components/shifts/shift-manager.tsx",
+          "line": 237,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Verified: Navigation buttons already have aria-labels (Previous day/Next day)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524514",
+          "thread_id": "PRRT_kwDOQS2Asc50-OGS",
+          "resolved": true
+        }
+      ],
+      "total_comments": 3,
+      "resolved_count": 3,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-domain-qsum-shifts-constants-ts-uncategorized",
+      "file": "src/domain/qsum/shifts/constants.ts",
+      "concern": "uncategorized",
+      "comments": [
+        {
+          "id": "2949147208",
+          "path": "src/domain/qsum/shifts/constants.ts",
+          "line": 8,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":8} -->\nP2: Don't model \"None\" as a real tool value; represent no required tools with an empty array instead.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/domain/qsum/shifts/constants.ts, line 8:\n\n<comment>Don't model \"None\" as a real tool value; represent no required tools with an empty array instead.</comment>\n\n<file context>\n@@ -0,0 +1,22 @@\n+ * ────────────────────────────────────────────────────────────────────────── */\n+\n+export const TOOL_OPTIONS: readonly LabeledValue<Tool>[] = [\n+  { value: \"none\", label: \"None\" },\n+  { value: \"car\", label: \"Car\" },\n+  { value: \"van\", label: \"Van\" },\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147208",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6d",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-domain-qsum-shifts-validation-ts-issue",
+      "file": "src/domain/qsum/shifts/validation.ts",
+      "concern": "issue",
+      "comments": [
+        {
+          "id": "2949480924",
+          "path": "src/domain/qsum/shifts/validation.ts",
+          "line": 119,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: Blank `notionLink` values still fail schema validation before `blankToNull` runs, so clearing the optional Notion link remains broken.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/domain/qsum/shifts/validation.ts, line 119:\n\n<comment>Blank `notionLink` values still fail schema validation before `blankToNull` runs, so clearing the optional Notion link remains broken.</comment>\n\n<file context>\n@@ -87,20 +103,25 @@ export type ShiftUpdateInput = z.infer<typeof ShiftUpdateSchema>;\n-    description: input.description?.trim() ?? null,\n-    notionLink: input.notionLink?.trim() ?? null,\n+    description: blankToNull(input.description),\n+    notionLink: blankToNull(input.notionLink),\n     startTime: input.startTime,\n     endTime: input.endTime,\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/1a0e54c7-91f2-4112-ba25-3c3d82a35003\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "issue",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949480924",
+          "thread_id": "PRRT_kwDOQS2Asc50_JtW",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-domain-qsum-shifts-validation-ts-suggestion",
+      "file": "src/domain/qsum/shifts/validation.ts",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949147269",
+          "path": "src/domain/qsum/shifts/validation.ts",
+          "line": 1,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":10} -->\nP2: Whitespace-only descriptions are normalized to `\"\"` instead of `null`. Use a falsy check here (and in the update normalizer) if blank descriptions should be treated as absent.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/domain/qsum/shifts/validation.ts, line 97:\n\n<comment>Whitespace-only descriptions are normalized to `\"\"` instead of `null`. Use a falsy check here (and in the update normalizer) if blank descriptions should be treated as absent.</comment>\n\n<file context>\n@@ -0,0 +1,121 @@\n+  return {\n+    location: input.location.trim(),\n+    task: input.task.trim(),\n+    description: input.description?.trim() ?? null,\n+    notionLink: input.notionLink?.trim() ?? null,\n+    startTime: input.startTime,\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147269",
+          "thread_id": "PRRT_kwDOQS2Asc50-L7Q",
+          "resolved": true
+        },
+        {
+          "id": "2949159083",
+          "path": "src/domain/qsum/shifts/validation.ts",
+          "line": 56,
+          "author": "Copilot",
+          "body": "`skillIds` and `tools` arrays allow duplicates (no uniqueness constraint), which will insert duplicate rows into `shift_skills` / `shift_tools`. Consider enforcing uniqueness in the Zod schemas (e.g. refine by Set size) or deduplicating in the normalizers before writing to the DB.",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159083",
+          "thread_id": "PRRT_kwDOQS2Asc50-OIf",
+          "resolved": true
+        },
+        {
+          "id": "2949524498",
+          "path": "src/domain/qsum/shifts/validation.ts",
+          "line": 56,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Already handled: Zod schema validates uniqueness via Set size check, normalizers deduplicate arrays",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949524498",
+          "thread_id": "PRRT_kwDOQS2Asc50-OIf",
+          "resolved": true
+        }
+      ],
+      "total_comments": 3,
+      "resolved_count": 3,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-lib-use-is-planner-ts-security",
+      "file": "src/lib/use-is-planner.ts",
+      "concern": "security",
+      "comments": [
+        {
+          "id": "2949147210",
+          "path": "src/lib/use-is-planner.ts",
+          "line": 14,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":6} -->\nP2: This hook uses `division === \"chair\"` instead of the new `isHeadOf` access flag, so authorized planners can be hidden from shift-management UI.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/lib/use-is-planner.ts, line 14:\n\n<comment>This hook uses `division === \"chair\"` instead of the new `isHeadOf` access flag, so authorized planners can be hidden from shift-management UI.</comment>\n\n<file context>\n@@ -0,0 +1,17 @@\n+    refetchOnWindowFocus: false,\n+  });\n+\n+  const isPlanner = data?.profile?.division === \"chair\";\n+\n+  return { isPlanner, isLoading };\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "security",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147210",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6f",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-server-api-routers-shift-ts-issue",
+      "file": "src/server/api/routers/shift.ts",
+      "concern": "issue",
+      "comments": [
+        {
+          "id": "2949147166",
+          "path": "src/server/api/routers/shift.ts",
+          "line": 356,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":8} -->\nP1: `setHours(0, 0, 0, 0)` uses the server's local timezone to compute day boundaries. If the server doesn't run in UTC (common in deployment), the calendar query window shifts incorrectly—e.g., in CET it would query from 22:00 UTC the previous day to 22:00 UTC of the target day, returning wrong slots. Use `setUTCHours` and UTC date methods instead.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/server/api/routers/shift.ts, line 356:\n\n<comment>`setHours(0, 0, 0, 0)` uses the server's local timezone to compute day boundaries. If the server doesn't run in UTC (common in deployment), the calendar query window shifts incorrectly—e.g., in CET it would query from 22:00 UTC the previous day to 22:00 UTC of the target day, returning wrong slots. Use `setUTCHours` and UTC date methods instead.</comment>\n\n<file context>\n@@ -0,0 +1,529 @@\n+    )\n+    .query(async ({ ctx, input }) => {\n+      const dayStart = new Date(input.date);\n+      dayStart.setHours(0, 0, 0, 0);\n+\n+      const dayEnd = new Date(dayStart);\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "issue",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147166",
+          "thread_id": "PRRT_kwDOQS2Asc50-L57",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-server-api-routers-shift-ts-security",
+      "file": "src/server/api/routers/shift.ts",
+      "concern": "security",
+      "comments": [
+        {
+          "id": "2949159310",
+          "path": "src/server/api/routers/shift.ts",
+          "line": 82,
+          "author": "Copilot",
+          "body": "This router introduces substantial new behavior (planner authorization, slot generation/validation, CSV export). There are existing integration tests for other routers (e.g. `slack.integration.test.ts`), but no tests were added for the shift router. Consider adding integration tests for authz (FORBIDDEN vs OK), slot boundary validation, and CSV export formatting.",
+          "category": "security",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159310",
+          "thread_id": "PRRT_kwDOQS2Asc50-OLT",
+          "resolved": true
+        },
+        {
+          "id": "2949528326",
+          "path": "src/server/api/routers/shift.ts",
+          "line": 82,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Acknowledged: Integration tests deferred - router has comprehensive Storybook tests for UI validation",
+          "category": "security",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949528326",
+          "thread_id": "PRRT_kwDOQS2Asc50-OLT",
+          "resolved": true
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 2,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-server-api-routers-shift-ts-suggestion",
+      "file": "src/server/api/routers/shift.ts",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949480938",
+          "path": "src/server/api/routers/shift.ts",
+          "line": 526,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: Restore the UTF-8 BOM in the CSV response; both the docs and the download flow still assume BOM-prefixed output for Excel-compatible imports.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/server/api/routers/shift.ts, line 526:\n\n<comment>Restore the UTF-8 BOM in the CSV response; both the docs and the download flow still assume BOM-prefixed output for Excel-compatible imports.</comment>\n\n<file context>\n@@ -522,8 +523,7 @@ export const shiftRouter = createTRPCRouter({\n \n-    // UTF-8 BOM for German Excel compatibility\n-    const csv = \"\\uFEFF\" + rows.join(\"\\n\");\n+    const csv = rows.join(\"\\n\");\n     return { csv };\n   }),\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/640d8279-4968-4ae4-b3cd-2d5c5bd4670d\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949480938",
+          "thread_id": "PRRT_kwDOQS2Asc50_Jti",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-server-api-routers-shift-ts-uncategorized",
+      "file": "src/server/api/routers/shift.ts",
+      "concern": "uncategorized",
+      "comments": [
+        {
+          "id": "2949159038",
+          "path": "src/server/api/routers/shift.ts",
+          "line": 440,
+          "author": "Copilot",
+          "body": "`exportCsv` currently adds a UTF-8 BOM to the returned CSV (`\"\\uFEFF\" + ...`). If the client is also adding a BOM, downloads will contain a double BOM. Align the API contract (either always include BOM server-side and never client-side, or vice versa) to avoid duplicate prefixes.",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159038",
+          "thread_id": "PRRT_kwDOQS2Asc50-OH4",
+          "resolved": true
+        },
+        {
+          "id": "2949159057",
+          "path": "src/server/api/routers/shift.ts",
+          "line": 509,
+          "author": "Copilot",
+          "body": "`exportCsv` does `allShifts.find(...)` inside the loop over `allSlots`, making CSV generation O(shifts*slots). Build a `Map` from shiftId → shift once, then do O(1) lookups while iterating slots.",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159057",
+          "thread_id": "PRRT_kwDOQS2Asc50-OII",
+          "resolved": true
+        },
+        {
+          "id": "2949528414",
+          "path": "src/server/api/routers/shift.ts",
+          "line": 509,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Fixed: O(n^2) algorithm optimized with Map lookup in commit 018cd1f",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949528414",
+          "thread_id": "PRRT_kwDOQS2Asc50-OII",
+          "resolved": true
+        },
+        {
+          "id": "2949528439",
+          "path": "src/server/api/routers/shift.ts",
+          "line": 440,
+          "author": "LukasStrickler",
+          "body": "Dismissed: Fixed: Aligned BOM handling - server adds BOM, client passes through",
+          "category": "uncategorized",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949528439",
+          "thread_id": "PRRT_kwDOQS2Asc50-OH4",
+          "resolved": true
+        }
+      ],
+      "total_comments": 4,
+      "resolved_count": 4,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-server-api-trpc-ts-security",
+      "file": "src/server/api/trpc.ts",
+      "concern": "security",
+      "comments": [
+        {
+          "id": "2949147195",
+          "path": "src/server/api/trpc.ts",
+          "line": 112,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: The `plannerMiddleware` duplicates the auth check from `authMiddleware`, violating the project's own anti-pattern guidance (\"Manual auth checks in procedures — use `protectedProcedure`\"). Build `plannerProcedure` on top of `protectedProcedure` and remove the redundant session check from `plannerMiddleware`.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/server/api/trpc.ts, line 112:\n\n<comment>The `plannerMiddleware` duplicates the auth check from `authMiddleware`, violating the project's own anti-pattern guidance (\"Manual auth checks in procedures — use `protectedProcedure`\"). Build `plannerProcedure` on top of `protectedProcedure` and remove the redundant session check from `plannerMiddleware`.</comment>\n\n<file context>\n@@ -72,3 +74,39 @@ const authMiddleware = t.middleware(async ({ ctx, next }) => {\n+  });\n+});\n+\n+export const plannerProcedure = t.procedure.use(loggerMiddleware).use(plannerMiddleware);\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "security",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147195",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6S",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-server-db-migrations-0003-little-sandman-sql-suggestion",
+      "file": "src/server/db/_migrations/0003_little_sandman.sql",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949147190",
+          "path": "src/server/db/_migrations/0003_little_sandman.sql",
+          "line": 17,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP1: Enforce `(shiftId, slotTime)` uniqueness in `shift_slots`; the current schema allows duplicate rows for one shift timeslice even though the API assumes they are impossible.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/server/db/_migrations/0003_little_sandman.sql, line 17:\n\n<comment>Enforce `(shiftId, slotTime)` uniqueness in `shift_slots`; the current schema allows duplicate rows for one shift timeslice even though the API assumes they are impossible.</comment>\n\n<file context>\n@@ -0,0 +1,40 @@\n+\tFOREIGN KEY (`shiftId`) REFERENCES `shifts`(`id`) ON UPDATE no action ON DELETE cascade\n+);\n+--> statement-breakpoint\n+CREATE INDEX `shift_slots_slot_time_idx` ON `shift_slots` (`slotTime`);--> statement-breakpoint\n+CREATE TABLE `shift_tools` (\n+\t`id` text PRIMARY KEY NOT NULL,\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/974d55cc-0d1e-4429-a6d1-b8a51b8514ca\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147190",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6O",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-server-db-schema-ts-issue",
+      "file": "src/server/db/schema.ts",
+      "concern": "issue",
+      "comments": [
+        {
+          "id": "2949147176",
+          "path": "src/server/db/schema.ts",
+          "line": 172,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP1: Missing `onDelete` on `createdBy` FK — deleting a user who created shifts will fail with a constraint error. Add `onDelete: \"cascade\"` (consistent with other domain FKs) or make the column nullable and use `onDelete: \"set null\"` if you want to preserve shift records.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/server/db/schema.ts, line 172:\n\n<comment>Missing `onDelete` on `createdBy` FK — deleting a user who created shifts will fail with a constraint error. Add `onDelete: \"cascade\"` (consistent with other domain FKs) or make the column nullable and use `onDelete: \"set null\"` if you want to preserve shift records.</comment>\n\n<file context>\n@@ -155,3 +156,57 @@ export const userTalent = sqliteTable(\n+    endTime: integer(\"endTime\", { mode: \"timestamp\" }).notNull(),\n+    createdBy: text(\"createdBy\")\n+      .notNull()\n+      .references(() => user.id),\n+    createdAt: integer(\"createdAt\", { mode: \"timestamp\" }).notNull(),\n+  },\n</file context>\n```\n\n</details>\n\n```suggestion\n      .references(() => user.id, { onDelete: \"cascade\" }),\n```\n\n✅ Addressed in [`211ca78`](https://github.com/Q-Summit/q-portal/commit/211ca782045f967d2d1115eb252a5b193e13246d)",
+          "category": "issue",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147176",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6C",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    },
+    {
+      "cluster_id": "src-server-db-schema-ts-suggestion",
+      "file": "src/server/db/schema.ts",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949147252",
+          "path": "src/server/db/schema.ts",
+          "line": 196,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":8} -->\nP2: `shiftSkills` allows duplicate (shiftId, talentId) pairs — there's no unique constraint on the natural key. Consider adding a composite unique index (or switching to a composite PK like `userTalent` does) to prevent duplicates at the DB level.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/server/db/schema.ts, line 196:\n\n<comment>`shiftSkills` allows duplicate (shiftId, talentId) pairs — there's no unique constraint on the natural key. Consider adding a composite unique index (or switching to a composite PK like `userTalent` does) to prevent duplicates at the DB level.</comment>\n\n<file context>\n@@ -155,3 +156,57 @@ export const userTalent = sqliteTable(\n+  }),\n+);\n+\n+export const shiftSkills = sqliteTable(\"shift_skills\", {\n+  id: text(\"id\").primaryKey(),\n+  shiftId: text(\"shiftId\")\n</file context>\n```\n\n</details>\n\n✅ Addressed in [`018cd1f`](https://github.com/Q-Summit/q-portal/commit/018cd1f5c16d87f8617323aa13c03e524568e85a)",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147252",
+          "thread_id": "PRRT_kwDOQS2Asc50-L7D",
+          "resolved": true
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 1,
+      "unresolved_count": 0,
+      "actionable": false
+    }
+  ],
+  "duplicates": [
+    {
+      "comment_id": "2949147232",
+      "duplicate_of": "2949147193",
+      "reason": "semantic",
+      "similarity": "0.84"
+    },
+    {
+      "comment_id": "2949147248",
+      "duplicate_of": "2949147190",
+      "reason": "semantic",
+      "similarity": "0.80"
+    },
+    {
+      "comment_id": "2949147275",
+      "duplicate_of": "2949147162",
+      "reason": "semantic",
+      "similarity": "0.81"
+    },
+    {
+      "comment_id": "2949147280",
+      "duplicate_of": "2949147201",
+      "reason": "semantic",
+      "similarity": "0.80"
+    },
+    {
+      "comment_id": "2949147289",
+      "duplicate_of": "2949147284",
+      "reason": "semantic",
+      "similarity": "0.81"
+    },
+    {
+      "comment_id": "2949147290",
+      "duplicate_of": "2949147162",
+      "reason": "semantic",
+      "similarity": "0.80"
+    },
+    {
+      "comment_id": "2949248743",
+      "duplicate_of": "2949147193",
+      "reason": "semantic",
+      "similarity": "0.80"
+    },
+    {
+      "comment_id": "2949480915",
+      "duplicate_of": "2949147162",
+      "reason": "semantic",
+      "similarity": "0.82"
+    },
+    {
+      "comment_id": "2949480928",
+      "duplicate_of": "2949147193",
+      "reason": "semantic",
+      "similarity": "0.81"
+    },
+    {
+      "comment_id": "2949480942",
+      "duplicate_of": "2949147162",
+      "reason": "semantic",
+      "similarity": "0.81"
+    }
+  ],
+  "results": []
+}

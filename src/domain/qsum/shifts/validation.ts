@@ -23,25 +23,34 @@ export type SlotInput = z.infer<typeof SlotInputSchema>;
  * Main Validation Schemas
  * ────────────────────────────────────────────────────────────────────────── */
 
-const notionUrlSchema = z
-  .string()
-  .trim()
-  .url()
-  .refine(
-    (value) => {
-      try {
-        const url = new URL(value);
-        const host = url.hostname.toLowerCase();
-        return host === "notion.so" || host === "www.notion.so" || host.endsWith(".notion.so");
-      } catch {
-        return false;
-      }
-    },
-    {
-      message: "Notion URL must be on notion.so",
-    },
-  )
-  .nullable();
+const notionUrlSchema = z.preprocess(
+  (val) => {
+    // Allow blank strings to pass through as null before URL validation
+    if (val === null || val === undefined || (typeof val === "string" && val.trim() === "")) {
+      return null;
+    }
+    return val;
+  },
+  z
+    .string()
+    .trim()
+    .url()
+    .refine(
+      (value) => {
+        try {
+          const url = new URL(value);
+          const host = url.hostname.toLowerCase();
+          return host === "notion.so" || host === "www.notion.so" || host.endsWith(".notion.so");
+        } catch {
+          return false;
+        }
+      },
+      {
+        message: "Notion URL must be on notion.so",
+      },
+    )
+    .nullable(),
+);
 
 export const ShiftCreateSchema = z
   .object({

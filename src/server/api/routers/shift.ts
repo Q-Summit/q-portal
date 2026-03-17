@@ -523,7 +523,8 @@ export const shiftRouter = createTRPCRouter({
       rows.push(row);
     }
 
-    const csv = rows.join("\n");
+    // UTF-8 BOM for German Excel compatibility
+    const csv = "\uFEFF" + rows.join("\n");
     return { csv };
   }),
 });

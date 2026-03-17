@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { api } from "@/server/api/client";
 import { Download, Loader2 } from "lucide-react";
-import * as React from "react";
 
 interface CsvExportButtonProps {
   filename?: string;

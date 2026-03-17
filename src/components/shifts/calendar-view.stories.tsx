@@ -827,7 +827,7 @@ export const Interactive: Story = {
     const cells = canvasElement.querySelectorAll('[class*="cursor-pointer"]');
     const shiftCells = Array.from(cells).filter((cell) => {
       const className = cell.className || "";
-      return className.includes("bg-primary") || className.includes("bg-");
+      return className.includes("bg-primary");
     });
     if (shiftCells.length > 0) {
       (shiftCells[0] as HTMLElement).click();

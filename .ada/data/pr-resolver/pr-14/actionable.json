@@ -1,0 +1,233 @@
+{
+  "pr_number": 14,
+  "repository": "Q-Summit/q-portal",
+  "generated_at": "2026-03-17T20:57:31Z",
+  "note": "Token-efficient output: only actionable clusters (unresolved_count > 0). Use data.json for full historical context.",
+  "statistics": {
+    "total_comments": 82,
+    "resolved_comments": 62,
+    "unresolved_comments": 20,
+    "actionable_clusters": 9
+  },
+  "clusters": [
+    {
+      "cluster_id": "sisyphus-plans-shift-planning-md-security",
+      "file": ".sisyphus/plans/shift-planning.md",
+      "concern": "security",
+      "comments": [
+        {
+          "id": "2949147162",
+          "path": ".sisyphus/plans/shift-planning.md",
+          "line": 824,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP1: Protect the read/export procedures too; this plan currently leaves schedule data readable by any authenticated user.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At .sisyphus/plans/shift-planning.md, line 824:\n\n<comment>Protect the read/export procedures too; this plan currently leaves schedule data readable by any authenticated user.</comment>\n\n<file context>\n@@ -0,0 +1,1014 @@\n+\n+**What to do**:\n+\n+- Add plannerProcedure to create/update/delete\n+- Hide create button for non-planners\n+- Show edit/delete only for planners\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/22ff8753-e537-45ea-baae-630225272a43\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "security",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147162",
+          "thread_id": "PRRT_kwDOQS2Asc50-L52",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "sisyphus-plans-shift-planning-md-suggestion",
+      "file": ".sisyphus/plans/shift-planning.md",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949147201",
+          "path": ".sisyphus/plans/shift-planning.md",
+          "line": 690,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: The fixed 06:00–23:00 grid cannot display the overnight slots that Task 15 requires for midnight-spanning shifts.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At .sisyphus/plans/shift-planning.md, line 690:\n\n<comment>The fixed 06:00–23:00 grid cannot display the overnight slots that Task 15 requires for midnight-spanning shifts.</comment>\n\n<file context>\n@@ -0,0 +1,1014 @@\n+\n+- Create calendar component:\n+  - Day selector (April 9, April 10)\n+  - Y-axis: 30-min time slots (06:00-23:00)\n+  - X-axis: Locations OR just show total per slot\n+  - Cell shows headcount number\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/77bf3b3d-60fc-4023-bbbf-eca713b878a8\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147201",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6Y",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-app-mobile-shifts-page-tsx-security",
+      "file": "src/app/(mobile)/shifts/page.tsx",
+      "concern": "security",
+      "comments": [
+        {
+          "id": "2949480919",
+          "path": "src/app/(mobile)/shifts/page.tsx",
+          "line": 27,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":8} -->\nP2: Avoid inlining another copy of the planner-role check; share the access rule with the existing planner authorization logic so page gating cannot drift from API enforcement.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/app/(mobile)/shifts/page.tsx, line 27:\n\n<comment>Avoid inlining another copy of the planner-role check; share the access rule with the existing planner authorization logic so page gating cannot drift from API enforcement.</comment>\n\n<file context>\n@@ -12,6 +15,21 @@ export default async function ShiftsPage() {\n+  ]);\n+\n+  const isHeadOf = userRow[0]?.isHeadOf ?? false;\n+  const isPlanner = profile?.division === \"chair\" || isHeadOf;\n+\n+  if (!isPlanner) {\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/90fb693f-e792-4f68-9d26-2f32c4fb73e2\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "security",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949480919",
+          "thread_id": "PRRT_kwDOQS2Asc50_JtR",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-app-mobile-shifts-shifts-page-stories-tsx-suggestion",
+      "file": "src/app/(mobile)/shifts/shifts-page.stories.tsx",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949147193",
+          "path": "src/app/(mobile)/shifts/shifts-page.stories.tsx",
+          "line": 301,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: These \"CalendarView\" stories never switch `ShiftManager` out of its default list mode, so they do not actually render or verify the calendar state.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/app/(mobile)/shifts/shifts-page.stories.tsx, line 300:\n\n<comment>These \"CalendarView\" stories never switch `ShiftManager` out of its default list mode, so they do not actually render or verify the calendar state.</comment>\n\n<file context>\n@@ -1,128 +1,349 @@\n+/**\n+ * Calendar view - showing shifts by time slots.\n+ */\n+export const CalendarView: Story = {\n+  parameters: {\n+    msw: {\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/b547a2b6-2b8c-42e3-9e08-736af6f76d6e\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147193",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6Q",
+          "resolved": false
+        },
+        {
+          "id": "2949147284",
+          "path": "src/app/(mobile)/shifts/shifts-page.stories.tsx",
+          "line": 278,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":8} -->\nP3: Mock the default `shift.list` query in this loading story; otherwise it can hit an unhandled request instead of staying in the intended loading state.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/app/(mobile)/shifts/shifts-page.stories.tsx, line 263:\n\n<comment>Mock the default `shift.list` query in this loading story; otherwise it can hit an unhandled request instead of staying in the intended loading state.</comment>\n\n<file context>\n@@ -1,128 +1,349 @@\n+/**\n+ * Loading state - while fetching data.\n+ */\n+export const ListViewLoading: Story = {\n+  parameters: {\n+    msw: {\n</file context>\n```\n\n</details>\n\n```suggestion\nexport const ListViewLoading: Story = {\n  parameters: {\n    msw: {\n      handlers: [\n        trpcQuery(\"profile\", \"getMy\", async () => {\n          await new Promise((resolve) => setTimeout(resolve, 100000));\n          return {\n            user: mockUser,\n            profile: mockRegularProfile,\n          };\n        }),\n        trpcQuery(\"shift\", \"list\", async () => {\n          await new Promise((resolve) => setTimeout(resolve, 100000));\n          return {\n            items: [],\n            total: 0,\n            nextCursor: null,\n          };\n        }),\n      ],\n    },\n  },\n};\n```\n\n<a href=\"https://www.cubic.dev/action/fix/violation/fe755a28-2a23-4916-b388-cc627941f16b\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147284",
+          "thread_id": "PRRT_kwDOQS2Asc50-L7d",
+          "resolved": false
+        }
+      ],
+      "total_comments": 2,
+      "resolved_count": 0,
+      "unresolved_count": 2,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-components-shifts-calendar-view-stories-tsx-suggestion",
+      "file": "src/components/shifts/calendar-view.stories.tsx",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949232734",
+          "path": "src/components/shifts/calendar-view.stories.tsx",
+          "line": 829,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: The new `bg-` filter is too broad and now clicks the first clickable time row instead of a shift cell.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/components/shifts/calendar-view.stories.tsx, line 829:\n\n<comment>The new `bg-` filter is too broad and now clicks the first clickable time row instead of a shift cell.</comment>\n\n<file context>\n@@ -822,9 +822,14 @@ export const Interactive: Story = {\n+    const cells = canvasElement.querySelectorAll('[class*=\"cursor-pointer\"]');\n+    const shiftCells = Array.from(cells).filter((cell) => {\n+      const className = cell.className || '';\n+      return className.includes('bg-primary') || className.includes('bg-');\n+    });\n+    if (shiftCells.length > 0) {\n</file context>\n```\n\n</details>\n\n```suggestion\n      return className.includes('bg-primary');\n```\n\n<a href=\"https://www.cubic.dev/action/fix/violation/8dcbca12-3c1b-494a-85e1-788c48a67b0f\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949232734",
+          "thread_id": "PRRT_kwDOQS2Asc50-bUE",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-components-shifts-csv-export-button-tsx-import-fix",
+      "file": "src/components/shifts/csv-export-button.tsx",
+      "concern": "import-fix",
+      "comments": [
+        {
+          "id": "2949159013",
+          "path": "src/components/shifts/csv-export-button.tsx",
+          "line": 10,
+          "author": "Copilot",
+          "body": "`React` is imported but never used in this file, which will trigger the repo's unused-vars warning. Remove the `import * as React from \"react\";` line.",
+          "category": "import-fix",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949159013",
+          "thread_id": "PRRT_kwDOQS2Asc50-OHh",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-domain-qsum-shifts-validation-ts-issue",
+      "file": "src/domain/qsum/shifts/validation.ts",
+      "concern": "issue",
+      "comments": [
+        {
+          "id": "2949480924",
+          "path": "src/domain/qsum/shifts/validation.ts",
+          "line": 119,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: Blank `notionLink` values still fail schema validation before `blankToNull` runs, so clearing the optional Notion link remains broken.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/domain/qsum/shifts/validation.ts, line 119:\n\n<comment>Blank `notionLink` values still fail schema validation before `blankToNull` runs, so clearing the optional Notion link remains broken.</comment>\n\n<file context>\n@@ -87,20 +103,25 @@ export type ShiftUpdateInput = z.infer<typeof ShiftUpdateSchema>;\n-    description: input.description?.trim() ?? null,\n-    notionLink: input.notionLink?.trim() ?? null,\n+    description: blankToNull(input.description),\n+    notionLink: blankToNull(input.notionLink),\n     startTime: input.startTime,\n     endTime: input.endTime,\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/1a0e54c7-91f2-4112-ba25-3c3d82a35003\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "issue",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949480924",
+          "thread_id": "PRRT_kwDOQS2Asc50_JtW",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-server-api-routers-shift-ts-suggestion",
+      "file": "src/server/api/routers/shift.ts",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949480938",
+          "path": "src/server/api/routers/shift.ts",
+          "line": 526,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP2: Restore the UTF-8 BOM in the CSV response; both the docs and the download flow still assume BOM-prefixed output for Excel-compatible imports.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/server/api/routers/shift.ts, line 526:\n\n<comment>Restore the UTF-8 BOM in the CSV response; both the docs and the download flow still assume BOM-prefixed output for Excel-compatible imports.</comment>\n\n<file context>\n@@ -522,8 +523,7 @@ export const shiftRouter = createTRPCRouter({\n \n-    // UTF-8 BOM for German Excel compatibility\n-    const csv = \"\\uFEFF\" + rows.join(\"\\n\");\n+    const csv = rows.join(\"\\n\");\n     return { csv };\n   }),\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/640d8279-4968-4ae4-b3cd-2d5c5bd4670d\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949480938",
+          "thread_id": "PRRT_kwDOQS2Asc50_Jti",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    },
+    {
+      "cluster_id": "src-server-db-migrations-0003-little-sandman-sql-suggestion",
+      "file": "src/server/db/_migrations/0003_little_sandman.sql",
+      "concern": "suggestion",
+      "comments": [
+        {
+          "id": "2949147190",
+          "path": "src/server/db/_migrations/0003_little_sandman.sql",
+          "line": 17,
+          "author": "cubic-dev-ai[bot]",
+          "body": "<!-- metadata:{\"confidence\":9} -->\nP1: Enforce `(shiftId, slotTime)` uniqueness in `shift_slots`; the current schema allows duplicate rows for one shift timeslice even though the API assumes they are impossible.\n\n<details>\n<summary>Prompt for AI agents</summary>\n\n```text\nCheck if this issue is valid — if so, understand the root cause and fix it. At src/server/db/_migrations/0003_little_sandman.sql, line 17:\n\n<comment>Enforce `(shiftId, slotTime)` uniqueness in `shift_slots`; the current schema allows duplicate rows for one shift timeslice even though the API assumes they are impossible.</comment>\n\n<file context>\n@@ -0,0 +1,40 @@\n+\tFOREIGN KEY (`shiftId`) REFERENCES `shifts`(`id`) ON UPDATE no action ON DELETE cascade\n+);\n+--> statement-breakpoint\n+CREATE INDEX `shift_slots_slot_time_idx` ON `shift_slots` (`slotTime`);--> statement-breakpoint\n+CREATE TABLE `shift_tools` (\n+\t`id` text PRIMARY KEY NOT NULL,\n</file context>\n```\n\n</details>\n\n<a href=\"https://www.cubic.dev/action/fix/violation/974d55cc-0d1e-4429-a6d1-b8a51b8514ca\" target=\"_blank\" rel=\"noopener noreferrer\" data-no-image-dialog=\"true\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://cubic.dev/buttons/fix-with-cubic-light.svg\">\n    <img alt=\"Fix with Cubic\" src=\"https://cubic.dev/buttons/fix-with-cubic-dark.svg\">\n  </picture>\n</a>",
+          "category": "suggestion",
+          "severity": "",
+          "url": "https://github.com/Q-Summit/q-portal/pull/14#discussion_r2949147190",
+          "thread_id": "PRRT_kwDOQS2Asc50-L6O",
+          "resolved": false
+        }
+      ],
+      "total_comments": 1,
+      "resolved_count": 0,
+      "unresolved_count": 1,
+      "actionable": true
+    }
+  ]
+}
