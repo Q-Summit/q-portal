@@ -1,19 +1,22 @@
 /**
- * Stories for the Shifts page.
+ * Stories for the ShiftManager component.
  *
  * Uses MSW to mock tRPC endpoints so the component renders with realistic data.
- * Demonstrates different user states and view modes.
+ * Demonstrates loading state, error state, planner vs regular user, list vs calendar view.
  */
 
-import { ShiftManager } from "@/components/shifts/shift-manager";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { trpcQuery, trpcQueryError } from "../../../../.storybook/utils/trpc-helpers";
+import { trpcQuery, trpcMutation } from "../../../.storybook/utils/trpc-helpers";
+import { ShiftManager } from "./shift-manager";
 
 const meta = {
-  title: "Pages/Shifts",
+  title: "Shifts/ShiftManager",
   component: ShiftManager,
   parameters: {
-    layout: "fullscreen",
+    layout: "padded",
+    nextjs: {
+      appDirectory: true,
+    },
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof ShiftManager>;
@@ -187,13 +190,9 @@ const mockCalendarSlots = [
 ];
 
 /* ──────────────────────────────────────────────────────────────────────────
- * Stories
+ * Stories - Regular User (can view, cannot create)
  * ────────────────────────────────────────────────────────────────────────── */
 
-/**
- * Regular user viewing the shifts list.
- * No "Create" button visible since they're not a planner.
- */
 export const ListViewRegularUser: Story = {
   parameters: {
     msw: {
@@ -213,32 +212,6 @@ export const ListViewRegularUser: Story = {
   },
 };
 
-/**
- * Planner user (chair division) viewing the shifts list.
- * "Create" button is visible in the header.
- */
-export const ListViewPlanner: Story = {
-  parameters: {
-    msw: {
-      handlers: [
-        trpcQuery("profile", "getMy", () => ({
-          user: mockUser,
-          profile: mockPlannerProfile,
-        })),
-        trpcQuery("profile", "listTalents", () => mockTalents),
-        trpcQuery("shift", "list", () => ({
-          items: mockShifts,
-          total: mockShifts.length,
-          nextCursor: null,
-        })),
-      ],
-    },
-  },
-};
-
-/**
- * Empty state - no shifts available.
- */
 export const ListViewEmpty: Story = {
   parameters: {
     msw: {
@@ -258,9 +231,6 @@ export const ListViewEmpty: Story = {
   },
 };
 
-/**
- * Loading state - while fetching data.
- */
 export const ListViewLoading: Story = {
   parameters: {
     msw: {
@@ -272,22 +242,16 @@ export const ListViewLoading: Story = {
             profile: mockRegularProfile,
           };
         }),
-        trpcQuery("shift", "list", async () => {
-          await new Promise((resolve) => setTimeout(resolve, 100000));
-          return {
-            items: [],
-            total: 0,
-            nextCursor: null,
-          };
-        }),
+        trpcQuery("shift", "list", () => ({
+          items: mockShifts,
+          total: mockShifts.length,
+          nextCursor: null,
+        })),
       ],
     },
   },
 };
 
-/**
- * Error state - when API call fails.
- */
 export const ListViewError: Story = {
   parameters: {
     msw: {
@@ -296,17 +260,15 @@ export const ListViewError: Story = {
           user: mockUser,
           profile: mockRegularProfile,
         })),
-        trpcQuery("profile", "listTalents", () => mockTalents),
-        trpcQueryError("shift", "list", "Failed to load shifts"),
+        trpcQuery("shift", "list", () => {
+          throw new Error("Failed to fetch shifts: Database connection timeout");
+        }),
       ],
     },
   },
 };
 
-/**
- * Calendar view - showing shifts by time slots.
- */
-export const CalendarView: Story = {
+export const CalendarViewRegularUser: Story = {
   parameters: {
     msw: {
       handlers: [
@@ -314,32 +276,66 @@ export const CalendarView: Story = {
           user: mockUser,
           profile: mockRegularProfile,
         })),
-        trpcQuery("profile", "listTalents", () => mockTalents),
         trpcQuery("shift", "list", () => ({
           items: mockShifts,
           total: mockShifts.length,
           nextCursor: null,
         })),
+        trpcQuery("profile", "listTalents", () => mockTalents),
         trpcQuery("shift", "calendar", () => mockCalendarSlots),
       ],
     },
   },
-  play: async ({ canvasElement }) => {
-    // Wait for component to render
-    await new Promise((resolve) => setTimeout(resolve, 100));
+};
 
-    // Click the Calendar view button to switch to calendar mode
-    const calendarButton = canvasElement.querySelector('button[aria-label="Calendar view"]');
-    if (calendarButton) {
-      (calendarButton as HTMLButtonElement).click();
-    }
+export const CalendarViewEmpty: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        trpcQuery("profile", "getMy", () => ({
+          user: mockUser,
+          profile: mockRegularProfile,
+        })),
+        trpcQuery("shift", "list", () => ({
+          items: mockShifts,
+          total: mockShifts.length,
+          nextCursor: null,
+        })),
+        trpcQuery("profile", "listTalents", () => mockTalents),
+        trpcQuery("shift", "calendar", () => []),
+      ],
+    },
   },
 };
 
-/**
- * Calendar view - planner user with create button.
- */
-export const CalendarViewPlanner: Story = {
+export const CalendarViewLoading: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        trpcQuery("profile", "getMy", () => ({
+          user: mockUser,
+          profile: mockRegularProfile,
+        })),
+        trpcQuery("shift", "list", () => ({
+          items: mockShifts,
+          total: mockShifts.length,
+          nextCursor: null,
+        })),
+        trpcQuery("profile", "listTalents", () => mockTalents),
+        trpcQuery("shift", "calendar", async () => {
+          await new Promise((resolve) => setTimeout(resolve, 100000));
+          return mockCalendarSlots;
+        }),
+      ],
+    },
+  },
+};
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Stories - Planner User (can view AND create)
+ * ────────────────────────────────────────────────────────────────────────── */
+
+export const ListViewPlanner: Story = {
   parameters: {
     msw: {
       handlers: [
@@ -353,26 +349,61 @@ export const CalendarViewPlanner: Story = {
           total: mockShifts.length,
           nextCursor: null,
         })),
-        trpcQuery("shift", "calendar", () => mockCalendarSlots),
+        trpcMutation("shift", "create", () => ({ ok: true, id: "new-shift-id" })),
       ],
     },
   },
-  play: async ({ canvasElement }) => {
-    // Wait for component to render
-    await new Promise((resolve) => setTimeout(resolve, 100));
+};
 
-    // Click the Calendar view button to switch to calendar mode
-    const calendarButton = canvasElement.querySelector('button[aria-label="Calendar view"]');
-    if (calendarButton) {
-      (calendarButton as HTMLButtonElement).click();
-    }
+export const CalendarViewPlanner: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        trpcQuery("profile", "getMy", () => ({
+          user: mockUser,
+          profile: mockPlannerProfile,
+        })),
+        trpcQuery("shift", "list", () => ({
+          items: mockShifts,
+          total: mockShifts.length,
+          nextCursor: null,
+        })),
+        trpcQuery("profile", "listTalents", () => mockTalents),
+        trpcQuery("shift", "calendar", () => mockCalendarSlots),
+        trpcMutation("shift", "create", () => ({ ok: true, id: "new-shift-id" })),
+      ],
+    },
   },
 };
 
-/**
- * Calendar view - empty day.
- */
-export const CalendarViewEmpty: Story = {
+/* ──────────────────────────────────────────────────────────────────────────
+ * Stories - User Without Profile
+ * ────────────────────────────────────────────────────────────────────────── */
+
+export const NoProfile: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        trpcQuery("profile", "getMy", () => ({
+          user: mockUser,
+          profile: null,
+        })),
+        trpcQuery("profile", "listTalents", () => mockTalents),
+        trpcQuery("shift", "list", () => ({
+          items: mockShifts,
+          total: mockShifts.length,
+          nextCursor: null,
+        })),
+      ],
+    },
+  },
+};
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Stories - Many Shifts (scroll testing)
+ * ────────────────────────────────────────────────────────────────────────── */
+
+export const ManyShifts: Story = {
   parameters: {
     msw: {
       handlers: [
@@ -382,22 +413,17 @@ export const CalendarViewEmpty: Story = {
         })),
         trpcQuery("profile", "listTalents", () => mockTalents),
         trpcQuery("shift", "list", () => ({
-          items: [],
-          total: 0,
+          items: Array.from({ length: 20 }, (_, i) => ({
+            ...mockShifts[i % mockShifts.length],
+            id: `shift-${i + 1}`,
+            location: `${mockShifts[i % mockShifts.length].location} ${i + 1}`,
+            startTime: new Date(`2026-04-0${(i % 9) + 1}T08:00:00`),
+            endTime: new Date(`2026-04-0${(i % 9) + 1}T12:00:00`),
+          })),
+          total: 20,
           nextCursor: null,
         })),
-        trpcQuery("shift", "calendar", () => []),
       ],
     },
-  },
-  play: async ({ canvasElement }) => {
-    // Wait for component to render
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
-    // Click the Calendar view button to switch to calendar mode
-    const calendarButton = canvasElement.querySelector('button[aria-label="Calendar view"]');
-    if (calendarButton) {
-      (calendarButton as HTMLButtonElement).click();
-    }
   },
 };

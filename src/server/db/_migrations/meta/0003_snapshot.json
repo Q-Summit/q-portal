@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "f3c8e1b5-3c5b-4e66-9d12-3cdb8c3f7b21",
-  "prevId": "86bc391b-1451-4f7c-95fb-ec18c9d5d594",
+  "id": "642bf5b5-a8ef-4f26-b319-72ecff126788",
+  "prevId": "f3c8e1b5-3c5b-4e66-9d12-3cdb8c3f7b21",
   "tables": {
     "account": {
       "name": "account",
@@ -288,6 +288,246 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "shift_skills": {
+      "name": "shift_skills",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "shiftId": {
+          "name": "shiftId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "talentId": {
+          "name": "talentId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "shift_skills_shiftId_shifts_id_fk": {
+          "name": "shift_skills_shiftId_shifts_id_fk",
+          "tableFrom": "shift_skills",
+          "tableTo": "shifts",
+          "columnsFrom": ["shiftId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "shift_skills_talentId_talent_id_fk": {
+          "name": "shift_skills_talentId_talent_id_fk",
+          "tableFrom": "shift_skills",
+          "tableTo": "talent",
+          "columnsFrom": ["talentId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "shift_slots": {
+      "name": "shift_slots",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "shiftId": {
+          "name": "shiftId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "slotTime": {
+          "name": "slotTime",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "headcount": {
+          "name": "headcount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "shift_slots_slot_time_idx": {
+          "name": "shift_slots_slot_time_idx",
+          "columns": ["slotTime"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "shift_slots_shiftId_shifts_id_fk": {
+          "name": "shift_slots_shiftId_shifts_id_fk",
+          "tableFrom": "shift_slots",
+          "tableTo": "shifts",
+          "columnsFrom": ["shiftId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "shift_tools": {
+      "name": "shift_tools",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "shiftId": {
+          "name": "shiftId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tool": {
+          "name": "tool",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "shift_tools_shiftId_shifts_id_fk": {
+          "name": "shift_tools_shiftId_shifts_id_fk",
+          "tableFrom": "shift_tools",
+          "tableTo": "shifts",
+          "columnsFrom": ["shiftId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "shifts": {
+      "name": "shifts",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "task": {
+          "name": "task",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "notionLink": {
+          "name": "notionLink",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "startTime": {
+          "name": "startTime",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "endTime": {
+          "name": "endTime",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdBy": {
+          "name": "createdBy",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "shifts_start_time_idx": {
+          "name": "shifts_start_time_idx",
+          "columns": ["startTime"],
+          "isUnique": false
+        },
+        "shifts_location_idx": {
+          "name": "shifts_location_idx",
+          "columns": ["location"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "shifts_createdBy_user_id_fk": {
+          "name": "shifts_createdBy_user_id_fk",
+          "tableFrom": "shifts",
+          "tableTo": "user",
+          "columnsFrom": ["createdBy"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "talent": {
       "name": "talent",
       "columns": {
@@ -363,6 +603,14 @@
           "notNull": false,
           "autoincrement": false
         },
+        "isHeadOf": {
+          "name": "isHeadOf",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
         "createdAt": {
           "name": "createdAt",
           "type": "integer",
@@ -431,8 +679,8 @@
       },
       "compositePrimaryKeys": {
         "user_talent_userId_talentId_pk": {
-          "name": "user_talent_userId_talentId_pk",
-          "columns": ["userId", "talentId"]
+          "columns": ["userId", "talentId"],
+          "name": "user_talent_userId_talentId_pk"
         }
       },
       "uniqueConstraints": {},

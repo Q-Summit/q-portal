@@ -10,14 +10,6 @@ import { api } from "@/server/api/client";
 import type { AppRouter } from "@/server/api/root";
 
 /**
- * Get the tRPC API URL for Storybook.
- * Uses relative path so MSW can intercept requests.
- */
-function getUrl() {
-  return "/api/trpc";
-}
-
-/**
  * Typed MSW handlers for tRPC endpoints.
  *
  * Use this with msw-trpc to create type-safe mock handlers in Storybook stories.
@@ -28,8 +20,11 @@ function getUrl() {
  * ```
  */
 export const trpcMsw = createTRPCMsw<AppRouter>({
-  baseUrl: getUrl(),
-  transformer: { input: superjson, output: superjson },
+  baseUrl: "/api/trpc",
+  transformer: {
+    input: superjson,
+    output: superjson,
+  },
 });
 
 /**
@@ -59,7 +54,7 @@ export function TRPCReactProviderStorybook(props: { children: React.ReactNode })
     api.createClient({
       links: [
         httpLink({
-          url: getUrl(),
+          url: "/api/trpc",
           transformer: superjson,
           headers() {
             return {

@@ -1,4 +1,11 @@
-import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  index,
+  integer,
+  primaryKey,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 
 /**
  * ──────────────────────────────────────────────────────────────────────────────
@@ -12,6 +19,7 @@ export const user = sqliteTable("user", {
   email: text("email").notNull().unique(),
   emailVerified: integer("emailVerified", { mode: "boolean" }).notNull(),
   image: text("image"),
+  isHeadOf: integer("isHeadOf", { mode: "boolean" }).notNull().default(false),
   createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
   updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
 });
@@ -155,3 +163,66 @@ export const userTalent = sqliteTable(
     pk: primaryKey({ columns: [table.userId, table.talentId] }),
   }),
 );
+
+export const shifts = sqliteTable(
+  "shifts",
+  {
+    id: text("id").primaryKey(),
+    location: text("location").notNull(),
+    task: text("task").notNull(),
+    description: text("description"),
+    notionLink: text("notionLink"),
+    startTime: integer("startTime", { mode: "timestamp" }).notNull(),
+    endTime: integer("endTime", { mode: "timestamp" }).notNull(),
+    createdBy: text("createdBy")
+      .notNull()
+      .references(() => user.id),
+    createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
+  },
+  (table) => ({
+    startTimeIdx: index("shifts_start_time_idx").on(table.startTime),
+    locationIdx: index("shifts_location_idx").on(table.location),
+  }),
+);
+
+export const shiftSlots = sqliteTable(
+  "shift_slots",
+  {
+    id: text("id").primaryKey(),
+    shiftId: text("shiftId")
+      .notNull()
+      .references(() => shifts.id, { onDelete: "cascade" }),
+    slotTime: integer("slotTime", { mode: "timestamp" }).notNull(),
+    headcount: integer("headcount").notNull().default(0),
+  },
+  (table) => ({
+    slotTimeIdx: index("shift_slots_slot_time_idx").on(table.slotTime),
+  }),
+);
+
+export const shiftSkills = sqliteTable(
+  "shift_skills",
+  {
+    id: text("id").primaryKey(),
+    shiftId: text("shiftId")
+      .notNull()
+      .references(() => shifts.id, { onDelete: "cascade" }),
+    talentId: text("talentId")
+      .notNull()
+      .references(() => talent.id, { onDelete: "cascade" }),
+  },
+  (table) => ({
+    shiftIdTalentIdUnique: uniqueIndex("shift_skills_shift_id_talent_id_unique").on(
+      table.shiftId,
+      table.talentId,
+    ),
+  }),
+);
+
+export const shiftTools = sqliteTable("shift_tools", {
+  id: text("id").primaryKey(),
+  shiftId: text("shiftId")
+    .notNull()
+    .references(() => shifts.id, { onDelete: "cascade" }),
+  tool: text("tool", { enum: ["car", "van", "equipment"] }).notNull(),
+});

@@ -1,9 +1,11 @@
 import { initTRPC, TRPCError } from "@trpc/server";
+import { eq } from "drizzle-orm";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { auth } from "@/lib/auth";
 import { db } from "@/server/db";
+import { memberProfile, user } from "@/server/db/schema";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   // Better Auth: get session from headers (cookie)
@@ -72,3 +74,43 @@ const authMiddleware = t.middleware(async ({ ctx, next }) => {
 });
 
 export const protectedProcedure = t.procedure.use(loggerMiddleware).use(authMiddleware);
+
+const plannerMiddleware = t.middleware(async ({ ctx, next }) => {
+  // Auth is guaranteed by protectedProcedure; only enforce chair/board role here.
+  if (!ctx.session?.user?.id) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Authentication required",
+    });
+  }
+  const userId = ctx.session.user.id;
+
+  const [profile, userRow] = await Promise.all([
+    ctx.db.query.memberProfile.findFirst({
+      where: eq(memberProfile.userId, userId),
+    }),
+    ctx.db.select({ isHeadOf: user.isHeadOf }).from(user).where(eq(user.id, userId)).limit(1),
+  ]);
+
+  const isHeadOf = userRow[0]?.isHeadOf ?? false;
+  const isPlanner = profile?.division === "chair" || isHeadOf;
+
+  if (!isPlanner) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Only Chair/Board members or heads can access shift planning",
+    });
+  }
+
+  return next({
+    ctx: {
+      ...ctx,
+      session: {
+        ...ctx.session,
+        user: ctx.session.user,
+      },
+    },
+  });
+});
+
+export const plannerProcedure = protectedProcedure.use(plannerMiddleware);

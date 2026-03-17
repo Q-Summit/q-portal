@@ -1,5 +1,9 @@
+import { ShiftManager } from "@/components/shifts/shift-manager";
 import { auth } from "@/lib/auth";
 import { buildLoginRedirect } from "@/lib/utils";
+import { db } from "@/server/db";
+import { memberProfile, user } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -11,11 +15,24 @@ export default async function ShiftsPage() {
     redirect(buildLoginRedirect("/shifts"));
   }
 
+  const userId = session.user.id;
+  const [profile, userRow] = await Promise.all([
+    db.query.memberProfile.findFirst({
+      where: eq(memberProfile.userId, userId),
+    }),
+    db.select({ isHeadOf: user.isHeadOf }).from(user).where(eq(user.id, userId)).limit(1),
+  ]);
+
+  const isHeadOf = userRow[0]?.isHeadOf ?? false;
+  const isPlanner = profile?.division === "chair" || isHeadOf;
+
+  if (!isPlanner) {
+    redirect("/dashboard");
+  }
+
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-foreground">Shifts</h1>
-      <p className="mt-2 text-muted-foreground">Your upcoming shifts will appear here.</p>
-      {/* TODO: Shifts list */}
+      <ShiftManager />
     </div>
   );
 }

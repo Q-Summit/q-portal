@@ -27,6 +27,7 @@ type Story = StoryObj<typeof meta>;
 const mockUser = {
   name: "Max Mustermann",
   image: "https://i.pravatar.cc/96?u=max",
+  isHeadOf: false,
 };
 
 const mockProfile = {
