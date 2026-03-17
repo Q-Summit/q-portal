@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { api } from "@/server/api/client";
 import {
-  AlertCircle,
   AlertTriangle,
   Calendar,
   ChevronLeft,

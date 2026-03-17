@@ -214,7 +214,13 @@ function ShiftDetailModal({ slot, isOpen, onClose }: ShiftDetailModalProps) {
               {slot.totalHeadcount !== 1 ? "s" : ""}
             </p>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose} className="h-9 w-9">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="h-9 w-9"
+            aria-label="Close modal"
+          >
             <X className="h-5 w-5" />
           </Button>
         </div>

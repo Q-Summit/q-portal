@@ -822,9 +822,14 @@ export const Interactive: Story = {
     await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Find and click a cell with headcount (Catering Area at 12:00)
-    const cells = canvasElement.querySelectorAll('[class*="cursor-pointer"][class*="bg-primary"]');
-    if (cells.length > 0) {
-      (cells[0] as HTMLElement).click();
+    // Note: bg-primary/5 is the actual class used for cells with shifts
+    const cells = canvasElement.querySelectorAll('[class*="cursor-pointer"]');
+    const shiftCells = Array.from(cells).filter((cell) => {
+      const className = cell.className || "";
+      return className.includes("bg-primary") || className.includes("bg-");
+    });
+    if (shiftCells.length > 0) {
+      (shiftCells[0] as HTMLElement).click();
     }
   },
 };
