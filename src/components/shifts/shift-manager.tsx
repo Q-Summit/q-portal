@@ -428,7 +428,12 @@ export function ShiftManager() {
           </div>
           {/* Create Button - Only for planners */}
           {isPlanner && (
-            <Button onClick={() => setIsCreateModalOpen(true)} size="sm" className="gap-1.5">
+            <Button
+              onClick={() => setIsCreateModalOpen(true)}
+              size="sm"
+              className="gap-1.5"
+              aria-label="Create shift"
+            >
               <Plus className="h-4 w-4" />
               <span className="hidden sm:inline">Create</span>
             </Button>
