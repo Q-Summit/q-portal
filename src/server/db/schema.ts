@@ -1,4 +1,11 @@
-import { index, integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  index,
+  integer,
+  primaryKey,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 
 /**
  * ──────────────────────────────────────────────────────────────────────────────
@@ -193,20 +200,29 @@ export const shiftSlots = sqliteTable(
   }),
 );
 
-export const shiftSkills = sqliteTable("shift_skills", {
-  id: text("id").primaryKey(),
-  shiftId: text("shiftId")
-    .notNull()
-    .references(() => shifts.id, { onDelete: "cascade" }),
-  talentId: text("talentId")
-    .notNull()
-    .references(() => talent.id, { onDelete: "cascade" }),
-});
+export const shiftSkills = sqliteTable(
+  "shift_skills",
+  {
+    id: text("id").primaryKey(),
+    shiftId: text("shiftId")
+      .notNull()
+      .references(() => shifts.id, { onDelete: "cascade" }),
+    talentId: text("talentId")
+      .notNull()
+      .references(() => talent.id, { onDelete: "cascade" }),
+  },
+  (table) => ({
+    shiftIdTalentIdUnique: uniqueIndex("shift_skills_shift_id_talent_id_unique").on(
+      table.shiftId,
+      table.talentId,
+    ),
+  }),
+);
 
 export const shiftTools = sqliteTable("shift_tools", {
   id: text("id").primaryKey(),
   shiftId: text("shiftId")
     .notNull()
     .references(() => shifts.id, { onDelete: "cascade" }),
-  tool: text("tool", { enum: ["car", "van", "equipment", "none"] }).notNull(),
+  tool: text("tool", { enum: ["car", "van", "equipment"] }).notNull(),
 });

@@ -10,8 +10,8 @@ Shift planning functionality is restricted to **Chair and Board members** only. 
 
 ```
 ┌─────────────────────────────────────┐
-│           Chair/Board               │  ← Full shift planning access
-│         (division = "chair")          │
+│  Planners (full shift access)       │  ← division = "chair" OR user.isHeadOf
+│  Chair/Board + authorized heads     │
 └─────────────────────────────────────┘
                   │
                   ▼
@@ -33,16 +33,16 @@ Shift planning functionality is restricted to **Chair and Board members** only. 
 A user is considered a **planner** if:
 
 1. They are logged in (authenticated)
-2. Their profile has `division === "chair"`
+2. They have planner authorization: **either** their profile has `division === "chair"` **or** their user record has `isHeadOf === true`
 
 This includes:
 
-- **Chairman**: The event chair
-- **Board Members**: Members of the organizing board
+- **Chair/Board**: Profile `division === "chair"` (Chairman and board members)
+- **Authorized heads**: Non-chair users marked as team leads via the `user.isHeadOf` flag (e.g. board members or other leads granted planner access)
 
 ### How the Role is Checked
 
-The `useIsPlanner` hook checks the user's profile:
+The `useIsPlanner` hook checks both profile division and the `isHeadOf` access flag:
 
 ```typescript
 // src/lib/use-is-planner.ts
@@ -51,7 +51,7 @@ export function useIsPlanner(): { isPlanner: boolean; isLoading: boolean } {
     refetchOnWindowFocus: false,
   });
 
-  const isPlanner = data?.profile?.division === "chair";
+  const isPlanner = (data?.profile?.division === "chair" || data?.user?.isHeadOf === true) ?? false;
 
   return { isPlanner, isLoading };
 }
@@ -76,11 +76,11 @@ This hook is used in components to conditionally show planner-only features.
 
 The tRPC router uses different procedure types to enforce access control:
 
-| Procedure            | Authentication | Authorization          | Use Case                          |
-| -------------------- | -------------- | ---------------------- | --------------------------------- |
-| `publicProcedure`    | None           | None                   | Public data (not used for shifts) |
-| `protectedProcedure` | Required       | None                   | Authenticated users can access    |
-| `plannerProcedure`   | Required       | `division === "chair"` | Planners only                     |
+| Procedure            | Authentication | Authorization                             | Use Case                          |
+| -------------------- | -------------- | ----------------------------------------- | --------------------------------- |
+| `publicProcedure`    | None           | None                                      | Public data (not used for shifts) |
+| `protectedProcedure` | Required       | None                                      | Authenticated users can access    |
+| `plannerProcedure`   | Required       | `division === "chair"` or `user.isHeadOf` | Planners only                     |
 
 ### Protected Endpoints
 
@@ -109,38 +109,34 @@ The tRPC router uses different procedure types to enforce access control:
 
 ### Middleware Implementation
 
-The `plannerProcedure` uses middleware to enforce access:
+The `plannerProcedure` is built on `protectedProcedure` and uses middleware to enforce planner access via `division === "chair"` or `user.isHeadOf`:
 
 ```typescript
 // src/server/api/trpc.ts
 const plannerMiddleware = t.middleware(async ({ ctx, next }) => {
-  // Check authentication
-  if (!ctx?.session?.user) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "You must be logged in to perform this action",
-    });
-  }
-
   const userId = ctx.session.user.id;
 
-  // Get user's profile
-  const profile = await ctx.db.query.memberProfile.findFirst({
-    where: eq(memberProfile.userId, userId),
-  });
+  const [profile, userRow] = await Promise.all([
+    ctx.db.query.memberProfile.findFirst({
+      where: eq(memberProfile.userId, userId),
+    }),
+    ctx.db.select({ isHeadOf: user.isHeadOf }).from(user).where(eq(user.id, userId)).limit(1),
+  ]);
 
-  // Check division
-  if (profile?.division !== "chair") {
+  const isHeadOf = userRow[0]?.isHeadOf ?? false;
+  const isPlanner = profile?.division === "chair" || isHeadOf;
+
+  if (!isPlanner) {
     throw new TRPCError({
       code: "FORBIDDEN",
-      message: "Only Chair/Board members can access shift planning",
+      message: "Only Chair/Board members or heads can access shift planning",
     });
   }
 
   return next({ ctx });
 });
 
-export const plannerProcedure = t.procedure.use(loggerMiddleware).use(plannerMiddleware);
+export const plannerProcedure = protectedProcedure.use(plannerMiddleware);
 ```
 
 ## UI-Level Protection
@@ -152,7 +148,8 @@ UI components check the planner role before showing controls:
 ```typescript
 // In ShiftManager component
 const { data: profileData, isLoading: isProfileLoading } = api.profile.getMy.useQuery(...);
-const isPlanner = profileData?.profile?.division === "chair";
+const isPlanner =
+  (profileData?.profile?.division === "chair" || profileData?.user?.isHeadOf === true) ?? false;
 
 // Only show Create button to planners
 {isPlanner && (
@@ -187,7 +184,7 @@ When a non-planner tries to access planner-only endpoints:
 {
   "error": {
     "code": "FORBIDDEN",
-    "message": "Only Chair/Board members can access shift planning"
+    "message": "Only Chair/Board members or heads can access shift planning"
   }
 }
 ```
@@ -245,18 +242,21 @@ Sessions are:
 
 ### How Roles Are Assigned
 
-Roles are stored in the `memberProfile` table:
+Planner access is determined by two places:
 
-| Column     | Type   | Description                                 |
-| ---------- | ------ | ------------------------------------------- |
-| `userId`   | string | Link to user account                        |
-| `division` | string | Role/division ("chair", "operations", etc.) |
+- **Profile**: `member_profile.division` — `"chair"` grants planner access (Chair/Board).
+- **User**: `user.isHeadOf` — when `true`, grants planner access (authorized heads / team leads).
+
+| Location         | Column     | Type    | Description                                   |
+| ---------------- | ---------- | ------- | --------------------------------------------- |
+| `member_profile` | `division` | string  | Role/division ("chair", "operations", etc.)   |
+| `user`           | `isHeadOf` | boolean | When true, user is a planner (e.g. team lead) |
 
 ### Updating a User's Role
 
-To grant planner access:
+To grant planner access, use either (or both):
 
-1. Update the user's profile in the database:
+1. **Chair/Board**: Set profile division to `'chair'`:
 
 ```sql
 UPDATE member_profile
@@ -264,22 +264,30 @@ SET division = 'chair'
 WHERE user_id = 'user-uuid-here';
 ```
 
-2. The user must log out and log back in for changes to take effect
+2. **Head / team lead**: Set the user's `isHeadOf` flag:
+
+```sql
+UPDATE user
+SET isHeadOf = 1
+WHERE id = 'user-uuid-here';
+```
+
+The user may need to log out and log back in for changes to take effect.
 
 **Note:** Only admins should be able to modify roles. This is typically done through an admin interface or database directly.
 
 ## Troubleshooting Access Issues
 
-| Problem                               | Cause                             | Solution                                |
-| ------------------------------------- | --------------------------------- | --------------------------------------- |
-| "Only Chair/Board members can access" | User not in chair division        | Contact admin to update role            |
-| "You must be logged in"               | Session expired                   | Log in again                            |
-| Create button not visible             | Not a planner or still loading    | Wait for profile to load, or check role |
-| Export button not visible             | Not in list view or not a planner | Switch to list view, verify role        |
+| Problem                                        | Cause                                              | Solution                                  |
+| ---------------------------------------------- | -------------------------------------------------- | ----------------------------------------- |
+| "Only Chair/Board members or heads can access" | User not planner (no chair division, not isHeadOf) | Contact admin to set division or isHeadOf |
+| "You must be logged in"                        | Session expired                                    | Log in again                              |
+| Create button not visible                      | Not a planner or still loading                     | Wait for profile to load, or check role   |
+| Export button not visible                      | Not in list view or not a planner                  | Switch to list view, verify role          |
 
 ## Related Documentation
 
 - [Workflow](./workflow.md) - How to use shift planning features
 - [CSV Format](./csv-format.md) - Export format specification
 - [API Reference](./api-reference.md) - Technical endpoint details
-- [Authentication](../api/authentication.md) - General auth documentation
+- [Authentication](../guides/flows/login-flow.md) - General auth documentation

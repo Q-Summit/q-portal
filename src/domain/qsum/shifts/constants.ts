@@ -5,7 +5,6 @@ import type { LabeledValue, Tool } from "./types";
  * ────────────────────────────────────────────────────────────────────────── */
 
 export const TOOL_OPTIONS: readonly LabeledValue<Tool>[] = [
-  { value: "none", label: "None" },
   { value: "car", label: "Car" },
   { value: "van", label: "Van" },
   { value: "equipment", label: "Equipment" },

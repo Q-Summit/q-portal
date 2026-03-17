@@ -90,15 +90,15 @@ function formatDateTimeRange(start: Date, end: Date): string {
   return `${formatTime(start)} - ${formatTime(end)}`;
 }
 
-/** Generate all 30-min time slots from START_HOUR to END_HOUR */
-function generateTimeSlots(): Date[] {
+/** Generate all 30-min time slots from START_HOUR to END_HOUR for the given date */
+function generateTimeSlots(baseDate: Date): Date[] {
   const slots: Date[] = [];
-  const baseDate = new Date(2026, 3, 9); // Use April 9 as base
+  const date = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
 
   for (let hour = START_HOUR; hour <= END_HOUR; hour++) {
     for (const minute of [0, 30]) {
       if (hour === END_HOUR && minute === 30) break;
-      const slotTime = new Date(baseDate);
+      const slotTime = new Date(date);
       slotTime.setHours(hour, minute, 0, 0);
       slots.push(slotTime);
     }
@@ -118,13 +118,14 @@ function getUniqueLocations(slots: CalendarSlot[]): string[] {
   return Array.from(locations).sort();
 }
 
-/** Get headcount for a specific slot time and location */
+/** Get headcount for a specific slot time and location (sums across all matching shifts) */
 function getHeadcountForSlot(slots: CalendarSlot[], slotTime: Date, location: string): number {
   const slot = slots.find((s) => s.slotTime.getTime() === slotTime.getTime());
   if (!slot) return 0;
 
-  const shift = slot.shifts.find((sh) => sh.location === location);
-  return shift?.headcount ?? 0;
+  return slot.shifts
+    .filter((sh) => sh.location === location)
+    .reduce((sum, sh) => sum + sh.headcount, 0);
 }
 
 /** Get shifts for a specific slot time and location */
@@ -144,7 +145,7 @@ function getShiftsForSlot(
  * ────────────────────────────────────────────────────────────────────────── */
 
 function LoadingState() {
-  const timeSlots = generateTimeSlots();
+  const timeSlots = generateTimeSlots(QSUMMIT_DATES[0]);
 
   return (
     <div className="grid gap-4">
@@ -305,8 +306,8 @@ export function CalendarView({
   );
   const isLoading = propIsLoading ?? isFetching;
 
-  // Generate time slots
-  const timeSlots = React.useMemo(() => generateTimeSlots(), []);
+  // Generate time slots for the selected date so slot lookups match API data
+  const timeSlots = React.useMemo(() => generateTimeSlots(selectedDate), [selectedDate]);
 
   // Get unique locations
   const locations = React.useMemo(() => getUniqueLocations(slots), [slots]);
@@ -440,16 +441,24 @@ export function CalendarView({
                 return (
                   <React.Fragment key={slotTime.getTime()}>
                     {/* Time Column */}
-                    <div
-                      className={`sticky left-0 z-10 border-b border-r border-border bg-muted/30 p-3 ${
-                        hasAnyShifts ? "cursor-pointer hover:bg-muted/50" : ""
-                      }`}
-                      onClick={() => handleTimeRowClick(slotTime)}
-                    >
-                      <span className="text-xs font-medium text-muted-foreground">
-                        {formatTime(slotTime)}
-                      </span>
-                    </div>
+                    {hasAnyShifts ? (
+                      <button
+                        type="button"
+                        className="sticky left-0 z-10 w-full cursor-pointer border-b border-r border-border bg-muted/30 p-3 text-left hover:bg-muted/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+                        onClick={() => handleTimeRowClick(slotTime)}
+                        aria-label={`${formatTime(slotTime)}, view shifts`}
+                      >
+                        <span className="text-xs font-medium text-muted-foreground">
+                          {formatTime(slotTime)}
+                        </span>
+                      </button>
+                    ) : (
+                      <div className="sticky left-0 z-10 border-b border-r border-border bg-muted/30 p-3">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          {formatTime(slotTime)}
+                        </span>
+                      </div>
+                    )}
 
                     {/* Location Cells */}
                     {locations.length === 0 ? (
@@ -461,25 +470,28 @@ export function CalendarView({
                         const headcount = getHeadcountForSlot(slots, slotTime, location);
                         const hasShifts = headcount > 0;
 
-                        return (
-                          <div
+                        return hasShifts ? (
+                          <button
                             key={`${slotTime.getTime()}-${location}`}
-                            className={`border-b border-r border-border p-2 ${
-                              hasShifts
-                                ? "cursor-pointer bg-primary/5 hover:bg-primary/10"
-                                : "bg-white"
-                            }`}
+                            type="button"
+                            className="w-full cursor-pointer border-b border-r border-border bg-primary/5 p-2 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                             onClick={() => handleCellClick(slotTime, location)}
+                            aria-label={`${location}, ${formatTime(slotTime)}, ${headcount} volunteer${headcount !== 1 ? "s" : ""}, view details`}
                           >
                             <div className="flex items-center justify-center">
-                              {hasShifts ? (
-                                <div className="flex items-center gap-1 rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
-                                  <Users className="h-3 w-3" />
-                                  <span>{headcount}</span>
-                                </div>
-                              ) : (
-                                <span className="text-xs text-muted-foreground/30">-</span>
-                              )}
+                              <div className="flex items-center gap-1 rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
+                                <Users className="h-3 w-3" />
+                                <span>{headcount}</span>
+                              </div>
+                            </div>
+                          </button>
+                        ) : (
+                          <div
+                            key={`${slotTime.getTime()}-${location}`}
+                            className="border-b border-r border-border bg-white p-2"
+                          >
+                            <div className="flex items-center justify-center">
+                              <span className="text-xs text-muted-foreground/30">-</span>
                             </div>
                           </div>
                         );

@@ -68,4 +68,4 @@ erDiagram
 
 - [Development Setup](../guides/dev-setup.md) - Local development instructions
 - [Database Schema](../db/schema.md) - Full database documentation
-- [API Authentication](../api/authentication.md) - Auth flows and procedures
+- [Authentication](../guides/flows/login-flow.md) - Auth flows and procedures

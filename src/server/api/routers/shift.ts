@@ -353,10 +353,10 @@ export const shiftRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const dayStart = new Date(input.date);
-      dayStart.setHours(0, 0, 0, 0);
+      dayStart.setUTCHours(0, 0, 0, 0);
 
       const dayEnd = new Date(dayStart);
-      dayEnd.setDate(dayEnd.getDate() + 1);
+      dayEnd.setUTCDate(dayEnd.getUTCDate() + 1);
 
       const slotTimeFilter = and(
         gte(shiftSlots.slotTime, dayStart),
@@ -435,11 +435,12 @@ export const shiftRouter = createTRPCRouter({
     });
 
     if (allShifts.length === 0) {
-      // UTF-8 BOM + header only
       return {
-        csv: "\uFEFFshift_id;location;task;start_time;end_time;slot_time;headcount;skills;tools;notion_link",
+        csv: "shift_id;location;task;start_time;end_time;slot_time;headcount;skills;tools;notion_link",
       };
     }
+
+    const shiftById = new Map(allShifts.map((s) => [s.id, s]));
 
     const shiftIds = allShifts.map((s) => s.id);
 
@@ -484,7 +485,7 @@ export const shiftRouter = createTRPCRouter({
     const rows: string[] = [header];
 
     for (const slot of allSlots) {
-      const shift = allShifts.find((s) => s.id === slot.shiftId);
+      const shift = shiftById.get(slot.shiftId);
       if (!shift) continue;
 
       const skills = (skillsByShift.get(slot.shiftId) ?? []).join(",");
@@ -522,8 +523,7 @@ export const shiftRouter = createTRPCRouter({
       rows.push(row);
     }
 
-    // UTF-8 BOM for German Excel compatibility
-    const csv = "\uFEFF" + rows.join("\n");
+    const csv = rows.join("\n");
     return { csv };
   }),
 });

@@ -5,7 +5,7 @@ import { ZodError } from "zod";
 
 import { auth } from "@/lib/auth";
 import { db } from "@/server/db";
-import { memberProfile } from "@/server/db/schema";
+import { memberProfile, user } from "@/server/db/schema";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   // Better Auth: get session from headers (cookie)
@@ -76,25 +76,29 @@ const authMiddleware = t.middleware(async ({ ctx, next }) => {
 export const protectedProcedure = t.procedure.use(loggerMiddleware).use(authMiddleware);
 
 const plannerMiddleware = t.middleware(async ({ ctx, next }) => {
-  if (!ctx?.session?.user) {
+  // Auth is guaranteed by protectedProcedure; only enforce chair/board role here.
+  if (!ctx.session?.user?.id) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
-      message: "You must be logged in to perform this action",
+      message: "Authentication required",
     });
   }
-
   const userId = ctx.session.user.id;
 
-  // Get user's profile
-  const profile = await ctx.db.query.memberProfile.findFirst({
-    where: eq(memberProfile.userId, userId),
-  });
+  const [profile, userRow] = await Promise.all([
+    ctx.db.query.memberProfile.findFirst({
+      where: eq(memberProfile.userId, userId),
+    }),
+    ctx.db.select({ isHeadOf: user.isHeadOf }).from(user).where(eq(user.id, userId)).limit(1),
+  ]);
 
-  // Chair (division = 'chair') can access - includes Chairman AND Board
-  if (profile?.division !== "chair") {
+  const isHeadOf = userRow[0]?.isHeadOf ?? false;
+  const isPlanner = profile?.division === "chair" || isHeadOf;
+
+  if (!isPlanner) {
     throw new TRPCError({
       code: "FORBIDDEN",
-      message: "Only Chair/Board members can access shift planning",
+      message: "Only Chair/Board members or heads can access shift planning",
     });
   }
 
@@ -109,4 +113,4 @@ const plannerMiddleware = t.middleware(async ({ ctx, next }) => {
   });
 });
 
-export const plannerProcedure = t.procedure.use(loggerMiddleware).use(plannerMiddleware);
+export const plannerProcedure = protectedProcedure.use(plannerMiddleware);

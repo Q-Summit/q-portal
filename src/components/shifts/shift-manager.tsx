@@ -54,6 +54,20 @@ interface CalendarSlot {
   }[];
 }
 
+/** Q-Summit 2026 dates — only these are valid for shift.calendar API */
+const QSUMMIT_DATES: readonly Date[] = [
+  new Date(2026, 3, 9), // April 9, 2026 (month is 0-indexed)
+  new Date(2026, 3, 10), // April 10, 2026
+];
+
+function isSameCalendarDay(a: Date, b: Date): boolean {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
+}
+
 /* ──────────────────────────────────────────────────────────────────────────
  * Helpers
  * ────────────────────────────────────────────────────────────────────────── */
@@ -133,7 +147,7 @@ function ShiftCard({ shift }: { shift: ShiftListItem }) {
             {shift.slotSummary.totalHeadcount === 0 ? (
               <div className="flex items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700">
                 <AlertTriangle className="h-3.5 w-3.5" />
-                <span>No slots</span>
+                <span>Unstaffed</span>
               </div>
             ) : (
               <div className="flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
@@ -160,10 +174,19 @@ function CalendarView({
   selectedDate: Date;
   onDateChange: (date: Date) => void;
 }) {
+  const currentIndex = (() => {
+    const i = QSUMMIT_DATES.findIndex((d) => isSameCalendarDay(d, selectedDate));
+    return i >= 0 ? i : 0;
+  })();
+  const canGoPrev = currentIndex > 0;
+  const canGoNext = currentIndex < QSUMMIT_DATES.length - 1;
+
   const navigateDay = (direction: "prev" | "next") => {
-    const newDate = new Date(selectedDate);
-    newDate.setDate(newDate.getDate() + (direction === "next" ? 1 : -1));
-    onDateChange(newDate);
+    const newIndex =
+      direction === "next"
+        ? Math.min(currentIndex + 1, QSUMMIT_DATES.length - 1)
+        : Math.max(currentIndex - 1, 0);
+    onDateChange(QSUMMIT_DATES[newIndex]);
   };
 
   // Group slots by hour for display
@@ -182,7 +205,14 @@ function CalendarView({
     <div className="grid gap-4">
       {/* Date Navigation */}
       <div className="flex items-center justify-between rounded-xl border border-border bg-white p-3 shadow-sm">
-        <Button variant="ghost" size="icon" onClick={() => navigateDay("prev")} className="h-9 w-9">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => navigateDay("prev")}
+          disabled={!canGoPrev}
+          className="h-9 w-9"
+          aria-label="Previous day"
+        >
           <ChevronLeft className="h-5 w-5" />
         </Button>
         <div className="text-center">
@@ -193,9 +223,16 @@ function CalendarView({
               day: "numeric",
             })}
           </div>
-          <div className="text-xs text-muted-foreground">2026</div>
+          <div className="text-xs text-muted-foreground">{selectedDate.getFullYear()}</div>
         </div>
-        <Button variant="ghost" size="icon" onClick={() => navigateDay("next")} className="h-9 w-9">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => navigateDay("next")}
+          disabled={!canGoNext}
+          className="h-9 w-9"
+          aria-label="Next day"
+        >
           <ChevronRight className="h-5 w-5" />
         </Button>
       </div>
@@ -307,7 +344,8 @@ export function ShiftManager() {
     refetchOnWindowFocus: false,
   });
 
-  const isPlanner = profileData?.profile?.division === "chair";
+  const isPlanner =
+    (profileData?.profile?.division === "chair" || profileData?.user?.isHeadOf === true) ?? false;
 
   // Fetch shifts list
   const {

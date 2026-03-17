@@ -109,29 +109,22 @@ export const WithError: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.post("*/api/trpc", async ({ request }) => {
-          const body = (await request.json()) as { json?: { params?: { path?: string } } };
-          const path = body?.json?.params?.path;
-
-          if (path === "shift.exportCsv") {
-            return HttpResponse.json(
-              {
-                id: null,
-                error: {
-                  message: "Failed to export shifts",
-                  code: -32603,
-                  data: {
-                    code: "INTERNAL_SERVER_ERROR",
-                    httpStatus: 500,
-                  },
+        http.post("*/api/trpc/shift.exportCsv", () =>
+          HttpResponse.json(
+            {
+              id: null,
+              error: {
+                message: "Failed to export shifts",
+                code: -32603,
+                data: {
+                  code: "INTERNAL_SERVER_ERROR",
+                  httpStatus: 500,
                 },
               },
-              { status: 500 },
-            );
-          }
-
-          return undefined;
-        }),
+            },
+            { status: 500 },
+          ),
+        ),
       ],
     },
   },

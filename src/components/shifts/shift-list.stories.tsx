@@ -41,6 +41,7 @@ const mockUser = {
   name: "Max Mustermann",
   email: "max@example.com",
   image: "https://i.pravatar.cc/150?u=shift-list",
+  isHeadOf: false,
 };
 
 const mockPlannerProfile = {
@@ -240,10 +241,10 @@ export const InlineEditing: Story = {
     // Wait for the component to render
     await new Promise((resolve) => setTimeout(resolve, 100));
 
-    // Find and click the edit button on the first row
+    // Find and click the edit button on the first shift (mock shift id is "shift-1")
     const editButton =
-      canvasElement.querySelector('[data-testid="edit-shift-1"]') ??
-      canvasElement.querySelector('button[title="Edit"]');
+      canvasElement.querySelector('[data-testid="edit-shift-shift-1"]') ??
+      canvasElement.querySelector('button[aria-label="Edit shift"]');
 
     if (editButton) {
       (editButton as HTMLButtonElement).click();

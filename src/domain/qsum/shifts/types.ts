@@ -2,7 +2,7 @@
  * Explicit Domain Primitives
  * ────────────────────────────────────────────────────────────────────────── */
 
-export type Tool = "car" | "van" | "equipment" | "none";
+export type Tool = "car" | "van" | "equipment";
 
 /* ──────────────────────────────────────────────────────────────────────────
  * UI & Helper Interfaces

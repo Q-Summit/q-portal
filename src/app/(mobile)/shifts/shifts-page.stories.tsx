@@ -123,6 +123,7 @@ const mockUser = {
   id: "user-1",
   name: "Max Mustermann",
   email: "max@example.com",
+  isHeadOf: false,
   image: "https://i.pravatar.cc/150?u=shift-manager",
 };
 

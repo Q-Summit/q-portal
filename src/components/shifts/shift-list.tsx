@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { api } from "@/server/api/client";
+
 import {
   AlertCircle,
   AlertTriangle,
@@ -52,17 +52,6 @@ interface ShiftListProps {
   isPlanner?: boolean;
   onEdit?: (shift: ShiftWithDetails) => void;
   onDelete?: (shiftId: string) => void;
-}
-
-interface ShiftRowProps {
-  shift: Shift;
-  talents: Talent[];
-  isEditing: boolean;
-  onEditStart: () => void;
-  onEditSave: (shiftId: string, data: { location: string; task: string }) => void;
-  onEditCancel: () => void;
-  onDelete: (shiftId: string) => void;
-  isSaving?: boolean;
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -141,26 +130,24 @@ function LoadingSkeleton() {
   return (
     <div className="space-y-3">
       {/* Header Skeleton */}
-      <div className="grid grid-cols-6 gap-4 rounded-lg bg-muted/50 px-4 py-3">
+      <div className="grid grid-cols-[repeat(5,1fr)] gap-4 rounded-lg bg-muted/50 px-4 py-3">
         <div className="h-4 w-20 animate-pulse rounded bg-muted" />
         <div className="h-4 w-24 animate-pulse rounded bg-muted" />
         <div className="h-4 w-32 animate-pulse rounded bg-muted" />
         <div className="h-4 w-16 animate-pulse rounded bg-muted" />
         <div className="h-4 w-20 animate-pulse rounded bg-muted" />
-        <div className="h-4 w-16 animate-pulse rounded bg-muted" />
       </div>
 
       {/* Row Skeletons */}
       {Array.from({ length: 3 }).map((_, i) => (
         <div
           key={i}
-          className="grid grid-cols-6 gap-4 rounded-xl border border-border bg-white p-4 shadow-sm"
+          className="grid grid-cols-[repeat(5,1fr)] gap-4 rounded-xl border border-border bg-white p-4 shadow-sm"
         >
           <div className="h-5 w-full animate-pulse rounded bg-muted" />
           <div className="h-5 w-full animate-pulse rounded bg-muted" />
           <div className="h-5 w-full animate-pulse rounded bg-muted" />
           <div className="h-5 w-12 animate-pulse rounded bg-muted" />
-          <div className="h-5 w-full animate-pulse rounded bg-muted" />
           <div className="h-5 w-20 animate-pulse rounded bg-muted" />
         </div>
       ))}
@@ -172,7 +159,7 @@ function LoadingSkeleton() {
  * Skills Badge Component
  * ────────────────────────────────────────────────────────────────────────── */
 
-function SkillsBadge({ skillIds, talents }: { skillIds: string[]; talents: Talent[] }) {
+function _SkillsBadge({ skillIds, talents }: { skillIds: string[]; talents: Talent[] }) {
   if (skillIds.length === 0) {
     return <span className="text-sm text-muted-foreground">-</span>;
   }
@@ -202,13 +189,12 @@ function SkillsBadge({ skillIds, talents }: { skillIds: string[]; talents: Talen
 
 interface InlineEditRowProps {
   shift: Shift;
-  talents: Talent[];
   onSave: (shiftId: string, data: { location: string; task: string }) => void;
   onCancel: () => void;
   isSaving?: boolean;
 }
 
-function InlineEditRow({ shift, talents, onSave, onCancel, isSaving }: InlineEditRowProps) {
+function InlineEditRow({ shift, onSave, onCancel, isSaving }: InlineEditRowProps) {
   const [location, setLocation] = React.useState(shift.location);
   const [task, setTask] = React.useState(shift.task);
   const [errors, setErrors] = React.useState<{ location?: string; task?: string }>({});
@@ -305,14 +291,11 @@ function InlineEditRow({ shift, talents, onSave, onCancel, isSaving }: InlineEdi
         {shift.slotSummary.totalHeadcount === 0 ? (
           <div className="flex items-center gap-1.5 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
             <AlertTriangle className="h-3 w-3" />
-            <span>No slots</span>
+            <span>No headcount</span>
           </div>
         ) : (
           <span className="text-sm font-medium">{shift.slotSummary.totalHeadcount}</span>
         )}
-      </td>
-      <td className="px-4 py-3">
-        <SkillsBadge skillIds={[]} talents={talents} />
       </td>
       <td className="px-4 py-3">
         <div className="flex items-center gap-1">
@@ -322,6 +305,7 @@ function InlineEditRow({ shift, talents, onSave, onCancel, isSaving }: InlineEdi
             className="h-8 w-8"
             onClick={handleSave}
             disabled={isSaving}
+            aria-label="Save"
           >
             <Check className="h-4 w-4 text-green-600" />
           </Button>
@@ -331,6 +315,7 @@ function InlineEditRow({ shift, talents, onSave, onCancel, isSaving }: InlineEdi
             className="h-8 w-8"
             onClick={onCancel}
             disabled={isSaving}
+            aria-label="Cancel"
           >
             <X className="h-4 w-4 text-destructive" />
           </Button>
@@ -346,7 +331,6 @@ function InlineEditRow({ shift, talents, onSave, onCancel, isSaving }: InlineEdi
 
 interface ShiftRowProps {
   shift: Shift;
-  talents: Talent[];
   isEditing: boolean;
   isPlanner: boolean;
   onEditStart: () => void;
@@ -358,7 +342,6 @@ interface ShiftRowProps {
 
 function ShiftRow({
   shift,
-  talents,
   isEditing,
   isPlanner,
   onEditStart,
@@ -371,7 +354,6 @@ function ShiftRow({
     return (
       <InlineEditRow
         shift={shift}
-        talents={talents}
         onSave={onEditSave}
         onCancel={onEditCancel}
         isSaving={isSaving}
@@ -403,19 +385,23 @@ function ShiftRow({
         {shift.slotSummary.totalHeadcount === 0 ? (
           <div className="flex items-center gap-1.5 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
             <AlertTriangle className="h-3 w-3" />
-            <span>No slots</span>
+            <span>No headcount</span>
           </div>
         ) : (
           <span className="text-sm font-medium">{shift.slotSummary.totalHeadcount}</span>
         )}
       </td>
-      <td className="px-4 py-3">
-        <SkillsBadge skillIds={[]} talents={talents} />
-      </td>
-      <td className="px-4 py-3">
-        {isPlanner && (
+      {isPlanner && (
+        <td className="px-4 py-3">
           <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onEditStart}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={onEditStart}
+              aria-label="Edit shift"
+              data-testid={`edit-shift-${shift.id}`}
+            >
               <Pencil className="h-4 w-4" />
             </Button>
             <Button
@@ -423,12 +409,13 @@ function ShiftRow({
               size="icon"
               className="h-8 w-8 text-destructive hover:text-destructive"
               onClick={() => onDelete(shift.id)}
+              aria-label="Delete shift"
             >
               <Trash2 className="h-4 w-4" />
             </Button>
           </div>
-        )}
-      </td>
+        </td>
+      )}
     </tr>
   );
 }
@@ -444,10 +431,6 @@ export function ShiftList({
   onEdit,
   onDelete,
 }: ShiftListProps) {
-  const { data: talents = [] } = api.profile.listTalents.useQuery(undefined, {
-    refetchOnWindowFocus: false,
-  });
-
   const [editingShiftId, setEditingShiftId] = React.useState<string | null>(null);
   const [isSaving, setIsSaving] = React.useState(false);
 
@@ -511,9 +494,6 @@ export function ShiftList({
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Headcount
               </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Skills
-              </th>
               {isPlanner && (
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Actions
@@ -526,7 +506,6 @@ export function ShiftList({
               <ShiftRow
                 key={shift.id}
                 shift={shift}
-                talents={talents}
                 isEditing={editingShiftId === shift.id}
                 isPlanner={isPlanner}
                 onEditStart={() => handleEditStart(shift.id)}

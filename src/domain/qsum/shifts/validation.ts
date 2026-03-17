@@ -58,6 +58,14 @@ export const ShiftCreateSchema = z
   .refine((data) => data.endTime > data.startTime, {
     message: "End time must be after start time",
     path: ["endTime"],
+  })
+  .refine((data) => new Set(data.skillIds).size === data.skillIds.length, {
+    message: "skillIds must be unique",
+    path: ["skillIds"],
+  })
+  .refine((data) => new Set(data.tools).size === data.tools.length, {
+    message: "tools must be unique",
+    path: ["tools"],
   });
 
 export type ShiftCreateInput = z.infer<typeof ShiftCreateSchema>;
@@ -78,6 +86,14 @@ export const ShiftUpdateSchema = z
   .refine((data) => data.endTime > data.startTime, {
     message: "End time must be after start time",
     path: ["endTime"],
+  })
+  .refine((data) => new Set(data.skillIds).size === data.skillIds.length, {
+    message: "skillIds must be unique",
+    path: ["skillIds"],
+  })
+  .refine((data) => new Set(data.tools).size === data.tools.length, {
+    message: "tools must be unique",
+    path: ["tools"],
   });
 
 export type ShiftUpdateInput = z.infer<typeof ShiftUpdateSchema>;
@@ -87,20 +103,25 @@ export type ShiftUpdateInput = z.infer<typeof ShiftUpdateSchema>;
  * ────────────────────────────────────────────────────────────────────────── */
 
 /**
- * Helper to clean up data before sending to DB.
- * Ensures consistent null states for optional fields.
+ * Treats blank (empty or whitespace-only) strings as null for optional fields.
+ * Used so optional description/notionLink are stored as null when absent.
  */
+function blankToNull(s: string | null | undefined): string | null {
+  const t = s?.trim();
+  return t === undefined || t === "" ? null : t;
+}
+
 export function normalizeShiftCreateInput(input: ShiftCreateInput, createdBy: string) {
   return {
     location: input.location.trim(),
     task: input.task.trim(),
-    description: input.description?.trim() ?? null,
-    notionLink: input.notionLink?.trim() ?? null,
+    description: blankToNull(input.description),
+    notionLink: blankToNull(input.notionLink),
     startTime: input.startTime,
     endTime: input.endTime,
     createdBy,
-    skillIds: input.skillIds,
-    tools: input.tools,
+    skillIds: [...new Set(input.skillIds)],
+    tools: [...new Set(input.tools)],
     slots: input.slots,
   } as const;
 }
@@ -110,12 +131,12 @@ export function normalizeShiftUpdateInput(input: ShiftUpdateInput) {
     id: input.id,
     location: input.location.trim(),
     task: input.task.trim(),
-    description: input.description?.trim() ?? null,
-    notionLink: input.notionLink?.trim() ?? null,
+    description: blankToNull(input.description),
+    notionLink: blankToNull(input.notionLink),
     startTime: input.startTime,
     endTime: input.endTime,
-    skillIds: input.skillIds,
-    tools: input.tools,
+    skillIds: [...new Set(input.skillIds)],
+    tools: [...new Set(input.tools)],
     slots: input.slots,
   } as const;
 }

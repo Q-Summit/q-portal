@@ -81,6 +81,17 @@ function validateTimeRange(startTime: string, endTime: string): string | undefin
   return undefined;
 }
 
+const SLOT_INTERVAL_MS = 30 * 60 * 1000;
+
+/** Build 30-min slots from start to end with a given headcount (for create payload). */
+function buildSlotsForRange(startTime: Date, endTime: Date, headcount: number) {
+  const slots: { slotTime: Date; headcount: number }[] = [];
+  for (let ts = startTime.getTime(); ts < endTime.getTime(); ts += SLOT_INTERVAL_MS) {
+    slots.push({ slotTime: new Date(ts), headcount });
+  }
+  return slots;
+}
+
 /* ──────────────────────────────────────────────────────────────────────────
  * Main Component
  * ────────────────────────────────────────────────────────────────────────── */
@@ -142,14 +153,17 @@ export function ShiftForm({ onSuccess }: { onSuccess?: () => void }) {
   const onSubmit = () => {
     if (!validateForm()) return;
 
+    const start = new Date(form.startTime);
+    const end = new Date(form.endTime);
     create.mutate(
       {
         location: form.location.trim(),
         task: form.task.trim(),
         description: form.description.trim() || null,
         notionLink: form.notionLink.trim() || null,
-        startTime: new Date(form.startTime),
-        endTime: new Date(form.endTime),
+        startTime: start,
+        endTime: end,
+        slots: buildSlotsForRange(start, end, 1),
         skillIds: form.skillIds,
         tools: form.tools,
       },
@@ -201,12 +215,16 @@ export function ShiftForm({ onSuccess }: { onSuccess?: () => void }) {
         <div className="grid gap-4">
           {/* Location */}
           <div className="grid gap-2 rounded-2xl border border-border bg-white p-4 shadow-sm">
-            <Label className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            <Label
+              htmlFor="shift-location"
+              className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground"
+            >
               Location
             </Label>
             <div className="flex items-center gap-3">
               <MapPin className="h-5 w-5 text-muted-foreground" />
               <Input
+                id="shift-location"
                 className="h-11 rounded-xl border-0 bg-transparent p-0 text-sm font-medium focus-visible:ring-0"
                 placeholder="Enter location"
                 value={form.location}
@@ -223,10 +241,14 @@ export function ShiftForm({ onSuccess }: { onSuccess?: () => void }) {
 
           {/* Task */}
           <div className="grid gap-2 rounded-2xl border border-border bg-white p-4 shadow-sm">
-            <Label className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            <Label
+              htmlFor="shift-task"
+              className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground"
+            >
               Task
             </Label>
             <Input
+              id="shift-task"
               className="h-11 rounded-xl border-0 bg-transparent p-0 text-sm font-medium focus-visible:ring-0"
               placeholder="Enter task description"
               value={form.task}
@@ -248,13 +270,18 @@ export function ShiftForm({ onSuccess }: { onSuccess?: () => void }) {
         <div className="grid gap-4 sm:grid-cols-2">
           {/* Start Time */}
           <div className="grid gap-2 rounded-2xl border border-border bg-white p-4 shadow-sm">
-            <Label className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            <Label
+              htmlFor="shift-startTime"
+              className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground"
+            >
               Start Time
             </Label>
             <div className="flex items-center gap-3">
               <Calendar className="h-5 w-5 text-muted-foreground" />
               <Input
+                id="shift-startTime"
                 type="datetime-local"
+                step={1800}
                 aria-label="Start time"
                 className="h-11 rounded-xl border-0 bg-transparent p-0 text-sm font-medium focus-visible:ring-0"
                 value={form.startTime}
@@ -271,13 +298,18 @@ export function ShiftForm({ onSuccess }: { onSuccess?: () => void }) {
 
           {/* End Time */}
           <div className="grid gap-2 rounded-2xl border border-border bg-white p-4 shadow-sm">
-            <Label className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            <Label
+              htmlFor="shift-endTime"
+              className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground"
+            >
               End Time
             </Label>
             <div className="flex items-center gap-3">
               <Clock className="h-5 w-5 text-muted-foreground" />
               <Input
+                id="shift-endTime"
                 type="datetime-local"
+                step={1800}
                 aria-label="End time"
                 className="h-11 rounded-xl border-0 bg-transparent p-0 text-sm font-medium focus-visible:ring-0"
                 value={form.endTime}
@@ -345,7 +377,7 @@ export function ShiftForm({ onSuccess }: { onSuccess?: () => void }) {
         </div>
         <div className="rounded-2xl border border-border bg-white p-4 shadow-sm">
           <div className="flex flex-wrap gap-2">
-            {TOOL_OPTIONS.filter((t) => t.value !== "none").map((tool) => (
+            {TOOL_OPTIONS.map((tool) => (
               <button
                 key={tool.value}
                 type="button"
@@ -368,12 +400,16 @@ export function ShiftForm({ onSuccess }: { onSuccess?: () => void }) {
       <div>
         <h2 className="mb-3 px-1 text-lg font-bold text-foreground">Documentation</h2>
         <div className="grid gap-2 rounded-2xl border border-border bg-white p-4 shadow-sm">
-          <Label className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+          <Label
+            htmlFor="shift-notionLink"
+            className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground"
+          >
             Notion Link
           </Label>
           <div className="flex items-center gap-3">
             <Link2 className="h-5 w-5 text-muted-foreground" />
             <Input
+              id="shift-notionLink"
               type="url"
               className="h-11 rounded-xl border-0 bg-transparent p-0 text-sm font-medium focus-visible:ring-0"
               placeholder="https://notion.so/..."

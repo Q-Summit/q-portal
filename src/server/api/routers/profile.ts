@@ -18,12 +18,17 @@ export const profileRouter = createTRPCRouter({
     const userId = ctx.session.user.id;
     const { name, image } = ctx.session.user;
 
-    const profile = await ctx.db.query.memberProfile.findFirst({
-      where: eq(memberProfile.userId, userId),
-    });
+    const [profile, userRow] = await Promise.all([
+      ctx.db.query.memberProfile.findFirst({
+        where: eq(memberProfile.userId, userId),
+      }),
+      ctx.db.select({ isHeadOf: user.isHeadOf }).from(user).where(eq(user.id, userId)).limit(1),
+    ]);
+
+    const isHeadOf = userRow[0]?.isHeadOf ?? false;
 
     if (!profile) {
-      return { user: { name, image }, profile: null };
+      return { user: { name, image, isHeadOf }, profile: null };
     }
 
     const talentRows: { talentId: string }[] = await ctx.db
@@ -32,7 +37,7 @@ export const profileRouter = createTRPCRouter({
       .where(eq(userTalent.userId, userId));
 
     return {
-      user: { name, image },
+      user: { name, image, isHeadOf },
       profile: {
         ...profile,
         talentIds: talentRows.map((row) => row.talentId),

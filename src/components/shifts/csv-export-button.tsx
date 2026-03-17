@@ -12,9 +12,8 @@ interface CsvExportButtonProps {
 export function CsvExportButton({ filename = "shifts-export.csv" }: CsvExportButtonProps) {
   const exportMutation = api.shift.exportCsv.useMutation({
     onSuccess: (data) => {
-      // Create blob with UTF-8 BOM for German Excel compatibility
-      const bom = "\uFEFF";
-      const blob = new Blob([bom + data.csv], {
+      // Server already includes UTF-8 BOM for German Excel compatibility
+      const blob = new Blob([data.csv], {
         type: "text/csv;charset=utf-8",
       });
 

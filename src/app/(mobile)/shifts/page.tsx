@@ -1,6 +1,9 @@
 import { ShiftManager } from "@/components/shifts/shift-manager";
 import { auth } from "@/lib/auth";
 import { buildLoginRedirect } from "@/lib/utils";
+import { db } from "@/server/db";
+import { memberProfile, user } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -10,6 +13,21 @@ export default async function ShiftsPage() {
 
   if (!session?.user?.id) {
     redirect(buildLoginRedirect("/shifts"));
+  }
+
+  const userId = session.user.id;
+  const [profile, userRow] = await Promise.all([
+    db.query.memberProfile.findFirst({
+      where: eq(memberProfile.userId, userId),
+    }),
+    db.select({ isHeadOf: user.isHeadOf }).from(user).where(eq(user.id, userId)).limit(1),
+  ]);
+
+  const isHeadOf = userRow[0]?.isHeadOf ?? false;
+  const isPlanner = profile?.division === "chair" || isHeadOf;
+
+  if (!isPlanner) {
+    redirect("/dashboard");
   }
 
   return (

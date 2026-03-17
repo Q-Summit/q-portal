@@ -37,6 +37,7 @@ const mockUser = {
   name: "Max Mustermann",
   email: "max@example.com",
   image: "https://i.pravatar.cc/150?u=shift-form",
+  isHeadOf: false,
 };
 
 const mockPlannerProfile = {

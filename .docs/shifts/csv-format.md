@@ -179,21 +179,63 @@ print(df.head())
 
 ### JavaScript/Node.js
 
+The format uses quoted fields for values containing semicolons, quotes, or newlines (see [Escaping](#escaping)). Use a parser that respects quotes instead of splitting only on `\n` and `;`.
+
 ```javascript
 const fs = require("fs");
 
-// Read and parse CSV
-const csv = fs.readFileSync("shifts-export.csv", "utf8");
-const lines = csv.trim().split("\n");
-const headers = lines[0].split(";");
+function parseSemicolonCsv(csvText) {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let inQuotes = false;
+  for (let i = 0; i < csvText.length; i++) {
+    const c = csvText[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (csvText[i + 1] === '"') {
+          field += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        field += c;
+      }
+    } else {
+      if (c === '"') {
+        inQuotes = true;
+      } else if (c === ";") {
+        row.push(field);
+        field = "";
+      } else if (c === "\n" || c === "\r") {
+        if (c === "\r" && csvText[i + 1] === "\n") i++;
+        row.push(field);
+        field = "";
+        if (row.length > 0 && row.some((cell) => cell !== "")) rows.push(row);
+        row = [];
+      } else {
+        field += c;
+      }
+    }
+  }
+  if (field !== "" || row.length > 0) {
+    row.push(field);
+    if (row.some((cell) => cell !== "")) rows.push(row);
+  }
+  return rows;
+}
 
-const data = lines.slice(1).map((line) => {
-  const values = line.split(";");
-  return headers.reduce((obj, header, i) => {
-    obj[header] = values[i];
+// Read and parse CSV (handles UTF-8 BOM)
+const csv = fs.readFileSync("shifts-export.csv", "utf8");
+const rows = parseSemicolonCsv(csv.replace(/^\uFEFF/, ""));
+const headers = rows[0];
+const data = rows.slice(1).map((values) =>
+  headers.reduce((obj, header, i) => {
+    obj[header] = values[i] ?? "";
     return obj;
-  }, {});
-});
+  }, {}),
+);
 
 console.log(data);
 ```
