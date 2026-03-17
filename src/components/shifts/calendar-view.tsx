@@ -220,7 +220,7 @@ function ShiftDetailModal({ slot, isOpen, onClose }: ShiftDetailModalProps) {
             size="icon"
             onClick={onClose}
             className="h-9 w-9"
-            aria-label="Close modal"
+            aria-label="Close"
           >
             <X className="h-5 w-5" />
           </Button>
@@ -474,8 +474,16 @@ export function CalendarView({
                           <button
                             key={`${slotTime.getTime()}-${location}`}
                             type="button"
+                            role="button"
+                            tabIndex={0}
                             className="w-full cursor-pointer border-b border-r border-border bg-primary/5 p-2 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
                             onClick={() => handleCellClick(slotTime, location)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                handleCellClick(slotTime, location);
+                              }
+                            }}
                             aria-label={`${location}, ${formatTime(slotTime)}, ${headcount} volunteer${headcount !== 1 ? "s" : ""}, view details`}
                           >
                             <div className="flex items-center justify-center">

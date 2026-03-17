@@ -4,7 +4,7 @@ How to create and manage volunteer shifts for Q-Summit 2026.
 
 ## Prerequisites
 
-- You must be logged in with a Chair or Board role (division = "chair")
+- You must be logged in with planner access (Chair/Board role or `isHeadOf = true`)
 - Access the shift planning page via the main navigation
 
 ## Creating a New Shift

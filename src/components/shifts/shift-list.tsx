@@ -305,7 +305,7 @@ function InlineEditRow({ shift, onSave, onCancel, isSaving }: InlineEditRowProps
             className="h-8 w-8"
             onClick={handleSave}
             disabled={isSaving}
-            aria-label="Save"
+            aria-label="Save changes"
           >
             <Check className="h-4 w-4 text-green-600" />
           </Button>
@@ -315,7 +315,7 @@ function InlineEditRow({ shift, onSave, onCancel, isSaving }: InlineEditRowProps
             className="h-8 w-8"
             onClick={onCancel}
             disabled={isSaving}
-            aria-label="Cancel"
+            aria-label="Cancel editing"
           >
             <X className="h-4 w-4 text-destructive" />
           </Button>

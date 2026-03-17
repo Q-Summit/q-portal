@@ -328,13 +328,13 @@ export function ShiftForm({ onSuccess }: { onSuccess?: () => void }) {
 
       {/* Skills */}
       {talents.length > 0 && (
-        <div>
-          <div className="mb-3 flex items-end justify-between px-1">
+        <fieldset className="border-0 p-0" aria-labelledby="shift-skillIds-legend">
+          <legend id="shift-skillIds-legend" className="mb-3 flex items-end justify-between px-1">
             <h2 className="text-lg font-bold text-foreground">Required Skills</h2>
             <span className="text-xs font-semibold tracking-wider text-muted-foreground">
               SELECT ALL THAT APPLY
             </span>
-          </div>
+          </legend>
           <div className="grid gap-3">
             {Array.from(talentsByCategory.entries()).map(([category, categoryTalents]) => (
               <div
@@ -364,17 +364,17 @@ export function ShiftForm({ onSuccess }: { onSuccess?: () => void }) {
               </div>
             ))}
           </div>
-        </div>
+        </fieldset>
       )}
 
       {/* Tools */}
-      <div>
-        <div className="mb-3 flex items-end justify-between px-1">
+      <fieldset className="border-0 p-0" aria-labelledby="shift-tools-legend">
+        <legend id="shift-tools-legend" className="mb-3 flex items-end justify-between px-1">
           <h2 className="text-lg font-bold text-foreground">Required Tools</h2>
           <span className="text-xs font-semibold tracking-wider text-muted-foreground">
             SELECT ALL THAT APPLY
           </span>
-        </div>
+        </legend>
         <div className="rounded-2xl border border-border bg-white p-4 shadow-sm">
           <div className="flex flex-wrap gap-2">
             {TOOL_OPTIONS.map((tool) => (
@@ -394,7 +394,7 @@ export function ShiftForm({ onSuccess }: { onSuccess?: () => void }) {
             ))}
           </div>
         </div>
-      </div>
+      </fieldset>
 
       {/* Notion Link */}
       <div>
@@ -430,7 +430,14 @@ export function ShiftForm({ onSuccess }: { onSuccess?: () => void }) {
       <div>
         <h2 className="mb-3 px-1 text-lg font-bold text-foreground">Description</h2>
         <div className="grid gap-2 rounded-2xl border border-border bg-white p-4 shadow-sm">
+          <Label
+            htmlFor="shift-description"
+            className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground"
+          >
+            Description
+          </Label>
           <textarea
+            id="shift-description"
             className="min-h-[120px] w-full resize-none rounded-xl border-0 bg-transparent p-0 text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0"
             placeholder="Enter detailed description of the shift..."
             value={form.description}
