@@ -248,10 +248,13 @@ export const Error: Story = {
       endTimeInputs[1].dispatchEvent(new Event("input", { bubbles: true }));
     }
 
-    // Click submit button
-    const submitButton = canvas.querySelector('button[type="button"]');
-    if (submitButton?.textContent?.includes("Create")) {
-      (submitButton as HTMLButtonElement).click();
+    // Click submit button (look for the button with "Create" text in the modal footer)
+    const buttons = canvasElement.querySelectorAll("button");
+    const submitButton = Array.from(buttons).find(
+      (btn) => btn.textContent?.includes("Create") && !btn.disabled,
+    );
+    if (submitButton) {
+      submitButton.click();
     }
   },
 };

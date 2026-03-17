@@ -467,7 +467,7 @@ const { data, isLoading, error } = api.shift.getById.useQuery(
 );
 
 // List shifts
-const { data, fetchNextPage } = api.shift.list.useQuery({
+const { data, hasNextPage, fetchNextPage } = api.shift.list.useInfiniteQuery({
   limit: 20,
   sortField: "startTime",
 });

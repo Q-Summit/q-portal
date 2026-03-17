@@ -14,7 +14,8 @@ CREATE TABLE `shift_slots` (
 	FOREIGN KEY (`shiftId`) REFERENCES `shifts`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE INDEX `shift_slots_slot_time_idx` ON `shift_slots` (`slotTime`);--> statement-breakpoint
+CREATE INDEX `shift_slots_slot_time_idx` ON `shift_slots` (`slotTime`);
+CREATE UNIQUE INDEX `shift_slots_shiftId_slotTime_idx` ON `shift_slots` (`shiftId`, `slotTime`);--> statement-breakpoint
 CREATE TABLE `shift_tools` (
 	`id` text PRIMARY KEY NOT NULL,
 	`shiftId` text NOT NULL,

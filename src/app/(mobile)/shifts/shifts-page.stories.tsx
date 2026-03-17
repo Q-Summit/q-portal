@@ -272,6 +272,14 @@ export const ListViewLoading: Story = {
             profile: mockRegularProfile,
           };
         }),
+        trpcQuery("shift", "list", async () => {
+          await new Promise((resolve) => setTimeout(resolve, 100000));
+          return {
+            items: [],
+            total: 0,
+            nextCursor: null,
+          };
+        }),
       ],
     },
   },
@@ -307,9 +315,24 @@ export const CalendarView: Story = {
           profile: mockRegularProfile,
         })),
         trpcQuery("profile", "listTalents", () => mockTalents),
+        trpcQuery("shift", "list", () => ({
+          items: mockShifts,
+          total: mockShifts.length,
+          nextCursor: null,
+        })),
         trpcQuery("shift", "calendar", () => mockCalendarSlots),
       ],
     },
+  },
+  play: async ({ canvasElement }) => {
+    // Wait for component to render
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Click the Calendar view button to switch to calendar mode
+    const calendarButton = canvasElement.querySelector('button[aria-label="Calendar view"]');
+    if (calendarButton) {
+      (calendarButton as HTMLButtonElement).click();
+    }
   },
 };
 
@@ -325,9 +348,24 @@ export const CalendarViewPlanner: Story = {
           profile: mockPlannerProfile,
         })),
         trpcQuery("profile", "listTalents", () => mockTalents),
+        trpcQuery("shift", "list", () => ({
+          items: mockShifts,
+          total: mockShifts.length,
+          nextCursor: null,
+        })),
         trpcQuery("shift", "calendar", () => mockCalendarSlots),
       ],
     },
+  },
+  play: async ({ canvasElement }) => {
+    // Wait for component to render
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Click the Calendar view button to switch to calendar mode
+    const calendarButton = canvasElement.querySelector('button[aria-label="Calendar view"]');
+    if (calendarButton) {
+      (calendarButton as HTMLButtonElement).click();
+    }
   },
 };
 
@@ -343,8 +381,23 @@ export const CalendarViewEmpty: Story = {
           profile: mockRegularProfile,
         })),
         trpcQuery("profile", "listTalents", () => mockTalents),
+        trpcQuery("shift", "list", () => ({
+          items: [],
+          total: 0,
+          nextCursor: null,
+        })),
         trpcQuery("shift", "calendar", () => []),
       ],
     },
+  },
+  play: async ({ canvasElement }) => {
+    // Wait for component to render
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Click the Calendar view button to switch to calendar mode
+    const calendarButton = canvasElement.querySelector('button[aria-label="Calendar view"]');
+    if (calendarButton) {
+      (calendarButton as HTMLButtonElement).click();
+    }
   },
 };

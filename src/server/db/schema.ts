@@ -176,7 +176,7 @@ export const shifts = sqliteTable(
     endTime: integer("endTime", { mode: "timestamp" }).notNull(),
     createdBy: text("createdBy")
       .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
+      .references(() => user.id),
     createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
   },
   (table) => ({
